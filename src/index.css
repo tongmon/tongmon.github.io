@@ -10,12 +10,12 @@ body {
   padding: 0;
   font-family: 'Open Sans', sans-serif;
   background: #21181B;
-  background-image: url('../images/pixel_tv.jpg');
+  background-image: url('../images/pixel_gameboy.jpg');
   background-position: center;
   background-repeat: no-repeat;
   background-size: auto 60vh;
   background-attachment: fixed;
-  color: #fff;
+  color: #f5efce;
   overflow-x: hidden;
 }
 

@@ -14,12 +14,16 @@ export function Header() {
           <li>
             <a href="#learn">Learn</a>
           </li>
+        </ul>
+        <ul>
           <li>
             <a href="#life">Life</a>
           </li>
           <li>
             <a href="#work">Work</a>
           </li>
+        </ul>
+        <ul>
           <li>
             <a href="#about">About</a>
           </li>

@@ -20,7 +20,7 @@ body {
 
 .welcome-header img {
     width: auto;
-    height: 15vh;
+    height: 12vh;
     margin-bottom: 0vh;
     margin-top: 4vh;
 }
@@ -35,7 +35,7 @@ body {
     font-size: 1.5vh;
     white-space: pre-wrap;
     text-align: center;
-    margin-bottom: 39vh;
+    margin-bottom: 40vh;
 }
 
 .welcome-header nav ul {
@@ -47,12 +47,12 @@ body {
 }
 
 .welcome-header nav li {
-    margin: 0 6vh;
+    margin: 2vh 17vh;
 }
 
 .welcome-header nav a {
     font-size: 2.5vh;
-    color: #fff;
+    color: #f5efce;
     text-decoration: none;
     opacity: 0.5;
     transition: opacity 0.3s;
