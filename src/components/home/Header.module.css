@@ -9,21 +9,6 @@ body {
 }
 */
 
-.pixel-clip-border {
-    clip-path:
-        polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%,
-            /* 기본 사각형 */
-            0% 0%, 5% 0%, 5% 5%, 0% 5%,
-            /* 좌상단 계단 */
-            95% 0%, 100% 0%, 100% 5%, 95% 5%
-            /* 우상단 계단 */
-        );
-    background: #000;
-    /* 테두리 색 */
-    padding: 5px;
-    /* 테두리 두께 */
-}
-
 .welcome-header {
     text-align: center;
     display: flex;
@@ -36,7 +21,6 @@ body {
 .welcome-header img {
     width: auto;
     height: 15vh;
-    border-radius: 5%;
     margin-bottom: 0vh;
     margin-top: 4vh;
 }

@@ -6,12 +6,7 @@ import profileImage from "../../assets/profile_pixelate.png";
 export function Header() {
   return (
     <header className={classes["welcome-header"]}>
-      {
-        // <img src={profileImage} alt="tongstar's profile image" /> 
-      }
-      <div class="pixel-clip-border">
-        <img src={profileImage} alt="tongstar's profile image" />
-      </div>
+      <img src={profileImage} alt="tongstar's profile image" />
       <h1>Welcome!</h1>
       <p>{"This is the blog of tongstar.\nFeel free to look around!"}</p>
       <nav>
