@@ -1,3 +1,4 @@
+/*
 body {
     margin: 0;
     padding: 0;
@@ -6,25 +7,77 @@ body {
     color: #fff;
     overflow-x: hidden;
 }
+*/
+
+.pixel-clip-border {
+    clip-path:
+        polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%,
+            /* 기본 사각형 */
+            0% 0%, 5% 0%, 5% 5%, 0% 5%,
+            /* 좌상단 계단 */
+            95% 0%, 100% 0%, 100% 5%, 95% 5%
+            /* 우상단 계단 */
+        );
+    background: #000;
+    /* 테두리 색 */
+    padding: 5px;
+    /* 테두리 두께 */
+}
 
 .welcome-header {
-    margin-top: 20px;
     text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
-    font-weight: 600;
+    font-family: 'PixelFont';
+    /*font-weight: 600;*/
+}
+
+.welcome-header img {
+    width: auto;
+    height: 15vh;
+    border-radius: 5%;
+    margin-bottom: 0vh;
+    margin-top: 4vh;
 }
 
 .welcome-header h1 {
-    font-size: 3rem;
-    margin-bottom: 1rem;
+    font-size: 3.5vh;
+    margin-bottom: 0vh;
     text-align: center;
 }
 
 .welcome-header p {
+    font-size: 1.5vh;
     white-space: pre-wrap;
     text-align: center;
+    margin-bottom: 39vh;
+}
+
+.welcome-header nav ul {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.welcome-header nav li {
+    margin: 0 6vh;
+}
+
+.welcome-header nav a {
+    font-size: 2.5vh;
+    color: #fff;
+    text-decoration: none;
+    opacity: 0.5;
+    transition: opacity 0.3s;
+    text-align: center;
+    letter-spacing: 0.05em;
+}
+
+.welcome-header nav a:hover {
+    opacity: 1;
 }
 
 /*
@@ -58,35 +111,3 @@ body {
     transform: translateY(0);
 }
 */
-
-.welcome-header img {
-    width: 200px;
-    height: 200px;
-    margin-bottom: 1rem;
-    border-radius: 50%;
-}
-
-.welcome-header nav ul {
-    display: flex;
-    justify-content: center;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.welcome-header nav li {
-    margin: 0 1rem;
-}
-
-.welcome-header nav a {
-    color: #fff;
-    text-decoration: none;
-    opacity: 0.5;
-    transition: opacity 0.3s;
-    text-align: center;
-    letter-spacing: 0.05em;
-}
-
-.welcome-header nav a:hover {
-    opacity: 1;
-}

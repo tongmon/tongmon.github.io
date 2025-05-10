@@ -1,3 +1,24 @@
+@font-face {
+  font-family: 'PixelFont';
+  src: url('./fonts/Daydream.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+body {
+  padding: 0;
+  font-family: 'Open Sans', sans-serif;
+  background: #21181B;
+  background-image: url('images/pixel_tv.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: auto 60vh;
+  background-attachment: fixed;
+  color: #fff;
+  overflow-x: hidden;
+}
+
 /* index.css 또는 App.css */
 /*
 body {
