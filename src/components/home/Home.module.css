@@ -1,15 +1,17 @@
-/*
-body {
-    margin: 0;
-    padding: 0;
+.home-bg {
     font-family: 'Open Sans', sans-serif;
-    background: #500909;
-    color: #fff;
+    background: #21181B;
+    background-image: url('../images/pixel_gameboy.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: auto 60vh;
+    background-attachment: fixed;
+    color: #f5efce;
     overflow-x: hidden;
+    min-height: 100vh;
 }
-*/
 
-.welcome-header {
+.home {
     text-align: center;
     display: flex;
     flex-direction: column;
@@ -18,27 +20,27 @@ body {
     /*font-weight: 600;*/
 }
 
-.welcome-header img {
+.home img {
     width: auto;
     height: 12vh;
     margin-bottom: 0vh;
-    margin-top: 4vh;
+    margin-top: 5vh;
 }
 
-.welcome-header h1 {
+.home h1 {
     font-size: 3.5vh;
     margin-bottom: 0vh;
     text-align: center;
 }
 
-.welcome-header p {
+.home p {
     font-size: 1.5vh;
     white-space: pre-wrap;
     text-align: center;
     margin-bottom: 38vh;
 }
 
-.welcome-header nav ul {
+.home nav ul {
     display: flex;
     justify-content: center;
     list-style: none;
@@ -46,11 +48,11 @@ body {
     margin: 0;
 }
 
-.welcome-header nav li {
+.home nav li {
     margin: 3.2vh 13vh;
 }
 
-.welcome-header nav a {
+.home nav a {
     font-size: 2.5vh;
     color: #f5efce;
     text-decoration: none;
@@ -60,7 +62,7 @@ body {
     letter-spacing: 0.05em;
 }
 
-.welcome-header nav a:hover {
+.home nav a:hover {
     opacity: 1;
 }
 

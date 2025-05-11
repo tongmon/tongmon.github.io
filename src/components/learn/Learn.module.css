@@ -1,0 +1,82 @@
+.learn-bg {
+    font-family: 'Open Sans', sans-serif;
+    background: #21181B;
+    background-image: url('../images/pixel_adventure_time.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: auto 60vh;
+    background-attachment: fixed;
+    color: #f5efce;
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+.app {
+    position: relative;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.toggle-button {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 1100;
+    padding: 10px 15px;
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -250px;
+    /* 숨겨진 상태 */
+    width: 250px;
+    height: 100%;
+    background-color: #222;
+    color: white;
+    padding: 20px;
+    transition: left 0.3s ease-in-out;
+    z-index: 1000;
+}
+
+.sidebar.open {
+    left: 0;
+}
+
+.content {
+    margin-left: 0;
+    padding: 60px 20px;
+}
+
+.dropdown {
+    margin-top: 20px;
+}
+
+.dropdown-toggle {
+    background: #444;
+    color: white;
+    padding: 10px;
+    border: none;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+}
+
+.dropdown-menu {
+    background-color: #333;
+    border: 1px solid #555;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    margin-top: 5px;
+}
+
+.dropdown-item {
+    padding: 10px;
+    cursor: pointer;
+    color: white;
+}
+
+.dropdown-item:hover {
+    background-color: #555;
+}
