@@ -2,8 +2,8 @@ import classes from "../learn/Learn.module.css";
 
 export function Learn() {
     return (
-        <>
-        </>
+        <div className={classes["learn-bg"]}>
+        </div>
         // <div className="app">
         //     <button className="toggle-button" onClick={() => setSidebarOpen(!sidebarOpen)}>
         //         {sidebarOpen ? '닫기' : '메뉴 열기'}

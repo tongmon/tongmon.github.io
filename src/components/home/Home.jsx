@@ -15,7 +15,7 @@ export function Home() {
         <nav>
           <ul>
             <li>
-              <a href="learn" onClick={() => navigate('/')}>Learn</a>
+              <a href="" onClick={() => navigate('/learn')}>Learn</a>
             </li>
           </ul>
           <ul>

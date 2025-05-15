@@ -5,9 +5,9 @@ import { Learn } from "./components/learn/Learn";
 
 function App() {
   return (
-    <Router basename="/">
+    <Router basename="/tongstar-blog">
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route exact path="/" element={<Home />} />
         <Route path="/learn" element={<Learn />} />
       </Routes>
     </Router>
