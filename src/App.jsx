@@ -5,7 +5,7 @@ import { Learn } from "./components/learn/Learn";
 
 function App() {
   return (
-    <Router basename="/tongstar-blog">
+    <Router basename="/tongstar-blog/">
       <Routes>
         <Route exact path="/" element={<Home />} />
         <Route path="/learn" element={<Learn />} />
