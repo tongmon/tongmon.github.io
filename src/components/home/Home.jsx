@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 import classes from "../home/Home.module.css";
 import profileImage from "/images/profile_pixelate.png";
@@ -15,20 +15,20 @@ export function Home() {
         <nav>
           <ul>
             <li>
-              <a href="" onClick={() => navigate('/learn')}>Learn</a>
+              <Link to="/learn">Learn</Link>
             </li>
           </ul>
           <ul>
             <li>
-              <a href="#life">Life</a>
+              <Link to="/life">Life</Link>
             </li>
             <li>
-              <a href="#work">Work</a>
+              <Link to="/work">Work</Link>
             </li>
           </ul>
           <ul>
             <li>
-              <a href="#about">About</a>
+              <Link to="/about">About</Link>
             </li>
           </ul>
         </nav>
