@@ -1,3 +1,3 @@
 # Welcome to tongstar's blog repository!
 
-[This link](https://tongmon.github.io/tongstar-blog) will take you to the repository's website.
+[This link](https://tongmon.github.io) will take you to the repository's website.
