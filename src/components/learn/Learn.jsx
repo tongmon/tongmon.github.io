@@ -1,34 +1,28 @@
+import { Link } from 'react-router-dom';
+
 import classes from "../learn/Learn.module.css";
 
 export function Learn() {
     return (
         <div className={classes["learn-bg"]}>
+            <div className={classes["category-menu"]}>
+                <div className={classes["title-box"]}>
+                    <h1>Menu-Icon</h1>
+                    <h1>Learn</h1>
+                </div>
+                <h1>Search bar</h1>
+                <ul>
+                    <li>
+                        <Link to="/learn/menu2">menu2</Link>
+                        <ul>
+                            <li><Link to="/learn/menu2/text1">text1</Link></li>
+                            <li><Link to="/learn/menu2/text2">text2</Link></li>
+                            <li><Link to="/learn/menu2/text3">text3</Link></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div className={classes["content-grid"]}>2</div>
         </div>
-        // <div className="app">
-        //     <button className="toggle-button" onClick={() => setSidebarOpen(!sidebarOpen)}>
-        //         {sidebarOpen ? '닫기' : '메뉴 열기'}
-        //     </button>
-        // 
-        //     <div className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
-        //         <h2>사이드바</h2>
-        // 
-        //         <div className="dropdown">
-        //             <button onClick={() => setDropdownOpen(!dropdownOpen)} className="dropdown-toggle">
-        //                 카테고리
-        //             </button>
-        //             {dropdownOpen && (
-        //                 <ul className="dropdown-menu">
-        //                     <li className="dropdown-item">React</li>
-        //                     <li className="dropdown-item">JavaScript</li>
-        //                     <li className="dropdown-item">Python</li>
-        //                 </ul>
-        //             )}
-        //         </div>
-        //     </div>
-        // 
-        //     <div className="content">
-        //         <h1>메인 콘텐츠</h1>
-        //     </div>
-        // </div>
     );
 }

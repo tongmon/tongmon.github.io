@@ -1,11 +1,9 @@
-import { useNavigate, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import classes from "../home/Home.module.css";
 import profileImage from "/images/profile_pixelate.png";
 
 export function Home() {
-  const navigate = useNavigate();
-
   return (
     <div className={classes["home-bg"]}>
       <header className={classes["home"]}>
