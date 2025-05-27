@@ -6,11 +6,16 @@ export function Learn() {
     return (
         <div className={classes["learn-bg"]}>
             <div className={classes["category-menu"]}>
-                <div className={classes["title-box"]}>
-                    <h1>Menu-Icon</h1>
-                    <h1>Learn</h1>
-                </div>
+                <h1>Learn</h1>
                 <h1>Search bar</h1>
+                <div className={classes["dropdown"]}>
+                    <button className={classes["dropbtn"]}>Programming</button>
+                    <div className={classes["dropdown-content"]}>
+                        <li><Link to="/learn/menu2/text1">text1</Link></li>
+                        <li><Link to="/learn/menu2/text2">text2</Link></li>
+                        <li><Link to="/learn/menu2/text3">text3</Link></li>
+                    </div>
+                </div>
                 <ul>
                     <li>
                         <Link to="/learn/menu2">menu2</Link>
