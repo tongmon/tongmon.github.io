@@ -1,13 +1,13 @@
 import { Link } from 'react-router-dom';
 
 import classes from "../learn/Learn.module.css";
+import { SearchBar } from '../user_interface/searchbar/SearchBar';
 
 export function Learn() {
     return (
         <div className={classes["learn-bg"]}>
             <div className={classes["category-menu"]}>
-                <h1>Learn</h1>
-                <h1>Search bar</h1>
+                <SearchBar initialSearchKeyword="Test" onSearchButtonClick={(searchKeyword) => console.log(searchKeyword)} />
                 <div className={classes["dropdown"]}>
                     <button className={classes["dropbtn"]}>Programming</button>
                     <div className={classes["dropdown-content"]}>

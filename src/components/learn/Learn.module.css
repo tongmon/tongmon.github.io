@@ -8,10 +8,10 @@
     background-attachment: fixed;
     color: #f5efce;
     overflow-x: hidden;
-    min-height: 80vh;
+    min-height: 90vh;
     display: grid;
     grid-template-columns: 20% 80%;
-    margin: 10vh 20vh 10vh 20vh;
+    margin: 5vh 20vh 5vh 20vh;
 }
 
 .title-box {
