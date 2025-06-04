@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import classes from "../../user_interface/dropdown/DropDown.module.css";
+import classes from "../../user_interface/dropdown/Dropdown.module.css";
 
 export function Dropdown({ item }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -26,7 +26,7 @@ export function Dropdown({ item }) {
   );
 }
 
-// export function DropDown() {
+// export function Dropdown() {
 //   const [isOpen, setIsOpen] = useState(false);
 //
 //   const toggleDropdown = () => {

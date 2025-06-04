@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 import classes from "../learn/Learn.module.css";
 import { SearchBar } from "../user_interface/searchbar/SearchBar";
-import { DropDown } from "../user_interface/dropdown/DropDown";
+import { Dropdown } from "../user_interface/dropdown/Dropdown";
 
 function CreateLearnDropDowns() {
   function toDropdownFormat(obj) {
@@ -15,10 +15,19 @@ function CreateLearnDropDowns() {
     });
   }
 
-  basePath = "/src/assets/Learn";
-  paths = Object.keys(import.meta.glob(`${basePath}/**/*`, { eager: true }));
+  // basePath = "/src/assets/Learn";
+  let paths = Object.keys(
+    import.meta.glob("/src/assets/Learn/**/*", { eager: true })
+  );
+
+  console.log(paths);
+
   for (const fullPath of paths) {
-    const parts = fullPath.replace(`${basePath}/`, "").split("/");
+    const parts = fullPath.replace("/src/assets/Learn/", "").split("/");
+  }
+
+  for (const fullPath of paths) {
+    const parts = fullPath.replace("/src/assets/Learn/", "").split("/");
     let current = root;
 
     for (const [index, part] of parts.entries()) {
@@ -29,10 +38,10 @@ function CreateLearnDropDowns() {
     }
   }
 
-  dropdownItems = toDropdownFormat(root);
+  let dropdownItems = toDropdownFormat(root);
 
   return dropdownItems.map((item, index) => (
-    <DropDown key={index} item={item} />
+    <Dropdown key={index} item={item} />
   ));
 }
 
