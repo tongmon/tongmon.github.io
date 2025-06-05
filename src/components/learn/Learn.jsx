@@ -3,46 +3,65 @@ import { Link } from "react-router-dom";
 import classes from "../learn/Learn.module.css";
 import { SearchBar } from "../user_interface/searchbar/SearchBar";
 import { Dropdown } from "../user_interface/dropdown/Dropdown";
+import { label } from "framer-motion/client";
+import { GetBlogContentTree } from "../util/GetBlogContentTree";
 
 function CreateLearnDropDowns() {
-  function toDropdownFormat(obj) {
-    return Object.entries(obj).map(([key, value]) => {
-      if (value === null) {
-        return { label: key };
-      } else {
-        return { label: key, children: toDropdownFormat(value) };
-      }
-    });
-  }
+  let blogContentTree = GetBlogContentTree();
+  return <Dropdown item={blogContentTree} />;
 
-  // basePath = "/src/assets/Learn";
-  let paths = Object.keys(
-    import.meta.glob("/src/assets/Learn/**/*", { eager: true })
-  );
+  //function toDropdownFormat(obj) {
+  //  return Object.entries(obj).map(([key, value]) => {
+  //    if (value === null) {
+  //      return { label: key };
+  //    } else {
+  //      return { label: key, children: toDropdownFormat(value) };
+  //    }
+  //  });
+  //}
 
-  console.log(paths);
+  //let dropDownTree = {
+  //  label: "Learn",
+  //  count: 0,
+  //  spread: true,
+  //  children: [],
+  //};
 
-  for (const fullPath of paths) {
-    const parts = fullPath.replace("/src/assets/Learn/", "").split("/");
-  }
+  //// basePath = "/src/assets/Learn";
+  //let paths = Object.keys(
+  //  import.meta.glob("/src/assets/Learn/**/*", { eager: true })
+  //);
 
-  for (const fullPath of paths) {
-    const parts = fullPath.replace("/src/assets/Learn/", "").split("/");
-    let current = root;
+  //for (const fullPath of paths) {
+  //  const parts = fullPath.replace("/src/assets/Learn/", "").split("/");
+  //  let root = dropDownTree.children;
+  //  for (let i = 0; i < parts.length; i++) {}
 
-    for (const [index, part] of parts.entries()) {
-      if (!current[part]) {
-        current[part] = index === parts.length - 1 ? null : {};
-      }
-      current = current[part];
-    }
-  }
+  //  dropDownTree.children.push({
+  //    label: parts[0],
+  //    count: 0,
+  //    spread: true,
+  //    children: [],
+  //  });
+  //}
 
-  let dropdownItems = toDropdownFormat(root);
+  //for (const fullPath of paths) {
+  //  const parts = fullPath.replace("/src/assets/Learn/", "").split("/");
+  //  let current = root;
 
-  return dropdownItems.map((item, index) => (
-    <Dropdown key={index} item={item} />
-  ));
+  //  for (const [index, part] of parts.entries()) {
+  //    if (!current[part]) {
+  //      current[part] = index === parts.length - 1 ? null : {};
+  //    }
+  //    current = current[part];
+  //  }
+  //}
+
+  //let dropdownItems = toDropdownFormat(root);
+
+  //return dropdownItems.map((item, index) => (
+  //  <Dropdown key={index} item={item} />
+  //));
 }
 
 export function Learn() {
