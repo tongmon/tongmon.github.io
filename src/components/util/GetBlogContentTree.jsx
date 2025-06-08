@@ -1,7 +1,9 @@
 let blogContentTree = {
   label: "All",
   childContentCnt: 0,
+  parent: null,
   isLeaf: false,
+  isOpen: true,
   children: [],
 };
 
@@ -30,7 +32,9 @@ export function GetBlogContentTree() {
         let child = {
           label: parts[i],
           childContentCnt: 0,
+          parent: parent,
           isLeaf: false,
+          isOpen: true,
           children: [],
         };
         parent.children.push(child);

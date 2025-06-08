@@ -1,26 +1,39 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import classes from "../../user_interface/dropdown/Dropdown.module.css";
 
 export function Dropdown({ item }) {
-  const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
+  const [isOpen, setIsOpen] = useState(item.isOpen);
   const hasChildren = item.children && item.children.length > 0;
   const toggleDropdown = () => {
-    setIsOpen((prev) => !prev);
+    if (hasChildren === false) {
+      var linkStr = "";
+      do {
+        linkStr = "/" + item.label + linkStr;
+        item = item.parent;
+      } while (item.parent != null);
+      navigate(linkStr);
+      return;
+    }
+    setIsOpen((prev) => {
+      prev = !prev;
+      item.isOpen = prev;
+      return prev;
+    });
   };
 
   return (
     <div className={classes["dropdown-container"]}>
       <div className={classes["dropdown-button-container"]}>
         <div className={classes["dropdown-button"]} onClick={toggleDropdown}>
-          {item.label}
-          {item.isLeaf ? "" : ` (${item.childContentCnt})`}
+          {`${item.label} (${item.childContentCnt})`}
         </div>
         <div className={classes["dropdown-flag-text"]}>
           {hasChildren && (isOpen ? "^" : "]")}
         </div>
       </div>
-
       {hasChildren && isOpen && (
         <div className={classes["dropdown-content"]}>
           {item.children.map((child, idx) => (

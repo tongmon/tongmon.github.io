@@ -6,76 +6,35 @@ import { Dropdown } from "../user_interface/dropdown/Dropdown";
 import { label } from "framer-motion/client";
 import { GetBlogContentTree } from "../util/GetBlogContentTree";
 
-function CreateLearnDropDowns() {
-  let blogContentTree = GetBlogContentTree();
-  let learnContentTree = undefined;
-  for (
-    var i = 0;
-    i < blogContentTree.children.length && learnContentTree == undefined;
-    i++
-  ) {
-    if ((learnContentTree = blogContentTree.children[i].label === "Learn")) {
-      learnContentTree = blogContentTree.children[i];
+export function Learn() {
+  function CreateLearnDropDowns() {
+    let blogContentTree = GetBlogContentTree();
+    let learnContentTree = undefined;
+    for (
+      var i = 0;
+      i < blogContentTree.children.length && learnContentTree == undefined;
+      i++
+    ) {
+      if ((learnContentTree = blogContentTree.children[i].label === "Learn")) {
+        learnContentTree = blogContentTree.children[i];
+      }
     }
+    function RemoveLeaf(node) {
+      for (let i = 0; i < node.children.length; i++) {
+        if (node.children[i].isLeaf) {
+          node.children.splice(i, 1);
+          i--;
+        } else {
+          RemoveLeaf(node.children[i]);
+        }
+      }
+    }
+
+    RemoveLeaf(learnContentTree);
+
+    return <Dropdown item={learnContentTree} />;
   }
 
-  return <Dropdown item={learnContentTree} />;
-
-  //function toDropdownFormat(obj) {
-  //  return Object.entries(obj).map(([key, value]) => {
-  //    if (value === null) {
-  //      return { label: key };
-  //    } else {
-  //      return { label: key, children: toDropdownFormat(value) };
-  //    }
-  //  });
-  //}
-
-  //let dropDownTree = {
-  //  label: "Learn",
-  //  count: 0,
-  //  spread: true,
-  //  children: [],
-  //};
-
-  //// basePath = "/src/assets/Learn";
-  //let paths = Object.keys(
-  //  import.meta.glob("/src/assets/Learn/**/*", { eager: true })
-  //);
-
-  //for (const fullPath of paths) {
-  //  const parts = fullPath.replace("/src/assets/Learn/", "").split("/");
-  //  let root = dropDownTree.children;
-  //  for (let i = 0; i < parts.length; i++) {}
-
-  //  dropDownTree.children.push({
-  //    label: parts[0],
-  //    count: 0,
-  //    spread: true,
-  //    children: [],
-  //  });
-  //}
-
-  //for (const fullPath of paths) {
-  //  const parts = fullPath.replace("/src/assets/Learn/", "").split("/");
-  //  let current = root;
-
-  //  for (const [index, part] of parts.entries()) {
-  //    if (!current[part]) {
-  //      current[part] = index === parts.length - 1 ? null : {};
-  //    }
-  //    current = current[part];
-  //  }
-  //}
-
-  //let dropdownItems = toDropdownFormat(root);
-
-  //return dropdownItems.map((item, index) => (
-  //  <Dropdown key={index} item={item} />
-  //));
-}
-
-export function Learn() {
   return (
     <div className={classes["learn-bg"]}>
       <div className={classes["category-menu"]}>

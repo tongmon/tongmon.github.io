@@ -13,20 +13,20 @@ export function Home() {
         <nav>
           <ul>
             <li>
-              <Link to="/learn">Learn</Link>
+              <Link to="/Learn">Learn</Link>
             </li>
           </ul>
           <ul>
             <li>
-              <Link to="/life">Life</Link>
+              <Link to="/Life">Life</Link>
             </li>
             <li>
-              <Link to="/work">Work</Link>
+              <Link to="/Work">Work</Link>
             </li>
           </ul>
           <ul>
             <li>
-              <Link to="/about">About</Link>
+              <Link to="/About">About</Link>
             </li>
           </ul>
         </nav>
