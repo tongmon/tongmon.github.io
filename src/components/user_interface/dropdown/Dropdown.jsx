@@ -11,8 +11,14 @@ export function Dropdown({ item }) {
 
   return (
     <div className={classes["dropdown-container"]}>
-      <div className={classes["dropdown-button"]} onClick={toggleDropdown}>
-        {item.label} {hasChildren && (isOpen ? "▲" : "▼")}
+      <div className={classes["dropdown-button-container"]}>
+        <div className={classes["dropdown-button"]} onClick={toggleDropdown}>
+          {item.label}
+          {item.isLeaf ? "" : ` (${item.childContentCnt})`}
+        </div>
+        <div className={classes["dropdown-flag-text"]}>
+          {hasChildren && (isOpen ? "^" : "]")}
+        </div>
       </div>
 
       {hasChildren && isOpen && (

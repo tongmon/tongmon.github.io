@@ -10,8 +10,8 @@
     overflow-x: hidden;
     min-height: 90vh;
     display: grid;
-    grid-template-columns: 20% 80%;
-    margin: 5vh 20vh 5vh 20vh;
+    grid-template-columns: 25% 65%;
+    margin: 5vh 15vh 5vh 15vh;
 }
 
 .title-box {

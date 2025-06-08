@@ -8,7 +8,18 @@ import { GetBlogContentTree } from "../util/GetBlogContentTree";
 
 function CreateLearnDropDowns() {
   let blogContentTree = GetBlogContentTree();
-  return <Dropdown item={blogContentTree} />;
+  let learnContentTree = undefined;
+  for (
+    var i = 0;
+    i < blogContentTree.children.length && learnContentTree == undefined;
+    i++
+  ) {
+    if ((learnContentTree = blogContentTree.children[i].label === "Learn")) {
+      learnContentTree = blogContentTree.children[i];
+    }
+  }
+
+  return <Dropdown item={learnContentTree} />;
 
   //function toDropdownFormat(obj) {
   //  return Object.entries(obj).map(([key, value]) => {

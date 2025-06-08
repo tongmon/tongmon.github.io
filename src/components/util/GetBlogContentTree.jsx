@@ -1,6 +1,7 @@
 let blogContentTree = {
   label: "All",
-  childCnt: 0,
+  childContentCnt: 0,
+  isLeaf: false,
   children: [],
 };
 
@@ -14,23 +15,46 @@ export function GetBlogContentTree() {
   for (const fullPath of paths) {
     const parts = fullPath.replace("/src/assets/blog_content/", "").split("/");
     let parent = blogContentTree;
-    for (let i = 0; i < parts.length; i++) {
+    for (let i = 0; i < parts.length && parent != undefined; i++) {
+      const fileRegex = /^[^\\/:\*\?"<>\|]+?\.[a-zA-Z0-9]+$/;
+      if (fileRegex.test(parts[i])) {
+        parent.isLeaf = true;
+        parent.children.length = 0;
+        parent = undefined;
+        continue;
+      }
       let targetChild = parent.children.find(
         (child) => child.label === parts[i]
       );
       if (targetChild == undefined) {
         let child = {
           label: parts[i],
-          childCnt: 0,
+          childContentCnt: 0,
+          isLeaf: false,
           children: [],
         };
         parent.children.push(child);
         parent = child;
       } else {
         parent = targetChild;
+        if (parent.isLeaf === true) {
+          parent = undefined;
+        }
       }
     }
   }
+
+  function CountChildContent(node) {
+    for (const child of node.children) {
+      CountChildContent(child);
+      node.childContentCnt += child.childContentCnt;
+    }
+    if (node.isLeaf) {
+      node.childContentCnt = 1;
+    }
+  }
+
+  CountChildContent(blogContentTree);
 
   return blogContentTree;
 
