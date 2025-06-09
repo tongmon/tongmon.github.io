@@ -21,9 +21,9 @@ export function GetBlogContentTree() {
       const fileRegex = /^[^\\/:\*\?"<>\|]+?\.[a-zA-Z0-9]+$/;
       if (fileRegex.test(parts[i])) {
         parent.isLeaf = true;
-        parent.children.length = 0;
-        parent = undefined;
-        continue;
+        // parent.children.length = 0;
+        // parent = undefined;
+        // continue;
       }
       let targetChild = parent.children.find(
         (child) => child.label === parts[i]
@@ -41,20 +41,21 @@ export function GetBlogContentTree() {
         parent = child;
       } else {
         parent = targetChild;
-        if (parent.isLeaf === true) {
-          parent = undefined;
-        }
+        // if (parent.isLeaf === true) {
+        //   parent = undefined;
+        // }
       }
     }
   }
 
   function CountChildContent(node) {
+    if (node.isLeaf) {
+      node.childContentCnt = 1;
+      return;
+    }
     for (const child of node.children) {
       CountChildContent(child);
       node.childContentCnt += child.childContentCnt;
-    }
-    if (node.isLeaf) {
-      node.childContentCnt = 1;
     }
   }
 

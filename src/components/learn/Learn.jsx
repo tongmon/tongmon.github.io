@@ -6,33 +6,46 @@ import { Dropdown } from "../user_interface/dropdown/Dropdown";
 import { label } from "framer-motion/client";
 import { GetBlogContentTree } from "../util/GetBlogContentTree";
 
+let learnContentTree = null;
+
 export function Learn() {
-  function CreateLearnDropDowns() {
+  function GetLearnContentTree() {
+    if (learnContentTree) return learnContentTree;
+
     let blogContentTree = GetBlogContentTree();
-    let learnContentTree = undefined;
     for (
       var i = 0;
-      i < blogContentTree.children.length && learnContentTree == undefined;
+      i < blogContentTree.children.length && learnContentTree == null;
       i++
     ) {
-      if ((learnContentTree = blogContentTree.children[i].label === "Learn")) {
+      if (blogContentTree.children[i].label === "Learn") {
         learnContentTree = blogContentTree.children[i];
       }
     }
-    function RemoveLeaf(node) {
-      for (let i = 0; i < node.children.length; i++) {
-        if (node.children[i].isLeaf) {
-          node.children.splice(i, 1);
-          i--;
-        } else {
-          RemoveLeaf(node.children[i]);
+    learnContentTree.parent = null;
+
+    function ShiftLeaf(node, isTopSide = true) {
+      if (node.isLeaf) {
+        if (isTopSide && node.parent != null) {
+          node.parent.isLeaf = true;
+          node.isLeaf = false;
+        } else if (!isTopSide && node.children.length > 0) {
+          node.isLeaf = false;
+          for (let i = 0; i < node.children.length; i++) {
+            node.children;
+            [i].isLeaf = true;
+          }
         }
+        return;
+      }
+      for (let i = 0; i < node.children.length; i++) {
+        ShiftLeaf(node.children[i], isTopSide);
       }
     }
 
-    RemoveLeaf(learnContentTree);
+    ShiftLeaf(learnContentTree, true);
 
-    return <Dropdown item={learnContentTree} />;
+    return learnContentTree;
   }
 
   return (
@@ -42,7 +55,7 @@ export function Learn() {
           initialSearchKeyword="Test"
           onSearchButtonClick={(searchKeyword) => console.log(searchKeyword)}
         />
-        {CreateLearnDropDowns()}
+        <Dropdown item={GetLearnContentTree()} />
       </div>
       <div className={classes["content-grid"]}>2</div>
     </div>

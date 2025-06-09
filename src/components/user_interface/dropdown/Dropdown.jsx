@@ -6,14 +6,14 @@ import classes from "../../user_interface/dropdown/Dropdown.module.css";
 export function Dropdown({ item }) {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(item.isOpen);
-  const hasChildren = item.children && item.children.length > 0;
+  // const hasChildren = item.children && item.children.length > 0;
   const toggleDropdown = () => {
-    if (hasChildren === false) {
+    if (item.isLeaf === true) {
       var linkStr = "";
       do {
         linkStr = "/" + item.label + linkStr;
         item = item.parent;
-      } while (item.parent != null);
+      } while (item != null);
       navigate(linkStr);
       return;
     }
@@ -31,10 +31,10 @@ export function Dropdown({ item }) {
           {`${item.label} (${item.childContentCnt})`}
         </div>
         <div className={classes["dropdown-flag-text"]}>
-          {hasChildren && (isOpen ? "^" : "]")}
+          {!item.isLeaf && (isOpen ? "^" : "]")}
         </div>
       </div>
-      {hasChildren && isOpen && (
+      {!item.isLeaf && isOpen && (
         <div className={classes["dropdown-content"]}>
           {item.children.map((child, idx) => (
             <Dropdown key={idx} item={child} />
