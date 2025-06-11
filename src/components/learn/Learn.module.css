@@ -10,7 +10,7 @@
     overflow-x: hidden;
     min-height: 90vh;
     display: grid;
-    grid-template-columns: 25% 65%;
+    grid-template-columns: 25% 75%;
     margin: 5vh 15vh 5vh 15vh;
 }
 
