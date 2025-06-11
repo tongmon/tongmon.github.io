@@ -5,6 +5,155 @@ import { SearchBar } from "../user_interface/searchbar/SearchBar";
 import { Dropdown } from "../user_interface/dropdown/Dropdown";
 import { label } from "framer-motion/client";
 import { GetBlogContentTree } from "../util/GetBlogContentTree";
+import { PostGrid } from "../user_interface/postgrid/PostGrid";
+
+const dummyPosts = [
+  {
+    title: "React로 Velog 스타일 만들기",
+    summary: "그리드 레이아웃과 카드 디자인 구현 방법을 알아봅니다.",
+    date: "2025.06.10",
+    thumbnail: "https://via.placeholder.com/400x200",
+  },
+  {
+    title: "JavaScript debounce 정리",
+    summary: "짧은 시간 내 이벤트를 제어하는 방법",
+    date: "2025.06.08",
+    thumbnail: "https://via.placeholder.com/400x200",
+  },
+  {
+    title: "JavaScript debounce 정리",
+    summary: "짧은 시간 내 이벤트를 제어하는 방법",
+    date: "2025.06.08",
+    thumbnail: "https://via.placeholder.com/400x200",
+  },
+  {
+    title: "JavaScript debounce 정리",
+    summary: "짧은 시간 내 이벤트를 제어하는 방법",
+    date: "2025.06.08",
+    thumbnail: "https://via.placeholder.com/400x200",
+  },
+  {
+    title: "JavaScript debounce 정리",
+    summary: "짧은 시간 내 이벤트를 제어하는 방법",
+    date: "2025.06.08",
+    thumbnail: "https://via.placeholder.com/400x200",
+  },
+  {
+    title: "JavaScript debounce 정리",
+    summary: "짧은 시간 내 이벤트를 제어하는 방법",
+    date: "2025.06.08",
+    thumbnail: "https://via.placeholder.com/400x200",
+  },
+  {
+    title: "JavaScript debounce 정리",
+    summary: "짧은 시간 내 이벤트를 제어하는 방법",
+    date: "2025.06.08",
+    thumbnail: "https://via.placeholder.com/400x200",
+  },
+  {
+    title: "JavaScript debounce 정리",
+    summary: "짧은 시간 내 이벤트를 제어하는 방법",
+    date: "2025.06.08",
+    thumbnail: "https://via.placeholder.com/400x200",
+  },
+  {
+    title: "JavaScript debounce 정리",
+    summary: "짧은 시간 내 이벤트를 제어하는 방법",
+    date: "2025.06.08",
+    thumbnail: "https://via.placeholder.com/400x200",
+  },
+  {
+    title: "JavaScript debounce 정리",
+    summary: "짧은 시간 내 이벤트를 제어하는 방법",
+    date: "2025.06.08",
+    thumbnail: "https://via.placeholder.com/400x200",
+  },
+  {
+    title: "JavaScript debounce 정리",
+    summary: "짧은 시간 내 이벤트를 제어하는 방법",
+    date: "2025.06.08",
+    thumbnail: "https://via.placeholder.com/400x200",
+  },
+  {
+    title: "JavaScript debounce 정리",
+    summary: "짧은 시간 내 이벤트를 제어하는 방법",
+    date: "2025.06.08",
+    thumbnail: "https://via.placeholder.com/400x200",
+  },
+  {
+    title: "JavaScript debounce 정리",
+    summary: "짧은 시간 내 이벤트를 제어하는 방법",
+    date: "2025.06.08",
+    thumbnail: "https://via.placeholder.com/400x200",
+  },
+  {
+    title: "JavaScript debounce 정리",
+    summary: "짧은 시간 내 이벤트를 제어하는 방법",
+    date: "2025.06.08",
+    thumbnail: "https://via.placeholder.com/400x200",
+  },
+  {
+    title: "JavaScript debounce 정리",
+    summary: "짧은 시간 내 이벤트를 제어하는 방법",
+    date: "2025.06.08",
+    thumbnail: "https://via.placeholder.com/400x200",
+  },
+  {
+    title: "JavaScript debounce 정리",
+    summary: "짧은 시간 내 이벤트를 제어하는 방법",
+    date: "2025.06.08",
+    thumbnail: "https://via.placeholder.com/400x200",
+  },
+  {
+    title: "JavaScript debounce 정리",
+    summary: "짧은 시간 내 이벤트를 제어하는 방법",
+    date: "2025.06.08",
+    thumbnail: "https://via.placeholder.com/400x200",
+  },
+  {
+    title: "JavaScript debounce 정리",
+    summary: "짧은 시간 내 이벤트를 제어하는 방법",
+    date: "2025.06.08",
+    thumbnail: "https://via.placeholder.com/400x200",
+  },
+  {
+    title: "JavaScript debounce 정리",
+    summary: "짧은 시간 내 이벤트를 제어하는 방법",
+    date: "2025.06.08",
+    thumbnail: "https://via.placeholder.com/400x200",
+  },
+  {
+    title: "JavaScript debounce 정리",
+    summary: "짧은 시간 내 이벤트를 제어하는 방법",
+    date: "2025.06.08",
+    thumbnail: "https://via.placeholder.com/400x200",
+  },
+  {
+    title: "JavaScript debounce 정리",
+    summary: "짧은 시간 내 이벤트를 제어하는 방법",
+    date: "2025.06.08",
+    thumbnail: "https://via.placeholder.com/400x200",
+  },
+  {
+    title: "JavaScript debounce 정리",
+    summary: "짧은 시간 내 이벤트를 제어하는 방법",
+    date: "2025.06.08",
+    thumbnail: "https://via.placeholder.com/400x200",
+  },
+  {
+    title: "JavaScript debounce 정리",
+    summary: "짧은 시간 내 이벤트를 제어하는 방법",
+    date: "2025.06.08",
+    thumbnail: "https://via.placeholder.com/400x200",
+  },
+  {
+    title: "JavaScript debounce 정리",
+    summary: "짧은 시간 내 이벤트를 제어하는 방법",
+    date: "2025.06.08",
+    thumbnail: "https://via.placeholder.com/400x200",
+  },
+  // ... 더 많은 포스트
+];
 
 let learnContentTree = null;
 
@@ -57,7 +206,10 @@ export function Learn() {
         />
         <Dropdown item={GetLearnContentTree()} />
       </div>
-      <div className={classes["content-grid"]}>2</div>
+      <div className={classes["content-grid"]}>
+        <p>Test Posts</p>
+        <PostGrid posts={dummyPosts} />
+      </div>
     </div>
   );
 }

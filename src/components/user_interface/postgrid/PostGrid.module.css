@@ -7,8 +7,44 @@
 
 .card {
     background-color: white;
-    border: 1px solid #ddd;
-    border-radius: 12px;
+    /* border: 1px solid #ddd; */
+    /* border-radius: 12px; */
+    clip-path: polygon(0px calc(100% - 25px),
+                5px calc(100% - 25px),
+                5px calc(100% - 15px),
+                10px calc(100% - 15px),
+                10px calc(100% - 10px),
+                15px calc(100% - 10px),
+                15px calc(100% - 5px),
+                25px calc(100% - 5px),
+                25px 100%,
+                calc(100% - 25px) 100%,
+                calc(100% - 25px) calc(100% - 5px),
+                calc(100% - 15px) calc(100% - 5px),
+                calc(100% - 15px) calc(100% - 10px),
+                calc(100% - 10px) calc(100% - 10px),
+                calc(100% - 10px) calc(100% - 15px),
+                calc(100% - 5px) calc(100% - 15px),
+                calc(100% - 5px) calc(100% - 25px),
+                100% calc(100% - 25px),
+                100% 25px,
+                calc(100% - 5px) 25px,
+                calc(100% - 5px) 15px,
+                calc(100% - 10px) 15px,
+                calc(100% - 10px) 10px,
+                calc(100% - 15px) 10px,
+                calc(100% - 15px) 5px,
+                calc(100% - 25px) 5px,
+                calc(100% - 25px) 0px,
+                25px 0px,
+                25px 5px,
+                15px 5px,
+                15px 10px,
+                10px 10px,
+                10px 15px,
+                5px 15px,
+                5px 25px,
+                0px 25px  );
     overflow: hidden;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     transition: transform 0.2s ease;

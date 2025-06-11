@@ -1,7 +1,10 @@
 import { Link } from "react-router-dom";
 
 import classes from "../home/Home.module.css";
-import profileImage from "/images/profile_pixelate.png";
+import profileImage from "../../assets/images/profile_pixelate_org.png";
+
+// ref: https://dev.to/pixmy/animated-arcade-with-pure-css-5hn1
+// ref: https://pixelcorners.lukeb.co.uk/?radius=8&multiplier=5
 
 export function Home() {
   return (
