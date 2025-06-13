@@ -1,7 +1,5 @@
 .searchbar-container {
     background: transparent;
-    display: flex;
-    justify-content: center;
     font-family: 'PixelFont';
     border: 1px solid rgb(211, 245, 16);
 }

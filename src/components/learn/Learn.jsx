@@ -199,14 +199,16 @@ export function Learn() {
 
   return (
     <div className={classes["learn-bg"]}>
-      <div className={classes["category-menu"]}>
+      <div className={classes["sidebar-container"]}>
         <SearchBar
           initialSearchKeyword="Test"
           onSearchButtonClick={(searchKeyword) => console.log(searchKeyword)}
         />
-        <Dropdown item={GetLearnContentTree()} />
+        <div className={classes["dropdown-container"]}>
+          <Dropdown item={GetLearnContentTree()} />
+        </div>
       </div>
-      <div className={classes["content-grid"]}>
+      <div className={classes["post-container"]}>
         <p>Test Posts</p>
         <PostGrid posts={dummyPosts} />
       </div>

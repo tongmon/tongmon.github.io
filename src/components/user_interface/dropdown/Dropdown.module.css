@@ -1,6 +1,7 @@
 .dropdown-container {
-    margin-top: 0.5rem;
-    margin-left: 1rem;
+    margin: 0.5rem;
+    /* margin-left: 1rem; */
+    /* margin-right: 1rem; */
 }
 
 /*
@@ -29,7 +30,7 @@
 .dropdown-button {
     background: transparent;
     font-family: 'PixelFont';
-    font-size: 1.3vh;
+    font-size: 1.2vh;
     cursor: pointer;
     text-align: start;
     opacity: 0.5;

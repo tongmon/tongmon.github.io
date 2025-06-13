@@ -8,8 +8,8 @@ export function Dropdown({ item }) {
   const [isOpen, setIsOpen] = useState(item.isOpen);
   // const hasChildren = item.children && item.children.length > 0;
   const toggleDropdown = () => {
-    if (item.isLeaf === true) {
-      var linkStr = "";
+    if (item.isLeaf || !item.parent) {
+      var linkStr = item.parent ? "" : "/All";
       do {
         linkStr = "/" + item.label + linkStr;
         item = item.parent;
@@ -31,7 +31,7 @@ export function Dropdown({ item }) {
           {`${item.label} (${item.childContentCnt})`}
         </div>
         <div className={classes["dropdown-flag-text"]}>
-          {!item.isLeaf && (isOpen ? "^" : "]")}
+          {!item.isLeaf && item.parent && (isOpen ? "^" : "]")}
         </div>
       </div>
       {!item.isLeaf && isOpen && (

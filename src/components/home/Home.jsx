@@ -5,6 +5,8 @@ import profileImage from "../../assets/images/profile_pixelate_org.png";
 
 // ref: https://dev.to/pixmy/animated-arcade-with-pure-css-5hn1
 // ref: https://pixelcorners.lukeb.co.uk/?radius=8&multiplier=5
+// ref: https://inpa.tistory.com/entry/CSS-%F0%9F%93%9A-%ED%94%8C%EB%9E%99%EC%8A%A4Flex-%F0%9F%92%AF-%EC%B4%9D%EC%A0%95%EB%A6%AC
+// ref: https://velog.io/@cdw8431/2025%EB%85%84-%EC%9D%B4%EC%A7%81-%ED%9A%8C%EA%B3%A0-%EC%88%A8%EA%B3%A0-%EC%B5%9C%EC%A2%85%ED%95%A9%EA%B2%A9
 
 export function Home() {
   return (
