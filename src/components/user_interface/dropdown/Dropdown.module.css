@@ -1,5 +1,6 @@
 .dropdown-container {
     margin: 0.5rem;
+    direction: ltr;
     /* margin-left: 1rem; */
     /* margin-right: 1rem; */
 }

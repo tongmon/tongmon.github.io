@@ -7,153 +7,23 @@ import { label } from "framer-motion/client";
 import { GetBlogContentTree } from "../util/GetBlogContentTree";
 import { PostGrid } from "../user_interface/postgrid/PostGrid";
 
-const dummyPosts = [
-  {
-    title: "React로 Velog 스타일 만들기",
-    summary: "그리드 레이아웃과 카드 디자인 구현 방법을 알아봅니다.",
-    date: "2025.06.10",
-    thumbnail: "https://via.placeholder.com/400x200",
-  },
-  {
-    title: "JavaScript debounce 정리",
-    summary: "짧은 시간 내 이벤트를 제어하는 방법",
-    date: "2025.06.08",
-    thumbnail: "https://via.placeholder.com/400x200",
-  },
-  {
-    title: "JavaScript debounce 정리",
-    summary: "짧은 시간 내 이벤트를 제어하는 방법",
-    date: "2025.06.08",
-    thumbnail: "https://via.placeholder.com/400x200",
-  },
-  {
-    title: "JavaScript debounce 정리",
-    summary: "짧은 시간 내 이벤트를 제어하는 방법",
-    date: "2025.06.08",
-    thumbnail: "https://via.placeholder.com/400x200",
-  },
-  {
-    title: "JavaScript debounce 정리",
-    summary: "짧은 시간 내 이벤트를 제어하는 방법",
-    date: "2025.06.08",
-    thumbnail: "https://via.placeholder.com/400x200",
-  },
-  {
-    title: "JavaScript debounce 정리",
-    summary: "짧은 시간 내 이벤트를 제어하는 방법",
-    date: "2025.06.08",
-    thumbnail: "https://via.placeholder.com/400x200",
-  },
-  {
-    title: "JavaScript debounce 정리",
-    summary: "짧은 시간 내 이벤트를 제어하는 방법",
-    date: "2025.06.08",
-    thumbnail: "https://via.placeholder.com/400x200",
-  },
-  {
-    title: "JavaScript debounce 정리",
-    summary: "짧은 시간 내 이벤트를 제어하는 방법",
-    date: "2025.06.08",
-    thumbnail: "https://via.placeholder.com/400x200",
-  },
-  {
-    title: "JavaScript debounce 정리",
-    summary: "짧은 시간 내 이벤트를 제어하는 방법",
-    date: "2025.06.08",
-    thumbnail: "https://via.placeholder.com/400x200",
-  },
-  {
-    title: "JavaScript debounce 정리",
-    summary: "짧은 시간 내 이벤트를 제어하는 방법",
-    date: "2025.06.08",
-    thumbnail: "https://via.placeholder.com/400x200",
-  },
-  {
-    title: "JavaScript debounce 정리",
-    summary: "짧은 시간 내 이벤트를 제어하는 방법",
-    date: "2025.06.08",
-    thumbnail: "https://via.placeholder.com/400x200",
-  },
-  {
-    title: "JavaScript debounce 정리",
-    summary: "짧은 시간 내 이벤트를 제어하는 방법",
-    date: "2025.06.08",
-    thumbnail: "https://via.placeholder.com/400x200",
-  },
-  {
-    title: "JavaScript debounce 정리",
-    summary: "짧은 시간 내 이벤트를 제어하는 방법",
-    date: "2025.06.08",
-    thumbnail: "https://via.placeholder.com/400x200",
-  },
-  {
-    title: "JavaScript debounce 정리",
-    summary: "짧은 시간 내 이벤트를 제어하는 방법",
-    date: "2025.06.08",
-    thumbnail: "https://via.placeholder.com/400x200",
-  },
-  {
-    title: "JavaScript debounce 정리",
-    summary: "짧은 시간 내 이벤트를 제어하는 방법",
-    date: "2025.06.08",
-    thumbnail: "https://via.placeholder.com/400x200",
-  },
-  {
-    title: "JavaScript debounce 정리",
-    summary: "짧은 시간 내 이벤트를 제어하는 방법",
-    date: "2025.06.08",
-    thumbnail: "https://via.placeholder.com/400x200",
-  },
-  {
-    title: "JavaScript debounce 정리",
-    summary: "짧은 시간 내 이벤트를 제어하는 방법",
-    date: "2025.06.08",
-    thumbnail: "https://via.placeholder.com/400x200",
-  },
-  {
-    title: "JavaScript debounce 정리",
-    summary: "짧은 시간 내 이벤트를 제어하는 방법",
-    date: "2025.06.08",
-    thumbnail: "https://via.placeholder.com/400x200",
-  },
-  {
-    title: "JavaScript debounce 정리",
-    summary: "짧은 시간 내 이벤트를 제어하는 방법",
-    date: "2025.06.08",
-    thumbnail: "https://via.placeholder.com/400x200",
-  },
-  {
-    title: "JavaScript debounce 정리",
-    summary: "짧은 시간 내 이벤트를 제어하는 방법",
-    date: "2025.06.08",
-    thumbnail: "https://via.placeholder.com/400x200",
-  },
-  {
-    title: "JavaScript debounce 정리",
-    summary: "짧은 시간 내 이벤트를 제어하는 방법",
-    date: "2025.06.08",
-    thumbnail: "https://via.placeholder.com/400x200",
-  },
-  {
-    title: "JavaScript debounce 정리",
-    summary: "짧은 시간 내 이벤트를 제어하는 방법",
-    date: "2025.06.08",
-    thumbnail: "https://via.placeholder.com/400x200",
-  },
-  {
-    title: "JavaScript debounce 정리",
-    summary: "짧은 시간 내 이벤트를 제어하는 방법",
-    date: "2025.06.08",
-    thumbnail: "https://via.placeholder.com/400x200",
-  },
-  {
-    title: "JavaScript debounce 정리",
-    summary: "짧은 시간 내 이벤트를 제어하는 방법",
-    date: "2025.06.08",
-    thumbnail: "https://via.placeholder.com/400x200",
-  },
-  // ... 더 많은 포스트
-];
+const dummyData = Array.from({ length: 100 }, (_, i) => ({
+  title: `Post ${i + 1}`,
+  summary: "요약 내용입니다.",
+  date: "2025.06.10",
+  thumbnail:
+    "https://www.minecraft.net/content/dam/minecraftnet/games/minecraft/game-characters/MC-About_Key-Art_Gather_Resources_600x800.png",
+}));
+
+const fetchPosts = (page, size) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      const start = page * size;
+      const end = start + size;
+      resolve(dummyData.slice(start, end));
+    }, 500); // simulate delay
+  });
+};
 
 let learnContentTree = null;
 
@@ -210,29 +80,8 @@ export function Learn() {
       </div>
       <div className={classes["post-container"]}>
         <p className={classes["posts-title"]}>Test Posts</p>
-        <PostGrid posts={dummyPosts} />
+        <PostGrid fetchPosts={fetchPosts} pageSize={9} />
       </div>
     </div>
   );
 }
-
-/*
-                <div className={classes["dropdown"]}>
-                    <button className={classes["dropbtn"]}>Programming</button>
-                    <div className={classes["dropdown-content"]}>
-                        <li><Link to="/learn/menu2/text1">text1</Link></li>
-                        <li><Link to="/learn/menu2/text2">text2</Link></li>
-                        <li><Link to="/learn/menu2/text3">text3</Link></li>
-                    </div>
-                </div>
-                <ul>
-                    <li>
-                        <Link to="/learn/menu2">menu2</Link>
-                        <ul>
-                            <li><Link to="/learn/menu2/text1">text1</Link></li>
-                            <li><Link to="/learn/menu2/text2">text2</Link></li>
-                            <li><Link to="/learn/menu2/text3">text3</Link></li>
-                        </ul>
-                    </li>
-                </ul>
-*/
