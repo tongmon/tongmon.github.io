@@ -9,7 +9,7 @@ export function PostGrid({ posts }) {
           <img
             src={post.thumbnail}
             alt="thumbnail"
-            className="card-thumbnail"
+            className={classes["card-thumbnail"]}
           />
           <div className={classes["card-content"]}>
             <h3 className={classes["card-title"]}>{post.title}</h3>

@@ -209,7 +209,7 @@ export function Learn() {
         </div>
       </div>
       <div className={classes["post-container"]}>
-        <p>Test Posts</p>
+        <p className={classes["posts-title"]}>Test Posts</p>
         <PostGrid posts={dummyPosts} />
       </div>
     </div>

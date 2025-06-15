@@ -1,8 +1,8 @@
 .grid-container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 20px;
-    padding-top: 5vh;
+    /* grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); */
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2.5vh;
     padding-bottom: 5vh;
 }
 
@@ -49,6 +49,7 @@
     overflow: hidden;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     transition: transform 0.2s ease;
+    height: 25.5vh;
 }
 
 .card:hover {
