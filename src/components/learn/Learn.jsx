@@ -25,9 +25,10 @@ const fetchPosts = (page, size) => {
   });
 };
 
-let learnContentTree = null;
+// let learnContentTree = null;
 
 export function Learn() {
+  /*
   function GetLearnContentTree() {
     if (learnContentTree) return learnContentTree;
 
@@ -76,6 +77,7 @@ export function Learn() {
 
     return learnContentTree;
   }
+  */
 
   return (
     <div className={classes["learn-bg"]}>
@@ -85,7 +87,11 @@ export function Learn() {
           onSearchButtonClick={(searchKeyword) => console.log(searchKeyword)}
         />
         <div className={classes["dropdown-container"]}>
-          <Dropdown item={GetLearnContentTree()} />
+          <Dropdown
+            item={GetBlogContentTree().children.find(
+              (item) => item.label == "Learn"
+            )}
+          />
         </div>
       </div>
       <div className={classes["post-container"]}>

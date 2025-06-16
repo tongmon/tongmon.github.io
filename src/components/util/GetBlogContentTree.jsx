@@ -62,23 +62,32 @@ export function GetBlogContentTree() {
 
   CountChildContent(blogContentTree);
 
+  SetLearnContentTree();
+
   return blogContentTree;
+}
 
-  // for (const fullPath of paths) {
-  //   const parts = fullPath.replace("/src/assets/Learn/", "").split("/");
-  //   let current = root;
+function SetLearnContentTree() {
+  let learnContentTree = null;
+  let blogContentTree = GetBlogContentTree();
+  for (
+    var i = 0;
+    i < blogContentTree.children.length && learnContentTree == null;
+    i++
+  ) {
+    if (blogContentTree.children[i].label === "Learn") {
+      learnContentTree = blogContentTree.children[i];
+    }
+  }
 
-  //   for (const [index, part] of parts.entries()) {
-  //     if (!current[part]) {
-  //       current[part] = index === parts.length - 1 ? null : {};
-  //     }
-  //     current = current[part];
-  //   }
-  // }
+  function SetLearnContentTreeVisibility(node) {
+    if (node.isLeaf || (node.parent && !node.parent.isVisible)) {
+      node.isVisible = false;
+    }
+    for (let i = 0; i < node.children.length; i++) {
+      SetLearnContentTreeVisibility(node.children[i]);
+    }
+  }
 
-  // let dropdownItems = toDropdownFormat(root);
-
-  // return dropdownItems.map((item, index) => (
-  //   <Dropdown key={index} item={item} />
-  // ));
+  SetLearnContentTreeVisibility(learnContentTree);
 }
