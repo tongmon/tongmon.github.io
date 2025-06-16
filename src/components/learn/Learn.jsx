@@ -41,28 +41,38 @@ export function Learn() {
         learnContentTree = blogContentTree.children[i];
       }
     }
-    learnContentTree.parent = null;
 
-    function ShiftLeaf(node, isTopSide = true) {
-      if (node.isLeaf) {
-        if (isTopSide && node.parent != null) {
-          node.parent.isLeaf = true;
-          node.isLeaf = false;
-        } else if (!isTopSide && node.children.length > 0) {
-          node.isLeaf = false;
-          for (let i = 0; i < node.children.length; i++) {
-            node.children;
-            [i].isLeaf = true;
-          }
-        }
-        return;
+    function SetLearnContentTreeVisibility(node) {
+      if (node.isLeaf || (node.parent && !node.parent.isVisible)) {
+        node.isVisible = false;
       }
       for (let i = 0; i < node.children.length; i++) {
-        ShiftLeaf(node.children[i], isTopSide);
+        SetLearnContentTreeVisibility(node.children[i]);
       }
     }
 
-    ShiftLeaf(learnContentTree, true);
+    SetLearnContentTreeVisibility(learnContentTree);
+
+    //function ShiftLeaf(node, isTopSide = true) {
+    //  if (node.isLeaf) {
+    //    if (isTopSide && node.parent != null) {
+    //      node.parent.isLeaf = true;
+    //      node.isLeaf = false;
+    //    } else if (!isTopSide && node.children.length > 0) {
+    //      node.isLeaf = false;
+    //      for (let i = 0; i < node.children.length; i++) {
+    //        node.children;
+    //        [i].isLeaf = true;
+    //      }
+    //    }
+    //    return;
+    //  }
+    //  for (let i = 0; i < node.children.length; i++) {
+    //    ShiftLeaf(node.children[i], isTopSide);
+    //  }
+    //}
+
+    //ShiftLeaf(learnContentTree, true);
 
     return learnContentTree;
   }

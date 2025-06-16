@@ -6,14 +6,17 @@ import classes from "../../user_interface/dropdown/Dropdown.module.css";
 export function Dropdown({ item }) {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(item.isOpen);
-  // const hasChildren = item.children && item.children.length > 0;
+  const isRootChild =
+    item.parent && item.parent.hasOwnProperty("contentModules");
+  const hasNoVisibleChildren =
+    !item.children.length || item.children.every((child) => !child.isVisible);
   const toggleDropdown = () => {
-    if (item.isLeaf || !item.parent) {
+    if (hasNoVisibleChildren || isRootChild) {
       var linkStr = item.parent ? "" : "/All";
       do {
         linkStr = "/" + item.label + linkStr;
         item = item.parent;
-      } while (item != null);
+      } while (!item.parent.hasOwnProperty("contentModules"));
       navigate(linkStr);
       return;
     }
@@ -31,10 +34,10 @@ export function Dropdown({ item }) {
           {`${item.label} (${item.childContentCnt})`}
         </div>
         <div className={classes["dropdown-flag-text"]}>
-          {!item.isLeaf && item.parent && (isOpen ? "^" : "]")}
+          {!hasNoVisibleChildren && !isRootChild && (isOpen ? "^" : "]")}
         </div>
       </div>
-      {!item.isLeaf && isOpen && (
+      {!hasNoVisibleChildren && isOpen && (
         <div className={classes["dropdown-content"]}>
           {item.children.map((child, idx) => (
             <Dropdown key={idx} item={child} />

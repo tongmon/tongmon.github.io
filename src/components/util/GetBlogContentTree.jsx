@@ -3,16 +3,16 @@ let blogContentTree = {
   childContentCnt: 0,
   parent: null,
   isLeaf: false,
+  isVisible: true,
   isOpen: true,
   children: [],
+  contentModules: import.meta.glob("/src/assets/blog_content/**/*"), // { eager: true }
 };
 
 export function GetBlogContentTree() {
   if (blogContentTree.children.length > 0) return blogContentTree;
 
-  let paths = Object.keys(
-    import.meta.glob("/src/assets/blog_content/**/*", { eager: true })
-  );
+  let paths = Object.keys(blogContentTree.contentModules);
 
   for (const fullPath of paths) {
     const parts = fullPath.replace("/src/assets/blog_content/", "").split("/");
@@ -34,6 +34,7 @@ export function GetBlogContentTree() {
           childContentCnt: 0,
           parent: parent,
           isLeaf: false,
+          isVisible: parent.isLeaf || !parent.isVisible ? false : true,
           isOpen: true,
           children: [],
         };
