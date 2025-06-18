@@ -6,17 +6,16 @@ import classes from "../../user_interface/dropdown/Dropdown.module.css";
 export function Dropdown({ item }) {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(item.isOpen);
-  const isRootChild =
-    item.parent && item.parent.hasOwnProperty("contentModules");
+  const isRootChild = item.parent && !item.parent.parent;
   const hasNoVisibleChildren =
     !item.children.length || item.children.every((child) => !child.isVisible);
   const toggleDropdown = () => {
     if (hasNoVisibleChildren || isRootChild) {
-      var linkStr = item.parent ? "" : "/All";
+      var linkStr = item.parent && item.parent.parent ? "" : "/All";
       do {
         linkStr = "/" + item.label + linkStr;
         item = item.parent;
-      } while (!item.parent.hasOwnProperty("contentModules"));
+      } while (item.parent);
       navigate(linkStr);
       return;
     }
