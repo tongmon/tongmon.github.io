@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import classes from "../../user_interface/searchbar/SearchBar.module.css";
+import classes from "./SearchBar.module.css";
 
 export function SearchBar({ initialSearchKeyword, onSearchButtonClick }) {
   const [searchKeyword, setSearchKeyword] = useState(initialSearchKeyword);

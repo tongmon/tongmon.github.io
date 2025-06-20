@@ -1,16 +1,9 @@
-// import React from "react";
-// import classes from "../../user_interface/postgrid/PostGrid.module.css";
-
-// import React, { useEffect, useState, useCallback } from "react";
-// import { useInView } from "react-intersection-observer";
-// import classes from "./PostGrid.module.css";
-
 import { useEffect, useState, useCallback } from "react";
 import { useInView } from "react-intersection-observer";
-import classes from "./PostGrid.module.css";
-import { SkeletonCard } from "./skeletoncard/SkeletonCard";
+import classes from "./GridView.module.css";
+import { SkeletonCard } from "./skeleton_card/SkeletonCard";
 
-export function PostGrid({ fetchPosts, pageSize = 9 }) {
+export function GridView({ fetchPosts, pageSize = 9 }) {
   const [posts, setPosts] = useState([]);
   const [page, setPage] = useState(0);
   const [hasMore, setHasMore] = useState(true);

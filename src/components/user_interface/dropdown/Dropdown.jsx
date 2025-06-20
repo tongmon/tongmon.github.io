@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import classes from "../../user_interface/dropdown/Dropdown.module.css";
+import classes from "./Dropdown.module.css";
 
 export function Dropdown({ item }) {
   const navigate = useNavigate();

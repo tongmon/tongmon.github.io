@@ -1,11 +1,10 @@
-import { Link } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 
-import classes from "../learn/Learn.module.css";
-import { SearchBar } from "../user_interface/searchbar/SearchBar";
+import classes from "./Learn.module.css";
+import { SearchBar } from "../user_interface/search_bar/SearchBar";
 import { Dropdown } from "../user_interface/dropdown/Dropdown";
-import { label } from "framer-motion/client";
 import { GetBlogContentTree } from "../util/GetBlogContentTree";
-import { PostGrid } from "../user_interface/postgrid/PostGrid";
+// import { PostGrid } from "../user_interface/postgrid/PostGrid";
 
 const dummyData = Array.from({ length: 100 }, (_, i) => ({
   title: `Post ${i + 1}`,
@@ -42,8 +41,11 @@ export function Learn() {
         </div>
       </div>
       <div className={classes["post-container"]}>
-        <p className={classes["posts-title"]}>Test Posts</p>
-        <PostGrid fetchPosts={fetchPosts} pageSize={9} />
+        <Outlet />
+        {
+          // <p className={classes["posts-title"]}>Test Posts</p>
+          // <PostGrid fetchPosts={fetchPosts} pageSize={9} />
+        }
       </div>
     </div>
   );

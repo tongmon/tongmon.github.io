@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-import classes from "../home/Home.module.css";
+import classes from "./Home.module.css";
 import profileImage from "../../assets/images/profile_pixelate_org.png";
 
 // ref: https://dev.to/pixmy/animated-arcade-with-pure-css-5hn1
