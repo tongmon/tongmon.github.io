@@ -18,7 +18,7 @@ export function Home() {
         <nav>
           <ul>
             <li>
-              <Link to="/Learn">Learn</Link>
+              <Link to="/Learn/All">Learn</Link>
             </li>
           </ul>
           <ul>

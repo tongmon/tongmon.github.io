@@ -3,6 +3,7 @@ import { GridView } from "../../user_interface/grid_view/GridView";
 
 export function PostGridView({ node }) {
   var postList = [];
+  console.log("PostGridView node: ", node);
 
   function fetchPosts(page, size) {
     if (!postList.length) {
@@ -10,7 +11,7 @@ export function PostGridView({ node }) {
         if (node.isLeaf) {
           let postInfo = null;
           let postThunbnail = null;
-          for (child in node.children) {
+          for (const child in node.children) {
             if (child.label === "post_info.json") {
               postInfo = await child.module();
             } else if (child.label.includes("thumbnail")) {
@@ -49,7 +50,7 @@ export function PostGridView({ node }) {
 
   return (
     <>
-      <p className={classes["posts-title"]}>Test Posts</p>
+      <p className={classes["post-grid-view-title"]}>{node.label}</p>
       <GridView fetchPosts={fetchPosts} pageSize={9} />
     </>
   );

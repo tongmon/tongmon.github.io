@@ -4,6 +4,7 @@ import { GetBlogContentTree } from "./components/util/GetBlogContentTree";
 import { Home } from "./components/home/Home";
 import { Learn } from "./components/learn/Learn";
 import { PostGridView } from "./components/learn/post_grid_view/PostGridView";
+import { PostView } from "./components/learn/post_view/PostView";
 
 function App() {
   function LearnRoute() {
@@ -11,37 +12,47 @@ function App() {
       (item) => item.label == "Learn"
     );
 
-    function MakeLearnRoute(node, path) {
+    function MakeLearnRoute(node) {
       if (node.isLeaf) {
         return (
           <Route
-            key={path}
-            path={path}
-            element={<PostGridView content={node} />}
+            key={node.label}
+            path={node.label}
+            element={<PostView node={node} />}
           />
         );
       }
 
-      return node.children.map((child) => {
-        let newPath = path + "/" + child.label;
-        return (
-          <Route
-            key={newPath}
-            path={newPath}
-            element={<PostGridView node={child} />}
-          >
-            {MakeLearnRoute(child, newPath)}
-          </Route>
-        );
-      });
+      return (
+        <Route
+          key={node.label}
+          path={node.label}
+          element={<PostGridView node={node} />}
+        >
+          {node.children.map((child) => {
+            MakeLearnRoute(child);
+          })}
+        </Route>
+      );
     }
+
+    return (
+      <Route key="Learn" path="/Learn" element={<Learn />}>
+        <Route
+          key="All"
+          path="All"
+          element={<PostGridView node={learnContentTree} />}
+        />
+        {learnContentTree.children.map((child) => MakeLearnRoute(child))}
+      </Route>
+    );
   }
 
   return (
     <Router>
       <Routes>
         <Route exact path="/" element={<Home />} />
-        <Route path="/Learn" element={<Learn />}></Route>
+        {LearnRoute()}
       </Routes>
     </Router>
   );
