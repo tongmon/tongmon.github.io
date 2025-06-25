@@ -3,41 +3,39 @@ import { GridView } from "../../user_interface/grid_view/GridView";
 
 export function PostGridView({ node }) {
   var postList = [];
-  console.log("PostGridView node: ", node);
 
   function fetchPosts(page, size) {
-    if (!postList.length) {
-      async function SetPostList(node, postList) {
-        if (node.isLeaf) {
-          let postInfo = null;
-          let postThunbnail = null;
-          for (const child in node.children) {
-            if (child.label === "post_info.json") {
-              postInfo = await child.module();
-            } else if (child.label.includes("thumbnail")) {
-              const thumbnailModule = await child.module();
-              postThunbnail = thumbnailModule.default;
-            }
-          }
-          if (postInfo) {
-            postInfo["node"] = node;
-            if (postThunbnail) {
-              postInfo["thumbnail"] = postThunbnail;
-            }
-            postList.push(postInfo);
-          }
-          return;
-        }
-
+    async function SetPostList(node, postList) {
+      if (node.isLeaf) {
+        let postInfo = null;
+        let postThunbnail = null;
         for (const child of node.children) {
-          await SetPostList(child, postList);
+          if (child.label === "post_info.json") {
+            postInfo = await child.module().then((m) => m.default);
+          } else if (child.label.includes("thumbnail")) {
+            const thumbnailModule = await child.module();
+            postThunbnail = thumbnailModule.default;
+          }
         }
+        if (postInfo) {
+          postInfo["node"] = node;
+          if (postThunbnail) {
+            postInfo["thumbnail"] = postThunbnail;
+          }
+          postList.push(postInfo);
+        }
+        return;
       }
 
-      SetPostList(node, postList);
-      // Sort posts by date, latest will be first
-      postList.sort((a, b) => new Date(b.date) - new Date(a.date));
+      for (const child of node.children) {
+        await SetPostList(child, postList);
+      }
     }
+
+    postList.length = 0;
+    SetPostList(node, postList).then(() => {
+      postList.sort((a, b) => new Date(b.date) - new Date(a.date));
+    });
 
     return new Promise((resolve) => {
       setTimeout(() => {

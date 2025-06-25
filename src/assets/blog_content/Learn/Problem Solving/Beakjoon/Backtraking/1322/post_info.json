@@ -1,8 +1,7 @@
 {
-    "title": "Pong Game with SDL",
-    "summary": "Learn how to create a simple Pong game using the SDL library in C++. This tutorial covers setting up the game window, handling input, and rendering graphics.",
+    "title": "Beakjoon 1322",
+    "summary": "Backtracking problem solving for Beakjoon 1322.",
     "author": "KyungJoon Lee",
-    "date": "2025-06-16",
-    "tags": ["SDL", "C++", "Game Development", "Pong"],
-    "thumbnail": ""
+    "date": "2025-06-25T10:21:11.000Z",
+    "tags": ["Problem Solving", "C++", "Backtracking", "Beakjoon"]
 }

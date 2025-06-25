@@ -29,9 +29,7 @@ function App() {
           path={node.label}
           element={<PostGridView node={node} />}
         >
-          {node.children.map((child) => {
-            MakeLearnRoute(child);
-          })}
+          {node.children.map((child) => MakeLearnRoute(child))}
         </Route>
       );
     }
