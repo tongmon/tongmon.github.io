@@ -1,10 +1,9 @@
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 
 import classes from "./Learn.module.css";
 import { SearchBar } from "../user_interface/search_bar/SearchBar";
 import { Dropdown } from "../user_interface/dropdown/Dropdown";
 import { GetBlogContentTree } from "../util/GetBlogContentTree";
-// import { PostGrid } from "../user_interface/postgrid/PostGrid";
 
 // const dummyData = Array.from({ length: 100 }, (_, i) => ({
 //   title: `Post ${i + 1}`,
@@ -25,6 +24,8 @@ import { GetBlogContentTree } from "../util/GetBlogContentTree";
 // };
 
 export function Learn() {
+  const location = useLocation();
+
   return (
     <div className={classes["learn-bg"]}>
       <div className={classes["sidebar-container"]}>
@@ -41,7 +42,7 @@ export function Learn() {
         </div>
       </div>
       <div className={classes["post-container"]}>
-        <Outlet />
+        <Outlet key={location.pathname} />
         {
           // <p className={classes["posts-title"]}>Test Posts</p>
           // <PostGrid fetchPosts={fetchPosts} pageSize={9} />
