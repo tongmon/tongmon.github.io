@@ -43,10 +43,6 @@ export function Learn() {
       </div>
       <div className={classes["post-container"]}>
         <Outlet key={location.pathname} />
-        {
-          // <p className={classes["posts-title"]}>Test Posts</p>
-          // <PostGrid fetchPosts={fetchPosts} pageSize={9} />
-        }
       </div>
     </div>
   );

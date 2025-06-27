@@ -3,7 +3,7 @@ import { useInView } from "react-intersection-observer";
 import classes from "./GridView.module.css";
 import { SkeletonCard } from "./skeleton_card/SkeletonCard";
 
-export function GridView({ fetchPosts, pageSize = 9 }) {
+export function GridView({ fetchPosts, totalCount, pageSize = 9 }) {
   const [posts, setPosts] = useState([]);
   const [page, setPage] = useState(0);
   const [hasMore, setHasMore] = useState(true);
@@ -19,6 +19,13 @@ export function GridView({ fetchPosts, pageSize = 9 }) {
     setLoading(false);
   }, [page, fetchPosts]);
 
+  // Reset posts and pagination when fetchPosts changes
+  useEffect(() => {
+    setPosts([]);
+    setPage(0);
+    setHasMore(true);
+  }, [fetchPosts]);
+
   useEffect(() => {
     if (inView && hasMore && !loading) {
       setPage((prev) => prev + 1);
@@ -28,6 +35,9 @@ export function GridView({ fetchPosts, pageSize = 9 }) {
   useEffect(() => {
     if (page === 0 || hasMore) loadPosts();
   }, [page, loadPosts]);
+
+  const remainingCount = totalCount ? totalCount - posts.length : pageSize;
+  const skeletonCount = Math.min(remainingCount, pageSize);
 
   return (
     <div className={classes["grid-container"]}>
@@ -48,7 +58,7 @@ export function GridView({ fetchPosts, pageSize = 9 }) {
       ))}
 
       {loading &&
-        Array.from({ length: pageSize }).map((_, i) => (
+        Array.from({ length: skeletonCount }).map((_, i) => (
           <SkeletonCard key={`skeleton-${i}`} />
         ))}
 
