@@ -20,10 +20,12 @@ export function GridView({ fetchPosts, totalCount, pageSize = 9 }) {
   }, [page, fetchPosts]);
 
   // Reset posts and pagination when fetchPosts changes
+  // !Need to write the cache logic to avoid unnecessary re-fetching
+  // useEffect는 Outlet 컴포넌트가 마운트될 때마다 실행되는 것 확인함 (Outlet에 key를 주던 안주던)
   useEffect(() => {
-    setPosts([]);
-    setPage(0);
-    setHasMore(true);
+    // setPosts([]);
+    // setPage(0);
+    // setHasMore(true);
   }, [fetchPosts]);
 
   useEffect(() => {

@@ -42,8 +42,10 @@ export function Learn() {
         </div>
       </div>
       <div className={classes["post-container"]}>
-        <Outlet key={location.pathname} />
+        <Outlet />
       </div>
     </div>
   );
 }
+
+// <Outlet key={location.pathname} />

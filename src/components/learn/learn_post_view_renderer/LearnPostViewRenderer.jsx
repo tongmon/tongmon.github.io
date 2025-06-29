@@ -4,11 +4,9 @@ import { PostView } from "../post_view/PostView";
 import { GetBlogContentTree } from "../../util/GetBlogContentTree";
 
 export function LearnPostViewRenderer() {
-  console.log("LearnPostViewRenderer Called");
-
   const location = useLocation();
   const pathParts = location.pathname
-    .replace(/^\/(Learn|learn)\/?/, "") // /Learn/ 생략
+    .replace(/^\/(Learn|learn)\/?/, "")
     .split("/")
     .map(decodeURIComponent);
 

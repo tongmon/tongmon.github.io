@@ -3,8 +3,6 @@ import classes from "./PostGridView.module.css";
 import { GridView } from "../../user_interface/grid_view/GridView";
 
 export function PostGridView({ node }) {
-  console.log("PostGridView", node);
-
   /* 
   var postList = [];
 
@@ -106,5 +104,3 @@ export function PostGridView({ node }) {
     </>
   );
 }
-
-// pageSize={node.childContentCnt < 9 ? node.childContentCnt : 9}

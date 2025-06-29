@@ -1,6 +1,5 @@
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
-
-import { GetBlogContentTree } from "./components/util/GetBlogContentTree";
+import { ScrollRestoration } from "./components/util/ScrollRestoration";
 import { Home } from "./components/home/Home";
 import { Learn } from "./components/learn/Learn";
 import { LearnPostViewRenderer } from "./components/learn/learn_post_view_renderer/LearnPostViewRenderer";
