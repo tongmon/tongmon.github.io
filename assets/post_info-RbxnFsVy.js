@@ -1,0 +1,1 @@
+const o="Beakjoon 1322",n="Backtracking problem solving for Beakjoon 1322.",t="KyungJoon Lee",a="2025-06-25T10:21:11.000Z",e=["Problem Solving","C++","Backtracking","Beakjoon"],s={title:o,summary:n,author:t,date:a,tags:e};export{t as author,a as date,s as default,n as summary,e as tags,o as title};
