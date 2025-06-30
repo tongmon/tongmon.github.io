@@ -1,0 +1,54 @@
+.skeleton-card {
+    background: linear-gradient(90deg, #eeeeee 25%, #dddddd 50%, #eeeeee 75%);
+    background-size: 200% 100%;
+    animation: loading 1.2s infinite;
+    border-radius: 10px;
+    height: 25.5vh;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    clip-path: polygon(0px calc(100% - 25px),
+                5px calc(100% - 25px),
+                5px calc(100% - 15px),
+                10px calc(100% - 15px),
+                10px calc(100% - 10px),
+                15px calc(100% - 10px),
+                15px calc(100% - 5px),
+                25px calc(100% - 5px),
+                25px 100%,
+                calc(100% - 25px) 100%,
+                calc(100% - 25px) calc(100% - 5px),
+                calc(100% - 15px) calc(100% - 5px),
+                calc(100% - 15px) calc(100% - 10px),
+                calc(100% - 10px) calc(100% - 10px),
+                calc(100% - 10px) calc(100% - 15px),
+                calc(100% - 5px) calc(100% - 15px),
+                calc(100% - 5px) calc(100% - 25px),
+                100% calc(100% - 25px),
+                100% 25px,
+                calc(100% - 5px) 25px,
+                calc(100% - 5px) 15px,
+                calc(100% - 10px) 15px,
+                calc(100% - 10px) 10px,
+                calc(100% - 15px) 10px,
+                calc(100% - 15px) 5px,
+                calc(100% - 25px) 5px,
+                calc(100% - 25px) 0px,
+                25px 0px,
+                25px 5px,
+                15px 5px,
+                15px 10px,
+                10px 10px,
+                10px 15px,
+                5px 15px,
+                5px 25px,
+                0px 25px);
+}
+
+@keyframes loading {
+    0% {
+        background-position: 200% 0;
+    }
+
+    100% {
+        background-position: -200% 0;
+    } 
+}

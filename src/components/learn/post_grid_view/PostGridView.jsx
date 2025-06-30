@@ -1,13 +1,55 @@
 import { useEffect, useState, useCallback } from "react";
 import { useLocation } from "react-router-dom";
-import classes from "./PostGridView.module.css";
+import { useInView } from "react-intersection-observer";
 import { GridView } from "../../user_interface/grid_view/GridView";
+import { SkeletonCard } from "./skeleton_card/SkeletonCard";
+import classes from "./PostGridView.module.css";
 
 // url, {posts, page, hasMore}
 var postGridCache = new Map();
 
 export function PostGridView({ node }) {
   const location = useLocation();
+  const [posts, setPosts] = useState(
+    postGridCache.has(location.pathname)
+      ? postGridCache.get(location.pathname).posts
+      : []
+  );
+  const [page, setPage] = useState(
+    postGridCache.has(location.pathname)
+      ? postGridCache.get(location.pathname).page
+      : 0
+  );
+  const [hasMore, setHasMore] = useState(
+    postGridCache.has(location.pathname)
+      ? postGridCache.get(location.pathname).hasMore
+      : true
+  );
+  const [loading, setLoading] = useState(false);
+  const { ref, inView } = useInView({ threshold: 0.5 });
+
+  // init
+  useEffect(() => {
+    if (!postGridCache.has(location.pathname)) {
+      postGridCache.set(location.pathname, {
+        posts: [],
+        page: 0,
+        hasMore: true,
+      });
+    }
+    setPosts(postGridCache.get(location.pathname).posts);
+    setPage(postGridCache.get(location.pathname).page);
+    setHasMore(postGridCache.get(location.pathname).hasMore);
+  }, [location.pathname]);
+
+  useEffect(() => {
+    if (inView && hasMore && !loading) {
+      setPage((prev) => {
+        postGridCache.get(location.pathname).page = prev + 1;
+        return prev + 1;
+      });
+    }
+  }, [inView, hasMore, loading]);
 
   /* 
   var postList = [];
