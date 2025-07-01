@@ -1,0 +1,6 @@
+{
+    "title": "Chain of Responsibility",
+    "summary": "Chain of Responsibility is a behavioral design pattern that allows an object to pass a request along a chain of potential handlers until one of them handles the request. This pattern decouples the sender and receiver of a request, allowing for more flexible and maintainable code.",
+    "author": "KyungJoon Lee",
+    "tags": ["Programming Pattern", "C++", "Chain of Responsibility", "Behaviroal Pattern"]
+}

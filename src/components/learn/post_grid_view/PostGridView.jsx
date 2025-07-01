@@ -33,6 +33,7 @@ export function PostGridView({ node }) {
     if (!postGridCache.has(location.pathname)) {
       postGridCache.set(location.pathname, {
         posts: [],
+        viewPosts: [],
         page: 0,
         hasMore: true,
       });
@@ -50,6 +51,43 @@ export function PostGridView({ node }) {
       });
     }
   }, [inView, hasMore, loading]);
+
+  const loadPosts = useCallback(async () => {
+    // async function SetPostList(node, postList) {
+    //   if (node.isLeaf) {
+    //     let postInfo = null;
+    //     let postThunbnail = null;
+    //     for (const child of node.children) {
+    //       if (child.label.includes("post_info")) {
+    //         postInfo = await child.module().then((m) => m.default);
+    //       } else if (child.label.includes("thumbnail")) {
+    //         const thumbnailModule = await child.module();
+    //         postThunbnail = thumbnailModule.default;
+    //       }
+    //     }
+    //     if (postInfo) {
+    //       postInfo["node"] = node;
+    //       if (postThunbnail) {
+    //         postInfo["thumbnail"] = postThunbnail;
+    //       }
+    //       postList.push(postInfo);
+    //     }
+    //     return;
+    //   }
+    //   for (const child of node.children) {
+    //     await SetPostList(child, postList);
+    //   }
+    // }
+    // setLoading(true);
+    // const newPosts = await fetchPosts(page, pageSize);
+    // setPosts((prev) => [...prev, ...newPosts]);
+    // if (newPosts.length < pageSize) setHasMore(false);
+    // setLoading(false);
+  }, [page, location.pathname]);
+
+  useEffect(() => {
+    if (page === 0 || hasMore) loadPosts();
+  }, [page, loadPosts]);
 
   /* 
   var postList = [];
@@ -97,15 +135,6 @@ export function PostGridView({ node }) {
     });
   }
   */
-
-  // should i need to put the callback function in this object?
-  if (!postGridCache.has(location.pathname)) {
-    postGridCache.set(location.pathname, {
-      posts: [],
-      page: 0,
-      hasMore: true,
-    });
-  }
 
   const fetchPosts = useCallback(() => {
     async function SetPostList(node, postList) {
@@ -200,11 +229,30 @@ export function PostGridView({ node }) {
   return (
     <>
       <p className={classes["post-grid-view-title"]}>{node.label}</p>
-      <GridView
-        fetchPosts={fetchPosts}
-        totalCount={node.childContentCnt}
-        pageSize={12}
-      />
+      <div className={classes["grid-container"]}>
+        {posts.map((post, idx) => (
+          <div className={classes["card"]} key={idx}>
+            <img
+              src={post.thumbnail}
+              alt="thumbnail"
+              className={classes["card-thumbnail"]}
+              loading="lazy"
+            />
+            <div className={classes["card-content"]}>
+              <h3 className={classes["card-title"]}>{post.title}</h3>
+              <p className={classes["card-summary"]}>{post.summary}</p>
+              <p className={classes["card-date"]}>{post.date}</p>
+            </div>
+          </div>
+        ))}
+
+        {loading &&
+          Array.from({ length: skeletonCount }).map((_, i) => (
+            <SkeletonCard key={`skeleton-${i}`} />
+          ))}
+
+        {hasMore && <div ref={ref} style={{ height: "1px" }} />}
+      </div>
     </>
   );
 }
