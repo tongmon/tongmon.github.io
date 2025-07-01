@@ -1,6 +1,6 @@
 let instance;
 
-export default class PostDataManager {
+export class PostDataManager {
   constructor() {
     if (instance) {
       return instance;
@@ -99,11 +99,11 @@ export default class PostDataManager {
     instance = this;
   }
 
-  GetPostTree() {
+  getPostTree() {
     return this.postTree;
   }
 
-  GetCategorizedPosts() {
+  getCategorizedPosts() {
     return this.categorizedPosts;
   }
 }

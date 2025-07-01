@@ -3,7 +3,7 @@ import { Link, Outlet, useLocation } from "react-router-dom";
 import classes from "./Learn.module.css";
 import { SearchBar } from "../user_interface/search_bar/SearchBar";
 import { Dropdown } from "../user_interface/dropdown/Dropdown";
-import { GetBlogContentTree } from "../util/GetBlogContentTree";
+import { PostDataManager } from "../util/PostDataManager";
 
 // const dummyData = Array.from({ length: 100 }, (_, i) => ({
 //   title: `Post ${i + 1}`,
@@ -25,6 +25,7 @@ import { GetBlogContentTree } from "../util/GetBlogContentTree";
 
 export function Learn() {
   const location = useLocation();
+  let postDataManager = new PostDataManager();
 
   return (
     <div className={classes["learn-bg"]}>
@@ -34,11 +35,7 @@ export function Learn() {
           onSearchButtonClick={(searchKeyword) => console.log(searchKeyword)}
         />
         <div className={classes["dropdown-container"]}>
-          <Dropdown
-            item={GetBlogContentTree().children.find(
-              (item) => item.label == "Learn"
-            )}
-          />
+          <Dropdown item={postDataManager.getBlogContentTree()} />
         </div>
       </div>
       <div className={classes["post-container"]}>
