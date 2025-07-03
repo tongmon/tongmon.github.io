@@ -28,6 +28,7 @@ export function LearnPostViewRenderer() {
   //   return <div>404 Not Found</div>; // or Navigate to error page
   // }
 
+  // need to fix this condition
   return categorizedPosts.length === 1 ? (
     <PostView node={categorizedPosts[0]} />
   ) : (

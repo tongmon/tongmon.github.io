@@ -50,6 +50,9 @@ export class PostDataManager {
                 this.categorizedPosts.set(pathKey, []);
               }
               this.categorizedPosts.get(pathKey).push(parent);
+              if (j === i - 1) {
+                // marking in here
+              }
             }
           }
         }
@@ -77,7 +80,7 @@ export class PostDataManager {
     }
 
     function CountChildPost(node) {
-      if (node.hasownProperty("date")) {
+      if (node.hasOwnProperty("date")) {
         node.childPostCnt = 1;
         return;
       }
