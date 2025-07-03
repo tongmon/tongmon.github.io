@@ -35,7 +35,7 @@ export function Learn() {
           onSearchButtonClick={(searchKeyword) => console.log(searchKeyword)}
         />
         <div className={classes["dropdown-container"]}>
-          <Dropdown item={postDataManager.getBlogContentTree()} />
+          <Dropdown item={postDataManager.getPostTree()} />
         </div>
       </div>
       <div className={classes["post-container"]}>

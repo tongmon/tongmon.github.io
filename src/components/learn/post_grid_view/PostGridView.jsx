@@ -102,7 +102,9 @@ export function PostGridView({ postList }) {
             <div className={classes["card-content"]}>
               <h3 className={classes["card-title"]}>{post.title}</h3>
               <p className={classes["card-summary"]}>{post.summary}</p>
-              <p className={classes["card-date"]}>{post.date}</p>
+              <p className={classes["card-date"]}>
+                {post.date.toLocaleString("en-US")}
+              </p>
             </div>
           </div>
         ))}

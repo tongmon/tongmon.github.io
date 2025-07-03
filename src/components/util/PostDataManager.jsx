@@ -43,16 +43,16 @@ export class PostDataManager {
             parent["date"] = new Date(isoStr);
 
             this.categorizedPosts.get("All").push(parent);
-            let pathKey = "";
+            let pathKey = parts[0];
             for (let j = 0; j < i; j++) {
-              pathKey += parts[j] + "/";
               if (!this.categorizedPosts.has(pathKey)) {
                 this.categorizedPosts.set(pathKey, []);
               }
-              this.categorizedPosts.get(pathKey).push(parent);
               if (j === i - 1) {
-                // marking in here
+                this.categorizedPosts.get(pathKey).push(true);
               }
+              this.categorizedPosts.get(pathKey).push(parent);
+              pathKey += "/" + parts[j + 1];
             }
           }
         }

@@ -13,7 +13,12 @@ export function LearnPostViewRenderer() {
   const pathKey = decodeURIComponent(
     location.pathname.replace(/^\/(Learn|learn)\/?/, "")
   );
+
+  console.log("Path Key: ", pathKey);
+
   let categorizedPosts = postDataManager.getCategorizedPosts().get(pathKey);
+
+  console.log("LearnPostViewRenderer categorizedPosts: ", categorizedPosts);
 
   // All case
   // if (pathParts.length === 1 && pathParts[0] === "All") {
@@ -28,9 +33,8 @@ export function LearnPostViewRenderer() {
   //   return <div>404 Not Found</div>; // or Navigate to error page
   // }
 
-  // need to fix this condition
-  return categorizedPosts.length === 1 ? (
-    <PostView node={categorizedPosts[0]} />
+  return categorizedPosts[0] === true ? (
+    <PostView node={categorizedPosts[1]} />
   ) : (
     <PostGridView postList={categorizedPosts} />
   );

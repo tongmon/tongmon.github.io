@@ -10,12 +10,13 @@ export function Dropdown({ item }) {
     !item.children.length || item.children.every((child) => !child.isVisible);
   const toggleDropdown = () => {
     if (!item.parent || hasNoVisibleChildren) {
-      var path = "";
-      while (item) {
-        path += "/" + item.label;
+      var path = item.label;
+      while (item.parent) {
         item = item.parent;
+        path = item.label + "/" + path;
       }
-      navigate(linkStr);
+      // need to fix All/All/Game Programming/SDL problem
+      navigate(path);
       return;
     }
     setIsOpen((prev) => {
@@ -29,7 +30,7 @@ export function Dropdown({ item }) {
     <div className={classes["dropdown-container"]}>
       <div className={classes["dropdown-button-container"]}>
         <div className={classes["dropdown-button"]} onClick={toggleDropdown}>
-          {`${item.label} (${item.childContentCnt})`}
+          {`${item.label} (${item.childPostCnt})`}
         </div>
         <div className={classes["dropdown-flag-text"]}>
           {!hasNoVisibleChildren && item.parent && (isOpen ? "^" : "]")}
