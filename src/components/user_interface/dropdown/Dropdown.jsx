@@ -10,13 +10,13 @@ export function Dropdown({ item }) {
     !item.children.length || item.children.every((child) => !child.isVisible);
   const toggleDropdown = () => {
     if (!item.parent || hasNoVisibleChildren) {
-      var path = item.label;
-      while (item.parent) {
-        item = item.parent;
-        path = item.label + "/" + path;
-      }
-      // need to fix All/All/Game Programming/SDL problem
-      navigate(path);
+      var path = "";
+      var node = item;
+      do {
+        path = "/" + node.label + path;
+        node = node.parent;
+      } while (node && node.parent);
+      navigate("/Learn" + path);
       return;
     }
     setIsOpen((prev) => {
