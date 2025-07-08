@@ -23,14 +23,18 @@ export function PostGridView({ postList }) {
       posts: [],
       page: 0,
       hasMore: true,
-      loadSize: 12,
+      loading: false,
+      loadSize: postList.length < 12 ? postList.length : 12,
     });
   }
 
   console.log("PostGridView cache:", postGridCache);
 
   const loadPosts = async () => {
-    setLoading(true);
+    setLoading(() => {
+      postGridCache.get(location.pathname).loading = true;
+      return true;
+    });
     const start =
       postGridCache.get(location.pathname).page *
       postGridCache.get(location.pathname).loadSize;
@@ -68,24 +72,16 @@ export function PostGridView({ postList }) {
       return new Promise((resolve) => setTimeout(resolve, ms));
     }
     await sleep(1000); // Simulate network delay
-    setLoading(false);
+    setLoading(() => {
+      postGridCache.get(location.pathname).loading = false;
+      return false;
+    });
   };
 
   useEffect(() => {
     setPosts(postGridCache.get(location.pathname).posts);
     setHasMore(postGridCache.get(location.pathname).hasMore);
     setLoadSize(postGridCache.get(location.pathname).loadSize);
-    if (
-      (postGridCache.get(location.pathname).page === 0 ||
-        postGridCache.get(location.pathname).hasMore) &&
-      postGridCache.get(location.pathname).posts.length <
-        (postGridCache.get(location.pathname).page + 1) *
-          postGridCache.get(location.pathname).loadSize
-    ) {
-      loadPosts();
-      console.log("Post list", postList);
-      console.log("Loaded posts", postGridCache.get(location.pathname).posts);
-    }
   }, [location.pathname]);
 
   //useEffect(() => {
@@ -104,25 +100,38 @@ export function PostGridView({ postList }) {
   //  console.log("PostGridView cache:", postGridCache);
   //}, [location.pathname]);
 
+  // why this useEffect is not triggered when the component is mounted?
   useEffect(() => {
-    if (inView && postGridCache.get(location.pathname).hasMore && !loading) {
+    console.log("Inview", inView, "hasMore", hasMore, "loading", loading);
+    if (
+      inView &&
+      postGridCache.get(location.pathname).hasMore &&
+      !postGridCache.get(location.pathname).loading
+    ) {
+      if (
+        postGridCache.get(location.pathname).page === 0 ||
+        postGridCache.get(location.pathname).posts.length < postList.length
+      ) {
+        loadPosts();
+        postGridCache.get(location.pathname).page += 1;
+      }
       // setPage((prev) => {
       //   postGridCache.get(location.pathname).page = prev + 1;
       //   console.log("Page changed:", prev + 1);
       //   return prev + 1;
       // });
-      postGridCache.get(location.pathname).page += 1;
-      if (
-        postGridCache.get(location.pathname).posts.length <
-        (postGridCache.get(location.pathname).page + 1) *
-          postGridCache.get(location.pathname).loadSize
-      ) {
-        console.log(
-          "Loading more posts for page:",
-          postGridCache.get(location.pathname).page
-        );
-        loadPosts();
-      }
+      // postGridCache.get(location.pathname).page += 1;
+      // if (
+      //   postGridCache.get(location.pathname).posts.length <
+      //   (postGridCache.get(location.pathname).page + 1) *
+      //     postGridCache.get(location.pathname).loadSize
+      // ) {
+      //   console.log(
+      //     "Loading more posts for page:",
+      //     postGridCache.get(location.pathname).page
+      //   );
+      //   loadPosts();
+      // }
     }
   }, [inView, hasMore, loading]);
 
