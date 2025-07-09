@@ -17,6 +17,7 @@ export function PostGridView({ postList }) {
   const [loading, setLoading] = useState(false);
   const [loadSize, setLoadSize] = useState(12);
   const { ref, inView } = useInView({ threshold: 0.5 });
+  const maximumLoadSize = 12; // Maximum number of posts to load at once
 
   if (!postGridCache.has(location.pathname)) {
     postGridCache.set(location.pathname, {
@@ -24,17 +25,13 @@ export function PostGridView({ postList }) {
       page: 0,
       hasMore: true,
       loading: false,
-      loadSize: postList.length < 12 ? postList.length : 12,
+      loadSize:
+        postList.length < maximumLoadSize ? postList.length : maximumLoadSize,
     });
   }
 
-  console.log("PostGridView cache:", postGridCache);
-
   const loadPosts = async () => {
-    setLoading(() => {
-      postGridCache.get(location.pathname).loading = true;
-      return true;
-    });
+    setLoading(true);
     const start =
       postGridCache.get(location.pathname).page *
       postGridCache.get(location.pathname).loadSize;
@@ -57,8 +54,8 @@ export function PostGridView({ postList }) {
       }
       postGridCache.get(location.pathname).posts.push(postInfo);
     }
-    setPosts(postGridCache.get(location.pathname).posts);
-    if (end - start < postGridCache.get(location.pathname).loadSize) {
+    setPosts(postGridCache.get(location.pathname).posts); // could be the timing problem
+    if (end - start < maximumLoadSize) {
       setHasMore(() => {
         postGridCache.get(location.pathname).hasMore = false;
         return false;
@@ -72,13 +69,11 @@ export function PostGridView({ postList }) {
       return new Promise((resolve) => setTimeout(resolve, ms));
     }
     await sleep(1000); // Simulate network delay
-    setLoading(() => {
-      postGridCache.get(location.pathname).loading = false;
-      return false;
-    });
+    setLoading(false);
   };
 
   useEffect(() => {
+    console.log("PostGridView cache:", postGridCache);
     setPosts(postGridCache.get(location.pathname).posts);
     setHasMore(postGridCache.get(location.pathname).hasMore);
     setLoadSize(postGridCache.get(location.pathname).loadSize);
@@ -100,38 +95,21 @@ export function PostGridView({ postList }) {
   //  console.log("PostGridView cache:", postGridCache);
   //}, [location.pathname]);
 
-  // why this useEffect is not triggered when the component is mounted?
+  // 처음 로딩이 되는 시점에
+  // hasmore true -> useEffect triggered -> loadposts called -> setloading false -> loadposts called
   useEffect(() => {
-    console.log("Inview", inView, "hasMore", hasMore, "loading", loading);
-    if (
-      inView &&
-      postGridCache.get(location.pathname).hasMore &&
-      !postGridCache.get(location.pathname).loading
-    ) {
-      if (
-        postGridCache.get(location.pathname).page === 0 ||
-        postGridCache.get(location.pathname).posts.length < postList.length
-      ) {
-        loadPosts();
-        postGridCache.get(location.pathname).page += 1;
-      }
-      // setPage((prev) => {
-      //   postGridCache.get(location.pathname).page = prev + 1;
-      //   console.log("Page changed:", prev + 1);
-      //   return prev + 1;
-      // });
-      // postGridCache.get(location.pathname).page += 1;
-      // if (
-      //   postGridCache.get(location.pathname).posts.length <
-      //   (postGridCache.get(location.pathname).page + 1) *
-      //     postGridCache.get(location.pathname).loadSize
-      // ) {
-      //   console.log(
-      //     "Loading more posts for page:",
-      //     postGridCache.get(location.pathname).page
-      //   );
-      //   loadPosts();
-      // }
+    console.log(
+      "Inview",
+      inView,
+      "hasMore",
+      hasMore,
+      "loading",
+      loading,
+      postGridCache
+    );
+    if (inView && hasMore && !loading) {
+      loadPosts();
+      postGridCache.get(location.pathname).page += 1;
     }
   }, [inView, hasMore, loading]);
 
