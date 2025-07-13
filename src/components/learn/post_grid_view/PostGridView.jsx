@@ -24,13 +24,11 @@ export function PostGridView({ postList }) {
       posts: [],
       page: 0,
       hasMore: true,
-      loadSize:
-        postList.length < maximumLoadSize ? postList.length : maximumLoadSize,
+      loadSize: maximumLoadSize,
     });
   }
 
   const loadPosts = async () => {
-    setLoading(true);
     const start =
       postGridCache.get(location.pathname).page *
       postGridCache.get(location.pathname).loadSize;
@@ -38,6 +36,9 @@ export function PostGridView({ postList }) {
       start + postGridCache.get(location.pathname).loadSize,
       postList.length
     );
+    postGridCache.get(location.pathname).loadSize = end - start;
+    setLoadSize(postGridCache.get(location.pathname).loadSize);
+    setLoading(true);
     console.log("Loading posts from", start, "to", end);
     let appendPosts = [];
     for (let i = start; i < end; i++) {
@@ -62,10 +63,8 @@ export function PostGridView({ postList }) {
       postGridCache.get(location.pathname).posts.push(...appendPosts);
       return [...prev, ...appendPosts];
     });
-    if (end - start < maximumLoadSize) {
-      postGridCache.get(location.pathname).loadSize = end - start;
+    if (postGridCache.get(location.pathname).loadSize < maximumLoadSize) {
       postGridCache.get(location.pathname).hasMore = false;
-      setLoadSize(postGridCache.get(location.pathname).loadSize);
       setHasMore(postGridCache.get(location.pathname).hasMore);
     }
     setLoading(false);

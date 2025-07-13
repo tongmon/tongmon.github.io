@@ -10,10 +10,13 @@ export function ScrollRestoration() {
   const prevPathRef = useRef(null);
 
   useEffect(() => {
+    console.log("Scroll Pos map: ", scrollPositions);
+
     const prevPath = prevPathRef.current;
 
     // 이전 경로의 스크롤 위치 저장
     if (prevPath) {
+      console.log("Path: ", prevPath, " Scroll y: ", window.scrollY);
       scrollPositions.set(prevPath, window.scrollY);
     }
 
@@ -21,11 +24,13 @@ export function ScrollRestoration() {
 
     if (navigationType === "POP" && typeof storedY === "number") {
       // 뒤로 가기 또는 앞으로 가기 → 저장된 위치로 스크롤 복원
+      console.log("Saved page, scroll to ", storedY);
       requestAnimationFrame(() => {
         window.scrollTo({ top: storedY, behavior: "smooth" });
       });
     } else {
       // 새 경로로 이동 → 스크롤 맨 위
+      console.log("New Page, scroll to top!");
       requestAnimationFrame(() => {
         window.scrollTo({ top: 0, behavior: "smooth" });
       });

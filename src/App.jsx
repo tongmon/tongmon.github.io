@@ -1,12 +1,14 @@
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
-import { ScrollRestoration } from "./components/util/ScrollRestoration";
 import { Home } from "./components/home/Home";
 import { Learn } from "./components/learn/Learn";
 import { LearnPostViewRenderer } from "./components/learn/learn_post_view_renderer/LearnPostViewRenderer";
 
+import { ScrollRestoration } from "./components/util/ScrollRestoration";
+
 function App() {
   return (
     <Router>
+      <ScrollRestoration />
       <Routes>
         <Route exact path="/" element={<Home />} />
         <Route path="/Learn/*" element={<Learn />}>
