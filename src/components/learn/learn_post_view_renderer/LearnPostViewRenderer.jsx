@@ -3,7 +3,7 @@ import { PostGridView } from "../post_grid_view/PostGridView";
 import { PostView } from "../post_view/PostView";
 import { PostDataManager } from "../../util/PostDataManager";
 
-export function LearnPostViewRenderer() {
+export function LearnPostViewRenderer({ setScrollInfo }) {
   let postDataManager = new PostDataManager();
   const location = useLocation();
   // const pathParts = location.pathname
@@ -14,11 +14,11 @@ export function LearnPostViewRenderer() {
     location.pathname.replace(/^\/(Learn|learn)\/?/, "")
   );
 
-  console.log("Path Key: ", pathKey);
+  // console.log("Path Key: ", pathKey);
 
   let categorizedPosts = postDataManager.getCategorizedPosts().get(pathKey);
 
-  console.log("LearnPostViewRenderer categorizedPosts: ", categorizedPosts);
+  // console.log("LearnPostViewRenderer categorizedPosts: ", categorizedPosts);
 
   // All case
   // if (pathParts.length === 1 && pathParts[0] === "All") {
@@ -34,8 +34,8 @@ export function LearnPostViewRenderer() {
   // }
 
   return categorizedPosts[0] === true ? (
-    <PostView node={categorizedPosts[1]} />
+    <PostView node={categorizedPosts[1]} setScrollInfo={setScrollInfo} />
   ) : (
-    <PostGridView postList={categorizedPosts} />
+    <PostGridView postList={categorizedPosts} setScrollInfo={setScrollInfo} />
   );
 }

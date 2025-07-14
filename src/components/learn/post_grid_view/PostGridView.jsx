@@ -1,15 +1,14 @@
 import { useEffect, useState, useCallback } from "react";
 import { useLocation } from "react-router-dom";
 import { useInView } from "react-intersection-observer";
-import { GridView } from "../../user_interface/grid_view/GridView";
 import { SkeletonCard } from "./skeleton_card/SkeletonCard";
 import classes from "./PostGridView.module.css";
-import { a } from "framer-motion/client";
+import learnClasses from "../Learn.module.css";
 
 // url, {posts, page, hasMore}
 var postGridCache = new Map();
 
-export function PostGridView({ postList }) {
+export function PostGridView({ postList, setScrollInfo }) {
   const location = useLocation();
   const gridTitle = location.pathname.split("/").map(decodeURIComponent).at(-1);
   const [posts, setPosts] = useState([]);
@@ -39,7 +38,7 @@ export function PostGridView({ postList }) {
     postGridCache.get(location.pathname).loadSize = end - start;
     setLoadSize(postGridCache.get(location.pathname).loadSize);
     setLoading(true);
-    console.log("Loading posts from", start, "to", end);
+    // console.log("Loading posts from", start, "to", end);
     let appendPosts = [];
     for (let i = start; i < end; i++) {
       let postNode = postList[i];
@@ -74,6 +73,7 @@ export function PostGridView({ postList }) {
     setPosts(postGridCache.get(location.pathname).posts.slice());
     setHasMore(postGridCache.get(location.pathname).hasMore);
     setLoadSize(postGridCache.get(location.pathname).loadSize);
+    setScrollInfo({ query: `.${learnClasses["learn-bg"]}`, isReady: true });
   }, [location.pathname]);
 
   useEffect(() => {
@@ -115,116 +115,3 @@ export function PostGridView({ postList }) {
     </>
   );
 }
-
-/*
-export function PostGridView({ postList }) {
-  console.log("test PostGridView log");
-
-  const location = useLocation();
-  const gridTitle = location.pathname.split("/").map(decodeURIComponent).at(-1);
-  const loadSize = 12; // Number of posts to load per page
-  let skeletonCount = loadSize;
-  const [posts, setPosts] = useState(
-    postGridCache.has(location.pathname)
-      ? postGridCache.get(location.pathname).posts
-      : []
-  );
-  const [page, setPage] = useState(
-    postGridCache.has(location.pathname)
-      ? postGridCache.get(location.pathname).page
-      : 0
-  );
-  const [hasMore, setHasMore] = useState(
-    postGridCache.has(location.pathname)
-      ? postGridCache.get(location.pathname).hasMore
-      : true
-  );
-  const [loading, setLoading] = useState(false);
-  const { ref, inView } = useInView({ threshold: 0.5 });
-
-  // init
-  useEffect(() => {
-    if (!postGridCache.has(location.pathname)) {
-      postGridCache.set(location.pathname, {
-        posts: [],
-        page: 0,
-        hasMore: true,
-      });
-    }
-  }, [location.pathname]);
-
-  useEffect(() => {
-    if (inView && hasMore && !loading) {
-      setPage((prev) => {
-        postGridCache.get(location.pathname).page = prev + 1;
-        return prev + 1;
-      });
-    }
-  }, [inView, hasMore, loading]);
-
-  const loadPosts = useCallback(async () => {
-    setLoading(true);
-    const start = page * loadSize;
-    const end = Math.min(start + loadSize, postList.length);
-    for (let i = start; i < end; i++) {
-      let postNode = postList[i];
-      let postInfo = { date: postNode.date };
-      for (const child of postNode.children) {
-        if (child.label.includes("post_info")) {
-          const jsonInfo = await child.module().then((m) => m.default);
-          postInfo = { ...postInfo, ...jsonInfo };
-        } else if (child.label.includes("thumbnail")) {
-          const thumbnailImg = await child.module().then((m) => m.default);
-          postInfo["thumbnail"] = thumbnailImg;
-        }
-      }
-      postGridCache.get(location.pathname).posts.push(postInfo);
-    }
-    setPosts(postGridCache.get(location.pathname).posts);
-    if (end - start < loadSize) {
-      setHasMore(() => {
-        postGridCache.get(location.pathname).hasMore = false;
-        return false;
-      });
-      skeletonCount = end - start;
-    }
-    setLoading(false);
-  }, [page, location.pathname]);
-
-  useEffect(() => {
-    if (page === 0 || hasMore) loadPosts();
-  }, [page, loadPosts]);
-
-  return (
-    <>
-      <p className={classes["post-grid-view-title"]}>{gridTitle}</p>
-      <div className={classes["grid-container"]}>
-        {posts.map((post, idx) => (
-          <div className={classes["card"]} key={idx}>
-            <img
-              src={post.thumbnail}
-              alt="thumbnail"
-              className={classes["card-thumbnail"]}
-              loading="lazy"
-            />
-            <div className={classes["card-content"]}>
-              <h3 className={classes["card-title"]}>{post.title}</h3>
-              <p className={classes["card-summary"]}>{post.summary}</p>
-              <p className={classes["card-date"]}>
-                {post.date.toLocaleString("en-US")}
-              </p>
-            </div>
-          </div>
-        ))}
-
-        {loading &&
-          Array.from({ length: skeletonCount }).map((_, i) => (
-            <SkeletonCard key={`skeleton-${i}`} />
-          ))}
-
-        {hasMore && <div ref={ref} style={{ height: "1px" }} />}
-      </div>
-    </>
-  );
-}
-*/

@@ -1,3 +1,4 @@
+import { useState, useRef } from "react";
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import { Home } from "./components/home/Home";
 import { Learn } from "./components/learn/Learn";
@@ -6,13 +7,18 @@ import { LearnPostViewRenderer } from "./components/learn/learn_post_view_render
 import { ScrollRestoration } from "./components/util/ScrollRestoration";
 
 function App() {
+  const [scrollInfo, setScrollInfo] = useState({ query: "", isReady: false });
+
   return (
     <Router>
-      <ScrollRestoration />
+      <ScrollRestoration scrollInfo={scrollInfo} />
       <Routes>
         <Route exact path="/" element={<Home />} />
         <Route path="/Learn/*" element={<Learn />}>
-          <Route path="*" element={<LearnPostViewRenderer />} />
+          <Route
+            path="*"
+            element={<LearnPostViewRenderer setScrollInfo={setScrollInfo} />}
+          />
         </Route>
       </Routes>
     </Router>
