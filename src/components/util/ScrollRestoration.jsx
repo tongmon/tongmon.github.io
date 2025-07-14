@@ -12,7 +12,21 @@ export function ScrollRestoration({ scrollInfo }) {
   const navType = useNavigationType(); // PUSH, POP, REPLACE
   const prevLocation = useRef(location);
 
-  useEffect(() => {}, [scrollInfo]);
+  useEffect(() => {}, [location]);
+
+  useEffect(() => {
+    const handleHashChange = (event) => {
+      const from = event.oldURL;
+      const to = event.newURL;
+      console.log("🔁 해시 변경됨:", from, "→", to);
+    };
+
+    window.addEventListener("hashchange", handleHashChange);
+
+    return () => {
+      window.removeEventListener("hashchange", handleHashChange);
+    };
+  }, []);
 
   // 변경 전 위치 scroll 저장
   //useEffect(() => {
@@ -37,44 +51,44 @@ export function ScrollRestoration({ scrollInfo }) {
   //}, [location]);
 
   //// 변경 후 scroll 복원
-  //useEffect(() => {
-  //  if (!scrollInfo.isReady) return;
+  // useEffect(() => {
+  //   if (!scrollInfo.isReady) return;
 
-  //  const savedY = scrollPositions.get(location.pathname) ?? 0;
-  //  const scrollContainer =
-  //    scrollInfo.query.length > 0
-  //      ? document.querySelector(scrollInfo.query)
-  //      : window;
-  //  console.log(
-  //    "Scroll Pos: ",
-  //    scrollPositions,
-  //    " Saved Y: ",
-  //    savedY,
-  //    " Scroll Container: ",
-  //    scrollContainer,
-  //    " Path: ",
-  //    location.pathname,
-  //    " Nav Type: ",
-  //    navType
-  //  );
+  //   const savedY = scrollPositions.get(location.pathname) ?? 0;
+  //   const scrollContainer =
+  //     scrollInfo.query.length > 0
+  //       ? document.querySelector(scrollInfo.query)
+  //       : window;
+  //   console.log(
+  //     "Scroll Pos: ",
+  //     scrollPositions,
+  //     " Saved Y: ",
+  //     savedY,
+  //     " Scroll Container: ",
+  //     scrollContainer,
+  //     " Path: ",
+  //     location.pathname,
+  //     " Nav Type: ",
+  //     navType
+  //   );
 
-  //  if (navType === "POP") {
-  //    // setTimeout(() => {
-  //    //   scrollContainer.scrollTo(0, savedY);
-  //    // }, 60);
-  //    // scrollContainer.scrollTo(0, savedY); // 뒤로가기일 경우 복원
-  //    requestAnimationFrame(() => {
-  //      scrollContainer.scrollTo({
-  //        top: savedY,
-  //        behavior: "smooth",
-  //      });
-  //    });
-  //  } else {
-  //    scrollContainer.scrollTo(0, 0); // 새 페이지는 맨 위로
-  //  }
+  //   if (navType === "POP") {
+  //     // setTimeout(() => {
+  //     //   scrollContainer.scrollTo(0, savedY);
+  //     // }, 60);
+  //     // scrollContainer.scrollTo(0, savedY); // 뒤로가기일 경우 복원
+  //     requestAnimationFrame(() => {
+  //       scrollContainer.scrollTo({
+  //         top: savedY,
+  //         behavior: "smooth",
+  //       });
+  //     });
+  //   } else {
+  //     scrollContainer.scrollTo(0, 0); // 새 페이지는 맨 위로
+  //   }
 
-  //  prevLocation.current = location;
-  //}, [scrollInfo]);
+  //   prevLocation.current = location;
+  // }, [scrollInfo]);
 
   return null;
 }
