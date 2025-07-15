@@ -3,21 +3,26 @@ import { PostGridView } from "../post_grid_view/PostGridView";
 import { PostView } from "../post_view/PostView";
 import { PostDataManager } from "../../util/PostDataManager";
 
-export function LearnPostViewRenderer({ setScrollInfo }) {
-  let postDataManager = new PostDataManager();
+export function LearnPostViewRenderer({ scrollDivQuery }) {
+  const postDataManager = new PostDataManager();
   const location = useLocation();
   // const pathParts = location.pathname
   //   .replace(/^\/(Learn|learn)\/?/, "")
   //   .split("/")
   //   .map(decodeURIComponent);
-  const pathKey = decodeURIComponent(
-    location.pathname.replace(/^\/(Learn|learn)\/?/, "")
-  );
+  // const pathKey = decodeURIComponent(
+  //   location.pathname.replace(/^\/(Learn|learn)\/?/, "")
+  // );
 
   // console.log("Path Key: ", pathKey);
 
-  let categorizedPosts = postDataManager.getCategorizedPosts().get(pathKey);
+  // let categorizedPosts = postDataManager.getCategorizedPosts().get(pathKey);
 
+  let categorizedPosts = postDataManager
+    .getCategorizedPosts()
+    .get(decodeURIComponent(location.pathname));
+
+  // console.log("Post data manager: ", postDataManager);
   // console.log("LearnPostViewRenderer categorizedPosts: ", categorizedPosts);
 
   // All case
@@ -34,8 +39,8 @@ export function LearnPostViewRenderer({ setScrollInfo }) {
   // }
 
   return categorizedPosts[0] === true ? (
-    <PostView node={categorizedPosts[1]} setScrollInfo={setScrollInfo} />
+    <PostView node={categorizedPosts[1]} scrollDivQuery={scrollDivQuery} />
   ) : (
-    <PostGridView postList={categorizedPosts} setScrollInfo={setScrollInfo} />
+    <PostGridView postList={categorizedPosts} scrollDivQuery={scrollDivQuery} />
   );
 }

@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import { useInView } from "react-intersection-observer";
 import { SkeletonCard } from "./skeleton_card/SkeletonCard";
@@ -8,22 +8,22 @@ import learnClasses from "../Learn.module.css";
 // url, {posts, page, hasMore}
 var postGridCache = new Map();
 
-export function PostGridView({ postList, setScrollInfo }) {
+export function PostGridView({ postList, scrollDivQuery }) {
   const location = useLocation();
   const gridTitle = location.pathname.split("/").map(decodeURIComponent).at(-1);
+  const maximumLoadSize = useRef(12); // Maximum number of posts to load at once
   const [posts, setPosts] = useState([]);
-  const [loadSize, setLoadSize] = useState(12);
+  const [loadSize, setLoadSize] = useState(maximumLoadSize.current);
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
   const { ref, inView } = useInView({ threshold: 0.5 });
-  const maximumLoadSize = 12; // Maximum number of posts to load at once
 
   if (!postGridCache.has(location.pathname)) {
     postGridCache.set(location.pathname, {
       posts: [],
       page: 0,
       hasMore: true,
-      loadSize: maximumLoadSize,
+      loadSize: maximumLoadSize.current,
     });
   }
 
@@ -38,7 +38,6 @@ export function PostGridView({ postList, setScrollInfo }) {
     postGridCache.get(location.pathname).loadSize = end - start;
     setLoadSize(postGridCache.get(location.pathname).loadSize);
     setLoading(true);
-    // console.log("Loading posts from", start, "to", end);
     let appendPosts = [];
     for (let i = start; i < end; i++) {
       let postNode = postList[i];
@@ -62,7 +61,9 @@ export function PostGridView({ postList, setScrollInfo }) {
       postGridCache.get(location.pathname).posts.push(...appendPosts);
       return [...prev, ...appendPosts];
     });
-    if (postGridCache.get(location.pathname).loadSize < maximumLoadSize) {
+    if (
+      postGridCache.get(location.pathname).loadSize < maximumLoadSize.current
+    ) {
       postGridCache.get(location.pathname).hasMore = false;
       setHasMore(postGridCache.get(location.pathname).hasMore);
     }
@@ -73,7 +74,7 @@ export function PostGridView({ postList, setScrollInfo }) {
     setPosts(postGridCache.get(location.pathname).posts.slice());
     setHasMore(postGridCache.get(location.pathname).hasMore);
     setLoadSize(postGridCache.get(location.pathname).loadSize);
-    setScrollInfo({ query: `.${learnClasses["learn-bg"]}`, isReady: true });
+    scrollDivQuery.current = `.${learnClasses["learn-bg"]}`;
   }, [location.pathname]);
 
   useEffect(() => {
@@ -82,6 +83,16 @@ export function PostGridView({ postList, setScrollInfo }) {
       postGridCache.get(location.pathname).page += 1;
     }
   }, [inView, hasMore, loading]);
+
+  const onCardClick = (idx) => {
+    var node = postList[idx];
+    do {
+      path = "/" + node.label + path;
+      node = node.parent;
+    } while (node && node.parent);
+    path = `/${postDataManager.getPostTree().rootPrefix}` + path;
+    navigate(path);
+  };
 
   return (
     <>
@@ -110,7 +121,7 @@ export function PostGridView({ postList, setScrollInfo }) {
             <SkeletonCard key={`skeleton-${i}`} />
           ))}
 
-        {hasMore && <div ref={ref} style={{ height: "1px" }} />}
+        {hasMore && !loading && <div ref={ref} style={{ height: "1px" }} />}
       </div>
     </>
   );

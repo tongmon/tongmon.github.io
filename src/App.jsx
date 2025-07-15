@@ -3,21 +3,25 @@ import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import { Home } from "./components/home/Home";
 import { Learn } from "./components/learn/Learn";
 import { LearnPostViewRenderer } from "./components/learn/learn_post_view_renderer/LearnPostViewRenderer";
-
+import { PostDataManager } from "./components/util/PostDataManager";
 import { ScrollRestoration } from "./components/util/ScrollRestoration";
 
 function App() {
-  const [scrollInfo, setScrollInfo] = useState({ query: "", isReady: false });
+  const postDataManager = new PostDataManager();
+  const scrollDivQuery = useRef("");
 
   return (
     <Router>
-      <ScrollRestoration scrollInfo={scrollInfo} />
+      <ScrollRestoration scrollDivQuery={scrollDivQuery} />
       <Routes>
         <Route exact path="/" element={<Home />} />
-        <Route path="/Learn/*" element={<Learn />}>
+        <Route
+          path={`/${postDataManager.getPostTree().rootPrefix}/*`}
+          element={<Learn />}
+        >
           <Route
             path="*"
-            element={<LearnPostViewRenderer setScrollInfo={setScrollInfo} />}
+            element={<LearnPostViewRenderer scrollDivQuery={scrollDivQuery} />}
           />
         </Route>
       </Routes>
@@ -26,16 +30,3 @@ function App() {
 }
 
 export default App;
-
-/*
-<Route path="/Learn" element={<Learn />}>
-    <Route path="/All" element={<PostGrid />}>
-    </Route>
-    <Route path="/GameProgramming" element={<PostGrid />}>
-        <Route path="/SDL" element={<PostGrid />}>
-            <Route path="/01 Pong Game" element={<PostContent />}>
-            </Route>
-        </Route>
-    </Route>
-</Route>
-*/

@@ -6,8 +6,10 @@ export class PostDataManager {
       return instance;
     }
 
-    this.categorizedPosts = new Map([["All", []]]);
+    let rootPrefix = "Learn";
+    this.categorizedPosts = new Map([[`/${rootPrefix}/All`, []]]);
     this.postTree = {
+      rootPrefix: rootPrefix,
       label: "All",
       childPostCnt: 0,
       parent: null,
@@ -42,8 +44,8 @@ export class PostDataManager {
               );
             parent["date"] = new Date(isoStr);
 
-            this.categorizedPosts.get("All").push(parent);
-            let pathKey = parts[0];
+            this.categorizedPosts.get(`/${rootPrefix}/All`).push(parent);
+            let pathKey = `/${rootPrefix}/` + parts[0];
             for (let j = 0; j < i; j++) {
               if (!this.categorizedPosts.has(pathKey)) {
                 this.categorizedPosts.set(pathKey, []);
@@ -79,17 +81,17 @@ export class PostDataManager {
       }
     }
 
-    function CountChildPost(node) {
+    function countChildPost(node) {
       if (node.hasOwnProperty("date")) {
         node.childPostCnt = 1;
         return;
       }
       for (const child of node.children) {
-        CountChildPost(child);
+        countChildPost(child);
         node.childPostCnt += child.childPostCnt;
       }
     }
-    CountChildPost(this.postTree);
+    countChildPost(this.postTree);
 
     this.categorizedPosts.forEach((posts, key) => {
       posts.sort((a, b) => {

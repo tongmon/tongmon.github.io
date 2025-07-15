@@ -1,11 +1,13 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-
+import { useNavigate, useLocation, replace } from "react-router-dom";
+import { PostDataManager } from "../../util/PostDataManager";
 import classes from "./Dropdown.module.css";
 
 export function Dropdown({ item }) {
+  const location = useLocation();
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(item.isOpen);
+  const postDataManager = new PostDataManager();
   const hasNoVisibleChildren =
     !item.children.length || item.children.every((child) => !child.isVisible);
   const toggleDropdown = () => {
@@ -16,7 +18,12 @@ export function Dropdown({ item }) {
         path = "/" + node.label + path;
         node = node.parent;
       } while (node && node.parent);
-      navigate("/Learn" + path);
+      path = `/${postDataManager.getPostTree().rootPrefix}` + path;
+      const navOpt =
+        path === decodeURIComponent(location.pathname)
+          ? { replace: true, state: "test" }
+          : {};
+      navigate(path, navOpt);
       return;
     }
     setIsOpen((prev) => {

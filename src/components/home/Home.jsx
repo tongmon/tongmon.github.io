@@ -11,7 +11,7 @@ import { PostDataManager } from "../util/PostDataManager";
 // ref: https://velog.io/@cdw8431/2025%EB%85%84-%EC%9D%B4%EC%A7%81-%ED%9A%8C%EA%B3%A0-%EC%88%A8%EA%B3%A0-%EC%B5%9C%EC%A2%85%ED%95%A9%EA%B2%A9
 
 export function Home() {
-  let postDataManager = new PostDataManager();
+  const postDataManager = new PostDataManager();
   console.log("PostTree: ", postDataManager.getPostTree());
   console.log("CategorizedPosts: ", postDataManager.getCategorizedPosts());
 
@@ -24,7 +24,9 @@ export function Home() {
         <nav>
           <ul>
             <li>
-              <Link to="/Learn/All">Learn</Link>
+              <Link to={`/${postDataManager.getPostTree().rootPrefix}/All`}>
+                Learn
+              </Link>
             </li>
           </ul>
           <ul>
