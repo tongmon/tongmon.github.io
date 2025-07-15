@@ -1,7 +1,8 @@
 import { useEffect, useState, useCallback, useRef } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useInView } from "react-intersection-observer";
 import { SkeletonCard } from "./skeleton_card/SkeletonCard";
+import { PostDataManager } from "../../util/PostDataManager";
 import classes from "./PostGridView.module.css";
 import learnClasses from "../Learn.module.css";
 
@@ -10,6 +11,8 @@ var postGridCache = new Map();
 
 export function PostGridView({ postList, scrollDivQuery }) {
   const location = useLocation();
+  const navigate = useNavigate();
+  const postDataManager = new PostDataManager();
   const gridTitle = location.pathname.split("/").map(decodeURIComponent).at(-1);
   const maximumLoadSize = useRef(12); // Maximum number of posts to load at once
   const [posts, setPosts] = useState([]);
@@ -86,6 +89,7 @@ export function PostGridView({ postList, scrollDivQuery }) {
 
   const onCardClick = (idx) => {
     var node = postList[idx];
+    var path = "";
     do {
       path = "/" + node.label + path;
       node = node.parent;
@@ -99,7 +103,13 @@ export function PostGridView({ postList, scrollDivQuery }) {
       <p className={classes["post-grid-view-title"]}>{gridTitle}</p>
       <div className={classes["grid-container"]}>
         {posts.map((post, idx) => (
-          <div className={classes["card"]} key={idx}>
+          <div
+            className={classes["card"]}
+            onClick={() => {
+              onCardClick(idx);
+            }}
+            key={idx}
+          >
             <img
               src={post.thumbnail}
               alt="thumbnail"

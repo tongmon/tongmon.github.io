@@ -20,9 +20,7 @@ export function Dropdown({ item }) {
       } while (node && node.parent);
       path = `/${postDataManager.getPostTree().rootPrefix}` + path;
       const navOpt =
-        path === decodeURIComponent(location.pathname)
-          ? { replace: true, state: "test" }
-          : {};
+        path === decodeURIComponent(location.pathname) ? { replace: true } : {};
       navigate(path, navOpt);
       return;
     }

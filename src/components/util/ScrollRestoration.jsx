@@ -15,6 +15,12 @@ export function ScrollRestoration({ scrollDivQuery }) {
       let scrollY = window.scrollY;
       if (scrollDivQuery.current.length > 0) {
         const scrollContainer = document.querySelector(scrollDivQuery.current);
+        console.log(
+          "Scroll Container: ",
+          scrollContainer,
+          " Scroll Top: ",
+          scrollContainer.scrollTop
+        );
         scrollY = scrollContainer?.scrollTop ?? 0;
       }
       scrollCaches.set(location.pathname, {
@@ -41,6 +47,14 @@ export function ScrollRestoration({ scrollDivQuery }) {
           behavior: "smooth",
         });
       });
+    } else if (navType === "REPLACE") {
+      console.log("Replaced Page!");
+      requestAnimationFrame(() => {
+        scrollContainer.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      });
     } else {
       console.log("New Page!");
       requestAnimationFrame(() => {
@@ -51,7 +65,7 @@ export function ScrollRestoration({ scrollDivQuery }) {
       });
       // scrollContainer.scrollTo(0, 0); // Move newpage to the top
     }
-  }, [location.pathname]);
+  }, [location]);
 
   return null;
 }
