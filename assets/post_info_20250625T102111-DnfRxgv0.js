@@ -1,0 +1,1 @@
+const o="Beakjoon 1322",n="Backtracking problem solving for Beakjoon 1322.",t="KyungJoon Lee",a=["Problem Solving","C++","Backtracking","Beakjoon"],e={title:o,summary:n,author:t,tags:a};export{t as author,e as default,n as summary,a as tags,o as title};

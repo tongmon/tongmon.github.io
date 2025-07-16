@@ -1,0 +1,1 @@
+const o="Beakjoon 1248",n="Backtracking problem solving for Beakjoon 1248, which involves arranging signs in a sequence to satisfy given conditions.",s="KyungJoon Lee",t=["Problem Solving","C++","Backtracking","Beakjoon"],a={title:o,summary:n,author:s,tags:t};export{s as author,a as default,n as summary,t as tags,o as title};

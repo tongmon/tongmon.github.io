@@ -1,0 +1,1 @@
+const n="Pong Game with SDL",t="Learn how to create a simple Pong game using the SDL library in C++. This tutorial covers setting up the game window, handling input, and rendering graphics.",e="KyungJoon Lee",o=["SDL","C++","Game Development","Pong"],a={title:n,summary:t,author:e,tags:o};export{e as author,a as default,t as summary,o as tags,n as title};
