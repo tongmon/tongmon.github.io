@@ -4,12 +4,10 @@ import { useInView } from "react-intersection-observer";
 import { SkeletonCard } from "./skeleton_card/SkeletonCard";
 import { PostDataManager } from "../../util/PostDataManager";
 import classes from "./PostGridView.module.css";
-import learnClasses from "../Learn.module.css";
 
-// url, {posts, page, hasMore}
 var postGridCache = new Map();
 
-export function PostGridView({ postList, scrollDivQuery }) {
+export function PostGridView({ postList }) {
   const location = useLocation();
   const navigate = useNavigate();
   const postDataManager = new PostDataManager();
@@ -77,7 +75,6 @@ export function PostGridView({ postList, scrollDivQuery }) {
     setPosts(postGridCache.get(location.pathname).posts.slice());
     setHasMore(postGridCache.get(location.pathname).hasMore);
     setLoadSize(postGridCache.get(location.pathname).loadSize);
-    scrollDivQuery.current = `.${learnClasses["learn-bg"]}`;
   }, [location.pathname]);
 
   useEffect(() => {

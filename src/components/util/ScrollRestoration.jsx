@@ -8,26 +8,34 @@ const scrollCaches = new Map();
 export function ScrollRestoration({ scrollDivQuery }) {
   const location = useLocation();
   const navType = useNavigationType(); // PUSH, POP, REPLACE
+  const scrollY = useRef(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      scrollY.current =
+        scrollDivQuery.current.length > 0
+          ? document.querySelector(scrollDivQuery.current).scrollTop
+          : window.scrollY;
+    };
+
+    window.addEventListener("scroll", handleScroll, {
+      passive: true,
+      capture: true,
+    });
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   // useEffect is executed right before location start to change
   useEffect(() => {
     return () => {
-      let scrollY = window.scrollY;
-      if (scrollDivQuery.current.length > 0) {
-        const scrollContainer = document.querySelector(scrollDivQuery.current);
-        console.log(
-          "Scroll Container: ",
-          scrollContainer,
-          " Scroll Top: ",
-          scrollContainer.scrollTop
-        );
-        scrollY = scrollContainer?.scrollTop ?? 0;
-      }
       scrollCaches.set(location.pathname, {
-        scrollY: scrollY,
+        scrollY: scrollY.current,
         query: scrollDivQuery.current,
       });
-      console.log("Scroll cache: ", scrollCaches);
+      console.log("scrollCaches: ", scrollCaches);
     };
   }, [location]);
 
@@ -40,31 +48,38 @@ export function ScrollRestoration({ scrollDivQuery }) {
       scrollCache.query.length > 0
         ? document.querySelector(scrollCache.query)
         : window;
-    if (navType === "POP") {
-      requestAnimationFrame(() => {
-        scrollContainer.scrollTo({
-          top: scrollCache.scrollY,
-          behavior: "smooth",
-        });
+    requestAnimationFrame(() => {
+      scrollY.current = navType === "POP" ? scrollCache.scrollY : 0;
+      scrollContainer.scrollTo({
+        top: scrollY.current,
+        ...(navType === "REPLACE" ? { behavior: "smooth" } : {}),
       });
-    } else if (navType === "REPLACE") {
-      console.log("Replaced Page!");
-      requestAnimationFrame(() => {
-        scrollContainer.scrollTo({
-          top: 0,
-          behavior: "smooth",
-        });
-      });
-    } else {
-      console.log("New Page!");
-      requestAnimationFrame(() => {
-        scrollContainer.scrollTo({
-          top: 0,
-          behavior: "smooth",
-        });
-      });
-      // scrollContainer.scrollTo(0, 0); // Move newpage to the top
-    }
+    });
+    //if (navType === "POP") {
+    //  requestAnimationFrame(() => {
+    //    scrollContainer.scrollTo({
+    //      top: scrollCache.scrollY,
+    //      behavior: "smooth",
+    //    });
+    //  });
+    //} else if (navType === "REPLACE") {
+    //  console.log("Replaced Page!");
+    //  requestAnimationFrame(() => {
+    //    scrollContainer.scrollTo({
+    //      top: 0,
+    //      behavior: "smooth",
+    //    });
+    //  });
+    //} else {
+    //  console.log("New Page!");
+    //  requestAnimationFrame(() => {
+    //    scrollContainer.scrollTo({
+    //      top: 0,
+    //      behavior: "smooth",
+    //    });
+    //  });
+    //  // scrollContainer.scrollTo(0, 0); // Move newpage to the top
+    //}
   }, [location]);
 
   return null;

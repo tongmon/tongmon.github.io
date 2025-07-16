@@ -14,15 +14,16 @@ function App() {
     <Router>
       <ScrollRestoration scrollDivQuery={scrollDivQuery} />
       <Routes>
-        <Route exact path="/" element={<Home />} />
+        <Route
+          exact
+          path="/"
+          element={<Home scrollDivQuery={scrollDivQuery} />}
+        />
         <Route
           path={`/${postDataManager.getPostTree().rootPrefix}/*`}
-          element={<Learn />}
+          element={<Learn scrollDivQuery={scrollDivQuery} />}
         >
-          <Route
-            path="*"
-            element={<LearnPostViewRenderer scrollDivQuery={scrollDivQuery} />}
-          />
+          <Route path="*" element={<LearnPostViewRenderer />} />
         </Route>
       </Routes>
     </Router>

@@ -1,9 +1,9 @@
-import { Link, Outlet, useLocation } from "react-router-dom";
-
-import classes from "./Learn.module.css";
+import { useEffect, useRef } from "react";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { SearchBar } from "../user_interface/search_bar/SearchBar";
 import { Dropdown } from "../user_interface/dropdown/Dropdown";
 import { PostDataManager } from "../util/PostDataManager";
+import classes from "./Learn.module.css";
 
 // const dummyData = Array.from({ length: 100 }, (_, i) => ({
 //   title: `Post ${i + 1}`,
@@ -23,9 +23,13 @@ import { PostDataManager } from "../util/PostDataManager";
 //   });
 // };
 
-export function Learn() {
+export function Learn({ scrollDivQuery }) {
   const location = useLocation();
   let postDataManager = new PostDataManager();
+
+  useEffect(() => {
+    scrollDivQuery.current = `.${classes["learn-bg"]}`;
+  }, [location.pathname]);
 
   return (
     <div className={classes["learn-bg"]}>

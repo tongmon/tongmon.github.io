@@ -3,7 +3,7 @@ import { PostGridView } from "../post_grid_view/PostGridView";
 import { PostView } from "../post_view/PostView";
 import { PostDataManager } from "../../util/PostDataManager";
 
-export function LearnPostViewRenderer({ scrollDivQuery }) {
+export function LearnPostViewRenderer() {
   const postDataManager = new PostDataManager();
   const location = useLocation();
   // const pathParts = location.pathname
@@ -39,8 +39,8 @@ export function LearnPostViewRenderer({ scrollDivQuery }) {
   // }
 
   return categorizedPosts[0] === true ? (
-    <PostView node={categorizedPosts[1]} scrollDivQuery={scrollDivQuery} />
+    <PostView node={categorizedPosts[1]} />
   ) : (
-    <PostGridView postList={categorizedPosts} scrollDivQuery={scrollDivQuery} />
+    <PostGridView postList={categorizedPosts} />
   );
 }
