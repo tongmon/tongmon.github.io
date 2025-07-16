@@ -4,6 +4,7 @@ import { useInView } from "react-intersection-observer";
 import { SkeletonCard } from "./skeleton_card/SkeletonCard";
 import { PostDataManager } from "../../util/PostDataManager";
 import classes from "./PostGridView.module.css";
+import { tr } from "framer-motion/client";
 
 var postGridCache = new Map();
 
@@ -92,7 +93,7 @@ export function PostGridView({ postList }) {
       node = node.parent;
     } while (node && node.parent);
     path = `/${postDataManager.getPostTree().rootPrefix}` + path;
-    navigate(path);
+    navigate(path, { replace: true });
   };
 
   return (

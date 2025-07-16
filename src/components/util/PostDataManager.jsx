@@ -24,6 +24,7 @@ export class PostDataManager {
 
     for (const fullPath of paths) {
       const fileRegex = /^[^\\/:\*\?"<>\|]+?\.[a-zA-Z0-9]+$/;
+      const mdRegex = /\.md$/i;
       const parts = fullPath.replace("/src/assets/Blog/", "").split("/");
       let parent = this.postTree;
 
@@ -32,8 +33,11 @@ export class PostDataManager {
 
         if (fileRegex.test(parts[i])) {
           parent.isVisible = false;
-          targetModule = blogModules[fullPath];
-
+          // if (mdRegex.test(parts[i])) {
+          //   fullPath += "?raw";
+          // }
+          targetModule = blogModules[fullPath + "?raw"];
+          console.log(targetModule);
           if (parts[i].includes("post_info")) {
             const isoStr = parts[i]
               .replace("post_info_", "")
