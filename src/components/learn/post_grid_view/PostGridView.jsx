@@ -93,7 +93,7 @@ export function PostGridView({ postList }) {
       node = node.parent;
     } while (node && node.parent);
     path = `/${postDataManager.getPostTree().rootPrefix}` + path;
-    navigate(path, { replace: true });
+    navigate(path);
   };
 
   return (

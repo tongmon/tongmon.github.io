@@ -20,11 +20,24 @@ export class PostDataManager {
     };
 
     let blogModules = import.meta.glob("/src/assets/Blog/**/*");
+    const blogRawModules = import.meta.glob("/src/assets/Blog/**/*.{md,png}", {
+      query: "?raw",
+    });
+    const rawFileExt = [
+      ...new Set(
+        Object.keys(blogRawModules)
+          .map((path) => {
+            const match = path.match(/\.([a-z0-9]+)$/i);
+            return match?.[1];
+          })
+          .filter(Boolean)
+      ),
+    ];
+    const fileRegex = /^[^\\/:\*\?"<>\|]+?\.[a-zA-Z0-9]+$/;
+    const rawFileRegex = new RegExp(`\\.(${rawFileExt.join("|")})$`, "i");
     let paths = Object.keys(blogModules);
 
     for (const fullPath of paths) {
-      const fileRegex = /^[^\\/:\*\?"<>\|]+?\.[a-zA-Z0-9]+$/;
-      const mdRegex = /\.md$/i;
       const parts = fullPath.replace("/src/assets/Blog/", "").split("/");
       let parent = this.postTree;
 
@@ -33,11 +46,9 @@ export class PostDataManager {
 
         if (fileRegex.test(parts[i])) {
           parent.isVisible = false;
-          // if (mdRegex.test(parts[i])) {
-          //   fullPath += "?raw";
-          // }
-          targetModule = blogModules[fullPath + "?raw"];
-          console.log(targetModule);
+          targetModule = rawFileRegex.test(parts[i])
+            ? blogRawModules[fullPath]
+            : blogModules[fullPath];
           if (parts[i].includes("post_info")) {
             const isoStr = parts[i]
               .replace("post_info_", "")

@@ -28,22 +28,6 @@ export function PostView({ node }) {
     prevLocation.current = location.pathname;
   }, [location.pathname]);
 
-  //   const content = `
-  // # Hello GFM
-  //
-  // - [x] 할 일 1
-  // - [ ] 할 일 2
-  //
-  // ~~취소된 내용~~
-  //
-  // | 이름 | 나이 |
-  // |------|------|
-  // | 철수 | 14  |
-  // | 영희 | 13  |
-  //
-  // www.example.com
-  // `;
-
   return (
     <>
       {!loading && (
@@ -52,19 +36,3 @@ export function PostView({ node }) {
     </>
   );
 }
-
-// <div>Test</div>;
-
-/*
-ISOPLOT BOB WOW 구분하는 건가?
-
-Project tree
-
-Stategy diagram -> family, 카투카
-
-Component search
-
-ISOPLOT
-
-Problem Def Tree / Project Tree
-*/
