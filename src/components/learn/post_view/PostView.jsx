@@ -25,14 +25,16 @@ export function PostView({ node }) {
 
   useEffect(() => {
     if (prevLocation.current !== location.pathname) loadContent();
+    else console.log("Already loaded!");
     prevLocation.current = location.pathname;
   }, [location.pathname]);
 
   return (
     <>
-      {!loading && (
-        <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>
-      )}
+      {
+        //!loading && (<ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>)
+      }
+      <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>
     </>
   );
 }

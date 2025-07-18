@@ -10,34 +10,54 @@ export function ScrollRestoration({ scrollDivQuery }) {
   const navType = useNavigationType(); // PUSH, POP, REPLACE
   const scrollY = useRef(0);
 
+  // useEffect(() => {
+  //   const handleScroll = () => {
+  //     scrollY.current =
+  //       scrollDivQuery.current.length > 0
+  //         ? document.querySelector(scrollDivQuery.current).scrollTop
+  //         : window.scrollY;
+  //   };
+
+  //   window.addEventListener("scroll", handleScroll, {
+  //     passive: true,
+  //     capture: true,
+  //   });
+
+  //   return () => {
+  //     window.removeEventListener("scroll", handleScroll);
+  //   };
+  // }, []);
+
   useEffect(() => {
-    const handleScroll = () => {
+    const handleBeforeUnload = () => {
       scrollY.current =
         scrollDivQuery.current.length > 0
           ? document.querySelector(scrollDivQuery.current).scrollTop
           : window.scrollY;
-    };
 
-    window.addEventListener("scroll", handleScroll, {
-      passive: true,
-      capture: true,
-    });
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
-
-  // useEffect is executed right before location start to change
-  useEffect(() => {
-    return () => {
       scrollCaches.set(location.pathname, {
         scrollY: scrollY.current,
         query: scrollDivQuery.current,
       });
       console.log("scrollCaches: ", scrollCaches);
     };
-  }, [location]);
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
+
+  // useEffect is executed right before location start to change
+  // useEffect(() => {
+  //   return () => {
+  //     scrollCaches.set(location.pathname, {
+  //       scrollY: scrollY.current,
+  //       query: scrollDivQuery.current,
+  //     });
+  //     console.log("scrollCaches: ", scrollCaches);
+  //   };
+  // }, [location]);
 
   useEffect(() => {
     const scrollCache = scrollCaches.get(location.pathname) ?? {
