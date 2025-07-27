@@ -10,43 +10,43 @@ export function ScrollRestoration({ scrollDivQuery }) {
   const navType = useNavigationType(); // PUSH, POP, REPLACE
   const scrollY = useRef(0);
 
-  // useEffect(() => {
-  //   const handleScroll = () => {
-  //     scrollY.current =
-  //       scrollDivQuery.current.length > 0
-  //         ? document.querySelector(scrollDivQuery.current).scrollTop
-  //         : window.scrollY;
-  //   };
-
-  //   window.addEventListener("scroll", handleScroll, {
-  //     passive: true,
-  //     capture: true,
-  //   });
-
-  //   return () => {
-  //     window.removeEventListener("scroll", handleScroll);
-  //   };
-  // }, []);
-
   useEffect(() => {
-    const handleBeforeUnload = () => {
+    const handleScroll = () => {
       scrollY.current =
         scrollDivQuery.current.length > 0
           ? document.querySelector(scrollDivQuery.current).scrollTop
           : window.scrollY;
-
-      scrollCaches.set(location.pathname, {
-        scrollY: scrollY.current,
-        query: scrollDivQuery.current,
-      });
-      console.log("scrollCaches: ", scrollCaches);
     };
-    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    window.addEventListener("scroll", handleScroll, {
+      passive: true,
+      capture: true,
+    });
 
     return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  // useEffect(() => {
+  //   const handleBeforeUnload = () => {
+  //     scrollY.current =
+  //       scrollDivQuery.current.length > 0
+  //         ? document.querySelector(scrollDivQuery.current).scrollTop
+  //         : window.scrollY;
+
+  //     scrollCaches.set(location.pathname, {
+  //       scrollY: scrollY.current,
+  //       query: scrollDivQuery.current,
+  //     });
+  //     console.log("scrollCaches: ", scrollCaches);
+  //   };
+  //   window.addEventListener("beforeunload", handleBeforeUnload);
+
+  //   return () => {
+  //     window.removeEventListener("beforeunload", handleBeforeUnload);
+  //   };
+  // }, []);
 
   // useEffect is executed right before location start to change
   // useEffect(() => {
