@@ -1,0 +1,41 @@
+/* .navbar {
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--navbar-color);
+}
+
+.header {
+  margin-top: var(--mantine-spacing-md);
+  margin-left: var(--mantine-spacing-md);
+  margin-bottom: var(--mantine-spacing-lg);
+  height: var(--header-height);
+  color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
+   
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.links {
+  flex: 1;
+  min-height: 0; 
+  margin: 0;
+}
+
+.linksInner {
+  padding: var(--mantine-spacing-xl) 0;
+}
+
+.footer {
+  margin: 0;
+  padding: var(--mantine-spacing-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--app-surface);
+}
+*/
