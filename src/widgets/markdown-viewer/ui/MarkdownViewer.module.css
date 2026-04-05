@@ -1,0 +1,67 @@
+.prose {
+  color: var(--mantine-color-text);
+}
+
+.prose :global(*) {
+  max-width: 100%;
+}
+
+.prose :global(h1),
+.prose :global(h2),
+.prose :global(h3),
+.prose :global(h4),
+.prose :global(h5),
+.prose :global(h6) {
+  scroll-margin-top: 6.5rem;
+}
+
+.prose :global(a) {
+  color: var(--app-anchor);
+}
+
+.prose :global(blockquote) {
+  margin: 1.5rem 0;
+  padding: 1rem 1.25rem;
+  border-left: 4px solid var(--mantine-color-brand-5);
+  background: rgba(84, 188, 146, 0.08);
+  border-radius: 1rem;
+}
+
+.prose :global(pre) {
+  overflow-x: auto;
+  border: 1px solid var(--app-code-border);
+  border-radius: 1rem;
+}
+
+.prose :global(img) {
+  margin: 1.75rem auto;
+  border: 1px solid var(--app-muted-border);
+  border-radius: 1rem;
+  box-shadow: var(--app-soft-shadow);
+}
+
+.prose :global(table) {
+  width: 100%;
+  margin: 1.5rem 0;
+  border-collapse: collapse;
+  border: 1px solid var(--app-muted-border);
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+.prose :global(th),
+.prose :global(td) {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid var(--app-muted-border);
+  text-align: left;
+}
+
+.prose :global(th) {
+  background: rgba(84, 188, 146, 0.08);
+}
+
+.prose :global(hr) {
+  margin: 2rem 0;
+  border: 0;
+  border-top: 1px solid var(--app-muted-border);
+}

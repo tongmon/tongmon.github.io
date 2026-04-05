@@ -1,0 +1,86 @@
+import {
+  Button,
+  Card,
+  Flex,
+  Group,
+  Image,
+  Stack,
+  Text,
+  Title,
+} from "@mantine/core";
+import { Link } from "react-router-dom";
+import { PostMeta, PostTagList, type PostManifestEntry } from "@/entities/post";
+import { toPublicAssetUrl } from "@/shared/lib/base-path/toPublicAssetUrl";
+import { getPostPath } from "@/shared/lib/routes";
+
+interface PostCardProps {
+  post: PostManifestEntry;
+  variant?: "grid" | "compact";
+}
+
+export default function PostCard({
+  post,
+  variant = "grid",
+}: PostCardProps) {
+  const thumbnail = post.thumbnail ? toPublicAssetUrl(post.thumbnail) : null;
+  const isCompact = variant === "compact";
+  const postPath = getPostPath(post.slug);
+
+  return (
+    <Card
+      bg="var(--app-surface-1)"
+      p={isCompact ? "lg" : 0}
+      shadow="sm"
+      style={{
+        border: "1px solid var(--app-muted-border)",
+        overflow: "hidden",
+      }}
+    >
+      <Flex direction={isCompact ? { base: "column", sm: "row" } : "column"}>
+        {thumbnail ? (
+          <Image
+            alt={post.title}
+            h={isCompact ? { base: 220, sm: "100%" } : 220}
+            maw={isCompact ? { sm: 220 } : undefined}
+            src={thumbnail}
+          />
+        ) : null}
+
+        <Stack gap="md" p={isCompact ? 0 : "lg"} style={{ flex: 1 }}>
+          <Stack gap={8}>
+            {post.category ? (
+              <Text c="var(--app-muted)" fw={700} size="xs" tt="uppercase">
+                {post.category}
+              </Text>
+            ) : null}
+            <Title
+              order={isCompact ? 4 : 3}
+              renderRoot={(props) => <Link {...props} to={postPath} />}
+            >
+              {post.title}
+            </Title>
+            <Text c="var(--app-muted)" size="sm">
+              {post.description}
+            </Text>
+          </Stack>
+
+          <PostMeta
+            publishedAt={post.publishedAt}
+            readingTime={post.readingTime}
+            updatedAt={post.updatedAt}
+          />
+
+          <Group>
+            <PostTagList tags={post.tags} />
+          </Group>
+
+          <Group>
+            <Button component={Link} size="sm" to={postPath} variant="light">
+              Read post
+            </Button>
+          </Group>
+        </Stack>
+      </Flex>
+    </Card>
+  );
+}

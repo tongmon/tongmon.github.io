@@ -1,38 +1,32 @@
-import { type ReactNode, Suspense } from "react";
+import type { ReactNode } from "react";
 import {
-  Center,
   ColorSchemeScript,
-  LoadingOverlay,
+  localStorageColorSchemeManager,
   MantineProvider,
 } from "@mantine/core";
-import { theme, resolver } from "@/app/theme";
+import { cssVariablesResolver, theme } from "@/app/theme";
 
 interface AppThemeProviderProps {
   children: ReactNode;
 }
 
-export default function AppThemeProvider({ children }: AppThemeProviderProps) {
+const colorSchemeManager = localStorageColorSchemeManager({
+  key: "tongmon-blog-color-scheme",
+});
+
+export default function AppThemeProvider({
+  children,
+}: AppThemeProviderProps) {
   return (
     <>
-      <ColorSchemeScript forceColorScheme="light" />
+      <ColorSchemeScript defaultColorScheme="auto" />
       <MantineProvider
-        forceColorScheme="light"
+        colorSchemeManager={colorSchemeManager}
+        cssVariablesResolver={cssVariablesResolver}
+        defaultColorScheme="auto"
         theme={theme}
-        cssVariablesResolver={resolver}
       >
-        <Suspense
-          fallback={
-            <Center>
-              <LoadingOverlay
-                visible
-                overlayProps={{ radius: "sm", blur: 2 }}
-                loaderProps={{ type: "bars" }}
-              />
-            </Center>
-          }
-        >
-          {children}
-        </Suspense>
+        {children}
       </MantineProvider>
     </>
   );

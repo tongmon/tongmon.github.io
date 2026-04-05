@@ -1,33 +1,66 @@
-import { Center, LoadingOverlay } from "@mantine/core";
-import { createHashRouter } from "react-router-dom";
-import routeModules from "./routeModules";
+import { lazy } from "react";
+import { createBrowserRouter } from "react-router-dom";
+import { BlogShell } from "@/widgets/blog-shell";
 
-const hydrateFallbackElement = (
-  <Center>
-    <LoadingOverlay
-      visible
-      overlayProps={{ radius: "sm", blur: 2 }}
-      loaderProps={{ type: "bars", size: "lg" }}
-    />
-  </Center>
+const HomePage = lazy(() =>
+  import("@/pages/home").then((module) => ({ default: module.HomePage })),
+);
+const PostListPage = lazy(() =>
+  import("@/pages/post-list").then((module) => ({ default: module.PostListPage })),
+);
+const PostDetailPage = lazy(() =>
+  import("@/pages/post-detail").then((module) => ({
+    default: module.PostDetailPage,
+  })),
+);
+const TagPage = lazy(() =>
+  import("@/pages/tag").then((module) => ({ default: module.TagPage })),
+);
+const AboutPage = lazy(() =>
+  import("@/pages/about").then((module) => ({ default: module.AboutPage })),
+);
+const NotFoundPage = lazy(() =>
+  import("@/pages/not-found").then((module) => ({
+    default: module.NotFoundPage,
+  })),
 );
 
-const appRouter = createHashRouter([
+const appRouter = createBrowserRouter(
+  [
+    {
+      path: "/",
+      element: <BlogShell />,
+      children: [
+        {
+          index: true,
+          element: <HomePage />,
+        },
+        {
+          path: "posts",
+          element: <PostListPage />,
+        },
+        {
+          path: "posts/:slug",
+          element: <PostDetailPage />,
+        },
+        {
+          path: "tags/:tag",
+          element: <TagPage />,
+        },
+        {
+          path: "about",
+          element: <AboutPage />,
+        },
+        {
+          path: "*",
+          element: <NotFoundPage />,
+        },
+      ],
+    },
+  ],
   {
-    path: "/",
-    element: <routeModules.AppLayout />,
-    hydrateFallbackElement,
-    children: [
-      {
-        index: true,
-        element: <routeModules.Home />,
-      },
-      {
-        path: "home",
-        element: <routeModules.Home />,
-      },
-    ],
+    basename: import.meta.env.BASE_URL,
   },
-]);
+);
 
 export default appRouter;

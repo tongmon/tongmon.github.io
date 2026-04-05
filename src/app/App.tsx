@@ -1,8 +1,7 @@
 import "@mantine/core/styles.css";
-import "@mantine/dates/styles.css";
-import "@/app/App.module.css";
+import "@/app/global.css";
 
-import AppProvider from "./providers/AppProvider";
+import AppProvider from "@/app/providers/AppProvider";
 
 export default function App() {
   return <AppProvider />;

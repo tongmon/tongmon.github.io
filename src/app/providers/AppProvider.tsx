@@ -1,34 +1,21 @@
-import { RouterProvider } from 'react-router-dom';
-import appRouter from '../router/appRouter';
-import AppThemeProvider from './AppThemeProvider';
-import DateProvider from './DateProvider';
+import { Suspense } from "react";
+import { Center, Loader } from "@mantine/core";
+import { RouterProvider } from "react-router-dom";
+import appRouter from "@/app/router/appRouter";
+import AppThemeProvider from "@/app/providers/AppThemeProvider";
 
 export default function AppProvider() {
   return (
     <AppThemeProvider>
-      <DateProvider>
+      <Suspense
+        fallback={
+          <Center mih="100vh">
+            <Loader />
+          </Center>
+        }
+      >
         <RouterProvider router={appRouter} />
-      </DateProvider>
+      </Suspense>
     </AppThemeProvider>
   );
 }
-
-/*
-
-      <Suspense
-        fallback={
-          <div
-            style={{
-              display: 'flex',
-              height: '100dvh',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <h1 style={{ fontSize: '2.5dvh', fontWeight: 'bold' }}>Loading...</h1>
-          </div>
-        }
-      >
-      </Suspense>
-
-*/
