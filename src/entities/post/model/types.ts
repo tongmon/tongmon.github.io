@@ -30,3 +30,9 @@ export interface TagSummary {
   label: string;
   slug: string;
 }
+
+export interface SeriesSummary {
+  count: number;
+  label: string;
+  slug: string;
+}

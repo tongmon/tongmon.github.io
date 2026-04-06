@@ -8,6 +8,9 @@ const HomePage = lazy(() =>
 const PostListPage = lazy(() =>
   import("@/pages/post-list").then((module) => ({ default: module.PostListPage })),
 );
+const SeriesPage = lazy(() =>
+  import("@/pages/series").then((module) => ({ default: module.SeriesPage })),
+);
 const PostDetailPage = lazy(() =>
   import("@/pages/post-detail").then((module) => ({
     default: module.PostDetailPage,
@@ -38,6 +41,10 @@ const appRouter = createBrowserRouter(
         {
           path: "posts",
           element: <PostListPage />,
+        },
+        {
+          path: "series",
+          element: <SeriesPage />,
         },
         {
           path: "posts/:slug",

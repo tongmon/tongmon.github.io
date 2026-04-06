@@ -37,5 +37,22 @@ export const postsManifest: PostManifestEntry[] = [
     "seriesOrder": 2,
     "readingTime": 1,
     "contentPath": "content/posts/mantine-markdown-notes/index.md"
+  },
+  {
+    "slug": "draft-routing-experiment",
+    "title": "Draft routing experiment",
+    "description": "A hidden draft used to verify that unpublished entries do not leak into the production manifest.",
+    "publishedAt": "2026-04-01T08:00:00+09:00",
+    "tags": [
+      "Draft",
+      "Routing"
+    ],
+    "category": "Lab",
+    "thumbnail": "content/posts/draft-routing-experiment/cover.png",
+    "draft": false,
+    "series": "Build log",
+    "seriesOrder": 1,
+    "readingTime": 1,
+    "contentPath": "content/posts/draft-routing-experiment/index.md"
   }
 ];

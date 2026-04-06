@@ -7,7 +7,9 @@ tags:
   - Routing
 category: Lab
 thumbnail: ./cover.png
-draft: true
+draft: false
+series: Build log
+seriesOrder: 1
 ---
 
 ## This post should not appear

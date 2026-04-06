@@ -8,6 +8,10 @@ export function getPostsPath() {
   return "/posts";
 }
 
+export function getSeriesPath() {
+  return "/series";
+}
+
 export function getTagPath(tag: string) {
   return `/tags/${encodeURIComponent(toKebabCase(tag))}`;
 }
