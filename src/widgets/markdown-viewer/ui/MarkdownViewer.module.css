@@ -12,7 +12,9 @@
 .prose :global(h4),
 .prose :global(h5),
 .prose :global(h6) {
-  scroll-margin-top: 6.5rem;
+  scroll-margin-top: calc(
+    var(--app-shell-header-offset, 0rem) + var(--mantine-spacing-md)
+  );
 }
 
 .prose :global(a) {

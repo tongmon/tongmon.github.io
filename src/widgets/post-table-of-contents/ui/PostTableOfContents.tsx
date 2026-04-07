@@ -5,6 +5,11 @@ interface PostTableOfContentsProps {
   headings: PostHeading[];
 }
 
+const TOC_STICKY_TOP =
+  "calc(var(--app-shell-header-offset, 0rem) + var(--mantine-spacing-md))";
+const TOC_MAX_HEIGHT =
+  "calc(100dvh - var(--app-shell-header-offset, 0rem) - var(--mantine-spacing-md) - var(--mantine-spacing-md))";
+
 export default function PostTableOfContents({
   headings,
 }: PostTableOfContentsProps) {
@@ -19,8 +24,10 @@ export default function PostTableOfContents({
       shadow="sm"
       style={{
         border: "1px solid var(--app-muted-border)",
+        maxHeight: TOC_MAX_HEIGHT,
+        overflowY: "auto",
         position: "sticky",
-        top: "6.5rem",
+        top: TOC_STICKY_TOP,
       }}
     >
       <Stack gap="sm">

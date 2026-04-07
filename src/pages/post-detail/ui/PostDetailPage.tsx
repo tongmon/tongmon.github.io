@@ -130,7 +130,7 @@ export default function PostDetailPage() {
               <MarkdownViewer markdown={loadedPost.content} postSlug={loadedPost.slug} />
             </Paper>
           </Grid.Col>
-          <Grid.Col span={{ base: 12, lg: 4 }}>
+          <Grid.Col span={{ base: 12, lg: 4 }} style={{ alignSelf: "stretch" }}>
             <PostTableOfContents headings={loadedPost.headings} />
           </Grid.Col>
         </Grid>
