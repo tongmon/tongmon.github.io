@@ -1,4 +1,5 @@
 import {
+  ActionIcon,
   AppShell,
   Box,
   Burger,
@@ -13,7 +14,12 @@ import {
   Title,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { IconArrowUpRight, IconHash } from "@tabler/icons-react";
+import {
+  IconArrowUpRight,
+  IconHash,
+  IconSearch,
+  IconSearchFilled,
+} from "@tabler/icons-react";
 import { Link, Outlet, ScrollRestoration, useLocation } from "react-router-dom";
 import { getAllPosts, getTagSummaries } from "@/entities/post";
 import { ThemeToggle } from "@/features/theme-toggle";
@@ -109,7 +115,17 @@ export default function BlogShell() {
               ))}
             </Group>
 
-            <ThemeToggle />
+            <Group gap="xs" visibleFrom="md">
+              <ActionIcon
+                radius="xl"
+                size="lg"
+                variant="default"
+                aria-label="post-search"
+              >
+                <IconSearch size={18} />
+              </ActionIcon>
+              <ThemeToggle />
+            </Group>
           </Group>
         </Container>
       </AppShell.Header>
