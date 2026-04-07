@@ -1,13 +1,20 @@
-import { SimpleGrid, Stack, Text } from "@mantine/core";
-import { getAllPosts, getTagSummaries } from "@/entities/post";
-import { PostFilters, usePostFiltersStore } from "@/features/post-filters";
+import { Group, Pagination, SimpleGrid, Stack } from "@mantine/core";
+import { useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
+import { getAllPosts } from "@/entities/post";
+import { usePostFiltersStore } from "@/features/post-filters";
+import {
+  buildPageSearchParams,
+  paginateItems,
+  parsePageParam,
+} from "@/shared/lib/pagination";
 import { toKebabCase } from "@/shared/lib/text/toKebabCase";
 import { EmptyState, PageIntro } from "@/shared/ui";
 import { PostCard } from "@/widgets/post-card";
 
 export default function PostListPage() {
+  const [searchParams, setSearchParams] = useSearchParams();
   const posts = getAllPosts();
-  const tags = getTagSummaries();
   const { searchQuery, selectedTag, viewMode } = usePostFiltersStore();
   const normalizedQuery = searchQuery.trim().toLowerCase();
 
@@ -24,31 +31,55 @@ export default function PostListPage() {
 
     return matchesQuery && matchesTag;
   });
+  const requestedPage = parsePageParam(searchParams.get("page"));
+  const {
+    currentPage,
+    pageItems: visiblePosts,
+    totalPages,
+  } = paginateItems(filteredPosts, requestedPage);
+
+  useEffect(() => {
+    const normalizedSearchParams = buildPageSearchParams(
+      searchParams,
+      currentPage,
+    );
+
+    if (normalizedSearchParams.toString() !== searchParams.toString()) {
+      setSearchParams(normalizedSearchParams, { replace: true });
+    }
+  }, [currentPage, searchParams, setSearchParams]);
 
   return (
     <Stack gap="xl" py="xl">
       <PageIntro
-        description="Search by topic, narrow by tag, and keep your preferred post list view in local storage with a small Zustand store."
+        description={`${filteredPosts.length} post${filteredPosts.length === 1 ? "" : "s"}${" "} found.`}
         eyebrow="Archive"
         title="All posts"
       />
 
-      <PostFilters availableTags={tags} />
-
-      <Text c="var(--app-muted)" size="sm">
-        {filteredPosts.length} post{filteredPosts.length === 1 ? "" : "s"}{" "}
-        found.
-      </Text>
-
       {filteredPosts.length > 0 ? (
-        <SimpleGrid
-          cols={{ base: 1 /*, xl: viewMode === "grid" ? 2 : 1*/ }}
-          spacing="xl"
-        >
-          {filteredPosts.map((post) => (
-            <PostCard key={post.slug} post={post} variant={viewMode} />
-          ))}
-        </SimpleGrid>
+        <Stack gap="lg">
+          <SimpleGrid
+            cols={{ base: 1 /*, xl: viewMode === "grid" ? 2 : 1*/ }}
+            spacing="xl"
+          >
+            {visiblePosts.map((post) => (
+              <PostCard key={post.slug} post={post} variant={viewMode} />
+            ))}
+          </SimpleGrid>
+
+          {totalPages > 1 ? (
+            <Group justify="center">
+              <Pagination
+                onChange={(page) =>
+                  setSearchParams(buildPageSearchParams(searchParams, page))
+                }
+                total={totalPages}
+                value={currentPage}
+              />
+            </Group>
+          ) : null}
+        </Stack>
       ) : (
         <EmptyState
           actionHref="/posts"

@@ -1,15 +1,39 @@
-import { SimpleGrid, Stack } from "@mantine/core";
-import { useParams } from "react-router-dom";
+import { Group, Pagination, SimpleGrid, Stack } from "@mantine/core";
+import { useEffect } from "react";
+import { useParams, useSearchParams } from "react-router-dom";
 import { getPostsByTag, getTagSummary } from "@/entities/post";
+import {
+  buildPageSearchParams,
+  paginateItems,
+  parsePageParam,
+} from "@/shared/lib/pagination";
 import { getPostsPath } from "@/shared/lib/routes";
 import { EmptyState, PageIntro } from "@/shared/ui";
 import { PostCard } from "@/widgets/post-card";
 
 export default function TagPage() {
+  const [searchParams, setSearchParams] = useSearchParams();
   const { tag } = useParams();
   const tagSlug = tag ?? "";
   const tagSummary = getTagSummary(tagSlug);
   const posts = getPostsByTag(tagSlug);
+  const requestedPage = parsePageParam(searchParams.get("page"));
+  const {
+    currentPage,
+    pageItems: visiblePosts,
+    totalPages,
+  } = paginateItems(posts, requestedPage);
+
+  useEffect(() => {
+    const normalizedSearchParams = buildPageSearchParams(
+      searchParams,
+      currentPage,
+    );
+
+    if (normalizedSearchParams.toString() !== searchParams.toString()) {
+      setSearchParams(normalizedSearchParams, { replace: true });
+    }
+  }, [currentPage, searchParams, setSearchParams]);
 
   if (!tagSummary) {
     return (
@@ -32,11 +56,25 @@ export default function TagPage() {
         title={`#${tagSummary.label}`}
       />
 
-      <SimpleGrid cols={{ base: 1 /*, xl: 2*/ }} spacing="xl">
-        {posts.map((post) => (
-          <PostCard key={post.slug} post={post} />
-        ))}
-      </SimpleGrid>
+      <Stack gap="lg">
+        <SimpleGrid cols={{ base: 1 /*, xl: 2*/ }} spacing="xl">
+          {visiblePosts.map((post) => (
+            <PostCard key={post.slug} post={post} />
+          ))}
+        </SimpleGrid>
+
+        {totalPages > 1 ? (
+          <Group justify="center">
+            <Pagination
+              onChange={(page) =>
+                setSearchParams(buildPageSearchParams(searchParams, page))
+              }
+              total={totalPages}
+              value={currentPage}
+            />
+          </Group>
+        ) : null}
+      </Stack>
     </Stack>
   );
 }
