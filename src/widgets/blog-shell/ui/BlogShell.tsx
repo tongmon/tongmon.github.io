@@ -14,14 +14,15 @@ import {
   Title,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import { openSpotlight } from "@mantine/spotlight";
 import {
   IconArrowUpRight,
   IconHash,
   IconSearch,
-  IconSearchFilled,
 } from "@tabler/icons-react";
 import { Link, Outlet, ScrollRestoration, useLocation } from "react-router-dom";
 import { getAllPosts, getTagSummaries } from "@/entities/post";
+import { PostSpotlight } from "@/features/post-search";
 import { ThemeToggle } from "@/features/theme-toggle";
 import { siteConfig } from "@/shared/config/site";
 import { getPostsPath, getTagPath } from "@/shared/lib/routes";
@@ -57,6 +58,7 @@ export default function BlogShell() {
       padding="md"
     >
       <ScrollRestoration />
+      <PostSpotlight />
       <AppShell.Header
         bg="transparent"
         style={{ backdropFilter: "blur(18px)" }}
@@ -117,10 +119,11 @@ export default function BlogShell() {
 
             <Group gap="xs" visibleFrom="md">
               <ActionIcon
+                aria-label="Search posts"
+                onClick={openSpotlight}
                 radius="xl"
                 size="lg"
                 variant="default"
-                aria-label="post-search"
               >
                 <IconSearch size={18} />
               </ActionIcon>
