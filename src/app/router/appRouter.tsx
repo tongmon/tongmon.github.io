@@ -2,14 +2,21 @@ import { lazy } from "react";
 import { createBrowserRouter } from "react-router-dom";
 import { BlogShell } from "@/widgets/blog-shell";
 
-const HomePage = lazy(() =>
-  import("@/pages/home").then((module) => ({ default: module.HomePage })),
-);
+// const HomePage = lazy(() =>
+//   import("@/pages/home").then((module) => ({ default: module.HomePage })),
+// );
 const PostListPage = lazy(() =>
-  import("@/pages/post-list").then((module) => ({ default: module.PostListPage })),
+  import("@/pages/post-list").then((module) => ({
+    default: module.PostListPage,
+  })),
 );
 const SeriesPage = lazy(() =>
   import("@/pages/series").then((module) => ({ default: module.SeriesPage })),
+);
+const SeriesDetailPage = lazy(() =>
+  import("@/pages/series-detail").then((module) => ({
+    default: module.SeriesDetailPage,
+  })),
 );
 const PostDetailPage = lazy(() =>
   import("@/pages/post-detail").then((module) => ({
@@ -36,7 +43,7 @@ const appRouter = createBrowserRouter(
       children: [
         {
           index: true,
-          element: <HomePage />,
+          element: <PostListPage />,
         },
         {
           path: "posts",
@@ -45,6 +52,10 @@ const appRouter = createBrowserRouter(
         {
           path: "series",
           element: <SeriesPage />,
+        },
+        {
+          path: "series/:series",
+          element: <SeriesDetailPage />,
         },
         {
           path: "posts/:slug",

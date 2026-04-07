@@ -32,7 +32,7 @@ export default function TagPage() {
         title={`#${tagSummary.label}`}
       />
 
-      <SimpleGrid cols={{ base: 1, xl: 2 }}>
+      <SimpleGrid cols={{ base: 1 /*, xl: 2*/ }} spacing="xl">
         {posts.map((post) => (
           <PostCard key={post.slug} post={post} />
         ))}

@@ -1,7 +1,19 @@
-import { Paper, SimpleGrid, Stack, Text, Title } from "@mantine/core";
+import {
+  Group,
+  Image,
+  Paper,
+  SimpleGrid,
+  Stack,
+  Text,
+  Title,
+  UnstyledButton,
+} from "@mantine/core";
+import { IconBooks, IconRefresh } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
-import { getPostsBySeries, getSeriesSummaries } from "@/entities/post";
-import { getPostPath, getPostsPath } from "@/shared/lib/routes";
+import { getSeriesSummaries } from "@/entities/post";
+import { toPublicAssetUrl } from "@/shared/lib/base-path/toPublicAssetUrl";
+import { formatDateTime } from "@/shared/lib/date/formatDateTime";
+import { getPostsPath, getSeriesDetailPath } from "@/shared/lib/routes";
 import { EmptyState, PageIntro } from "@/shared/ui";
 
 export default function SeriesPage() {
@@ -23,68 +35,63 @@ export default function SeriesPage() {
   return (
     <Stack gap="xl" py="xl">
       <PageIntro
-        description="Grouped reading tracks for posts that belong together and are meant to be read in sequence."
+        description="Each card represents a writing track. Open a series to browse its posts in reading order."
         eyebrow="Series"
-        title="Read by series"
+        title="Browse by series"
       />
 
       <SimpleGrid cols={{ base: 1, xl: 2 }}>
         {seriesSummaries.map((series) => {
-          const posts = getPostsBySeries(series.slug);
+          const coverImage = series.thumbnail
+            ? toPublicAssetUrl(series.thumbnail)
+            : null;
 
           return (
-            <Paper
-              bg="var(--app-surface-1)"
+            <UnstyledButton
+              component={Link}
               key={series.slug}
-              p="xl"
-              shadow="sm"
-              style={{ border: "1px solid var(--app-muted-border)" }}
+              style={{ color: "inherit", display: "block", textDecoration: "none" }}
+              to={getSeriesDetailPath(series.label)}
             >
-              <Stack gap="lg">
-                <Stack gap="xs">
-                  <Text c="var(--app-muted)" fw={700} size="xs" tt="uppercase">
-                    {series.count} post{series.count === 1 ? "" : "s"}
-                  </Text>
-                  <Title order={2}>{series.label}</Title>
-                  <Text c="var(--app-muted)" size="sm">
-                    Posts in this series are listed in their intended reading order.
-                  </Text>
-                </Stack>
+              <Paper
+                bg="var(--app-surface-1)"
+                shadow="sm"
+                style={{
+                  border: "1px solid var(--app-muted-border)",
+                  overflow: "hidden",
+                }}
+              >
+                {coverImage ? <Image alt={series.label} h={220} src={coverImage} /> : null}
 
-                <Stack gap="sm">
-                  {posts.map((post, index) => (
-                    <Paper
-                      bg="transparent"
-                      key={post.slug}
-                      p="md"
-                      style={{ border: "1px solid var(--app-muted-border)" }}
-                    >
-                      <Stack gap="xs">
-                        <Text
-                          c="var(--app-muted)"
-                          fw={700}
-                          size="xs"
-                          tt="uppercase"
-                        >
-                          Part {post.seriesOrder ?? index + 1}
-                        </Text>
-                        <Title
-                          order={3}
-                          renderRoot={(props) => (
-                            <Link {...props} to={getPostPath(post.slug)} />
-                          )}
-                        >
-                          {post.title}
-                        </Title>
-                        <Text c="var(--app-muted)" size="sm">
-                          {post.description}
-                        </Text>
-                      </Stack>
-                    </Paper>
-                  ))}
+                <Stack gap="lg" p="xl">
+                  <Stack gap="xs">
+                    <Text c="var(--app-muted)" fw={700} size="xs" tt="uppercase">
+                      Series
+                    </Text>
+                    <Title order={2}>{series.label}</Title>
+                  </Stack>
+
+                  <Group c="var(--app-muted)" gap="md" wrap="wrap">
+                    <Group gap={6}>
+                      <IconRefresh size={16} stroke={1.8} />
+                      <Text size="sm">
+                        Updated {formatDateTime(series.latestUpdatedAt)}
+                      </Text>
+                    </Group>
+                    <Group gap={6}>
+                      <IconBooks size={16} stroke={1.8} />
+                      <Text size="sm">
+                        {series.count} post{series.count === 1 ? "" : "s"}
+                      </Text>
+                    </Group>
+                  </Group>
+
+                  <Text c="var(--app-anchor)" fw={700} size="sm">
+                    Open series
+                  </Text>
                 </Stack>
-              </Stack>
-            </Paper>
+              </Paper>
+            </UnstyledButton>
           );
         })}
       </SimpleGrid>

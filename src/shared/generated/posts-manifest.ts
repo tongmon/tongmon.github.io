@@ -21,6 +21,42 @@ export const postsManifest: PostManifestEntry[] = [
     "contentPath": "content/posts/building-a-static-blog/index.md"
   },
   {
+    "slug": "mantine-markdown-diff-double-notes",
+    "title": "Making markdown feel native in a Mantine blog",
+    "description": "Rendering markdown well is less about adding every plugin in sight and more about choosing a restrained pipeline with good defaults.",
+    "publishedAt": "2026-04-03T20:30:00+09:00",
+    "tags": [
+      "Markdown",
+      "Zustand",
+      "TypeScript"
+    ],
+    "category": "Frontend",
+    "thumbnail": "content/posts/mantine-markdown-diff-double-notes/cover.png",
+    "draft": false,
+    "series": "Build log",
+    "seriesOrder": 4,
+    "readingTime": 1,
+    "contentPath": "content/posts/mantine-markdown-diff-double-notes/index.md"
+  },
+  {
+    "slug": "mantine-markdown-diff-notes",
+    "title": "Making markdown feel native in a Mantine blog",
+    "description": "Rendering markdown well is less about adding every plugin in sight and more about choosing a restrained pipeline with good defaults.",
+    "publishedAt": "2026-04-02T20:30:00+09:00",
+    "tags": [
+      "Markdown",
+      "Zustand",
+      "TypeScript"
+    ],
+    "category": "Frontend",
+    "thumbnail": "content/posts/mantine-markdown-diff-notes/cover.png",
+    "draft": false,
+    "series": "Build log",
+    "seriesOrder": 3,
+    "readingTime": 1,
+    "contentPath": "content/posts/mantine-markdown-diff-notes/index.md"
+  },
+  {
     "slug": "mantine-markdown-notes",
     "title": "Making markdown feel native in a Mantine blog",
     "description": "Rendering markdown well is less about adding every plugin in sight and more about choosing a restrained pipeline with good defaults.",
@@ -39,6 +75,24 @@ export const postsManifest: PostManifestEntry[] = [
     "contentPath": "content/posts/mantine-markdown-notes/index.md"
   },
   {
+    "slug": "mantine-markdown-diff-triple-notes",
+    "title": "Making markdown feel native in a Mantine blog",
+    "description": "Rendering markdown well is less about adding every plugin in sight and more about choosing a restrained pipeline with good defaults.",
+    "publishedAt": "2026-04-01T20:30:00+09:00",
+    "tags": [
+      "Markdown",
+      "Zustand",
+      "TypeScript"
+    ],
+    "category": "Frontend",
+    "thumbnail": "content/posts/mantine-markdown-diff-triple-notes/cover.png",
+    "draft": false,
+    "series": "Build log",
+    "seriesOrder": 5,
+    "readingTime": 1,
+    "contentPath": "content/posts/mantine-markdown-diff-triple-notes/index.md"
+  },
+  {
     "slug": "draft-routing-experiment",
     "title": "Draft routing experiment",
     "description": "A hidden draft used to verify that unpublished entries do not leak into the production manifest.",
@@ -50,7 +104,7 @@ export const postsManifest: PostManifestEntry[] = [
     "category": "Lab",
     "thumbnail": "content/posts/draft-routing-experiment/cover.png",
     "draft": false,
-    "series": "Build log",
+    "series": "Build Some",
     "seriesOrder": 1,
     "readingTime": 1,
     "contentPath": "content/posts/draft-routing-experiment/index.md"

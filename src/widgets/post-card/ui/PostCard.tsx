@@ -18,10 +18,7 @@ interface PostCardProps {
   variant?: "grid" | "compact";
 }
 
-export default function PostCard({
-  post,
-  variant = "grid",
-}: PostCardProps) {
+export default function PostCard({ post, variant = "grid" }: PostCardProps) {
   const thumbnail = post.thumbnail ? toPublicAssetUrl(post.thumbnail) : null;
   const isCompact = variant === "compact";
   const postPath = getPostPath(post.slug);
@@ -72,12 +69,6 @@ export default function PostCard({
 
           <Group>
             <PostTagList tags={post.tags} />
-          </Group>
-
-          <Group>
-            <Button component={Link} size="sm" to={postPath} variant="light">
-              Read post
-            </Button>
           </Group>
         </Stack>
       </Flex>

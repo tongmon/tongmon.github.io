@@ -8,7 +8,7 @@ tags:
 category: Lab
 thumbnail: ./cover.png
 draft: false
-series: Build log
+series: Build Some
 seriesOrder: 1
 ---
 

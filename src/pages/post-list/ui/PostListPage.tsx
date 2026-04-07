@@ -14,13 +14,7 @@ export default function PostListPage() {
   const filteredPosts = posts.filter((post) => {
     const matchesQuery =
       normalizedQuery.length === 0 ||
-      [
-        post.title,
-        post.description,
-        post.category,
-        post.series,
-        ...post.tags,
-      ]
+      [post.title, post.description, post.category, post.series, ...post.tags]
         .filter(Boolean)
         .some((value) => value?.toLowerCase().includes(normalizedQuery));
 
@@ -42,11 +36,15 @@ export default function PostListPage() {
       <PostFilters availableTags={tags} />
 
       <Text c="var(--app-muted)" size="sm">
-        {filteredPosts.length} post{filteredPosts.length === 1 ? "" : "s"} found.
+        {filteredPosts.length} post{filteredPosts.length === 1 ? "" : "s"}{" "}
+        found.
       </Text>
 
       {filteredPosts.length > 0 ? (
-        <SimpleGrid cols={{ base: 1, xl: viewMode === "grid" ? 2 : 1 }}>
+        <SimpleGrid
+          cols={{ base: 1 /*, xl: viewMode === "grid" ? 2 : 1*/ }}
+          spacing="xl"
+        >
           {filteredPosts.map((post) => (
             <PostCard key={post.slug} post={post} variant={viewMode} />
           ))}

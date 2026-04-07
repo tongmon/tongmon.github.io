@@ -29,19 +29,19 @@ export const theme = createTheme({
     '"IBM Plex Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace',
   headings: {
     fontFamily: '"Instrument Serif", Georgia, serif',
-    sizes: {
-      h1: { fontSize: rem(44), lineHeight: "1.05", fontWeight: "500" },
-      h2: { fontSize: rem(34), lineHeight: "1.1", fontWeight: "500" },
-      h3: { fontSize: rem(26), lineHeight: "1.15", fontWeight: "500" },
-      h4: { fontSize: rem(22), lineHeight: "1.2", fontWeight: "500" },
-      h5: { fontSize: rem(18), lineHeight: "1.25", fontWeight: "600" },
-      h6: { fontSize: rem(16), lineHeight: "1.3", fontWeight: "600" },
-    },
+    //sizes: {
+    //  h1: { fontSize: rem(44), lineHeight: "1.05", fontWeight: "500" },
+    //  h2: { fontSize: rem(34), lineHeight: "1.1", fontWeight: "500" },
+    //  h3: { fontSize: rem(26), lineHeight: "1.15", fontWeight: "500" },
+    //  h4: { fontSize: rem(22), lineHeight: "1.2", fontWeight: "500" },
+    //  h5: { fontSize: rem(18), lineHeight: "1.25", fontWeight: "600" },
+    //  h6: { fontSize: rem(16), lineHeight: "1.3", fontWeight: "600" },
+    //},
   },
-  radius: {
-    md: rem(16),
-    xl: rem(28),
-  },
+  // radius: {
+  //   md: rem(16),
+  //   xl: rem(28),
+  // },
   defaultRadius: "md",
   components: {
     AppShell: {
@@ -89,6 +89,8 @@ export const cssVariablesResolver: CSSVariablesResolver = (mantineTheme) => ({
     "--app-surface-0": "rgba(255, 255, 255, 0.78)",
     "--app-surface-1": "rgba(255, 255, 255, 0.94)",
     "--app-surface-2": "#ffffff",
+    "--app-nav-active-bg": "rgba(84, 188, 146, 0.14)",
+    "--app-nav-active-border": "rgba(84, 188, 146, 0.24)",
     "--app-muted": "#5a655f",
     "--app-code-bg": "#f7f9fb",
     "--app-code-border": "rgba(15, 23, 42, 0.1)",
@@ -103,6 +105,8 @@ export const cssVariablesResolver: CSSVariablesResolver = (mantineTheme) => ({
     "--app-surface-0": "rgba(18, 27, 22, 0.82)",
     "--app-surface-1": "rgba(18, 27, 22, 0.92)",
     "--app-surface-2": "#16211c",
+    "--app-nav-active-bg": "rgba(84, 188, 146, 0.14)",
+    "--app-nav-active-border": "rgba(84, 188, 146, 0.24)",
     "--app-muted": "#9ca8a1",
     "--app-code-bg": "#121b16",
     "--app-code-border": "rgba(226, 232, 240, 0.12)",

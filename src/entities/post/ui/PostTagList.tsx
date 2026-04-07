@@ -1,4 +1,4 @@
-import { Badge, Group } from "@mantine/core";
+import { Badge, Group, OverflowList } from "@mantine/core";
 import { Link } from "react-router-dom";
 import { getTagPath } from "@/shared/lib/routes";
 
@@ -8,17 +8,13 @@ interface PostTagListProps {
 
 export default function PostTagList({ tags }: PostTagListProps) {
   return (
-    <Group gap="xs">
-      {tags.map((tag) => (
-        <Badge
-          component={Link}
-          key={tag}
-          to={getTagPath(tag)}
-          variant="light"
-        >
-          {tag}
-        </Badge>
-      ))}
-    </Group>
+    <div style={{ overflow: "auto", maxWidth: "100%" }}>
+      <OverflowList
+        data={tags}
+        gap="xs"
+        renderOverflow={(items) => <Badge>+{items.length} more</Badge>}
+        renderItem={(item, index) => <Badge key={index}>{item}</Badge>}
+      />
+    </div>
   );
 }

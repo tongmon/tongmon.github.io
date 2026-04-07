@@ -7,9 +7,22 @@ import { z } from "zod";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDirectory = path.resolve(__dirname, "..");
 const postsDirectory = path.join(rootDirectory, "content", "posts");
-const publicPostsDirectory = path.join(rootDirectory, "public", "content", "posts");
-const generatedDirectory = path.join(rootDirectory, "src", "shared", "generated");
-const generatedManifestFile = path.join(generatedDirectory, "posts-manifest.ts");
+const publicPostsDirectory = path.join(
+  rootDirectory,
+  "public",
+  "content",
+  "posts",
+);
+const generatedDirectory = path.join(
+  rootDirectory,
+  "src",
+  "shared",
+  "generated",
+);
+const generatedManifestFile = path.join(
+  generatedDirectory,
+  "posts-manifest.ts",
+);
 const includeDrafts = process.argv.includes("--include-drafts");
 
 const isoDateWithTimezone = z.preprocess(
@@ -20,12 +33,14 @@ const isoDateWithTimezone = z.preprocess(
 
     return value;
   },
-  z.string().refine(
-    (value) =>
-      Number.isNaN(Date.parse(value)) === false &&
-      /(Z|[+-]\d{2}:\d{2})$/.test(value),
-    "Expected an ISO datetime with timezone",
-  ),
+  z
+    .string()
+    .refine(
+      (value) =>
+        Number.isNaN(Date.parse(value)) === false &&
+        /(Z|[+-]\d{2}:\d{2})$/.test(value),
+      "Expected an ISO datetime with timezone",
+    ),
 );
 
 const frontmatterSchema = z.object({
@@ -141,7 +156,10 @@ function getPostManifestRecord(postDirectory: string): PostManifestRecord {
   }
 
   if (frontmatter.thumbnail) {
-    assertAssetExists(postDirectory, normalizeRelativeAssetPath(frontmatter.thumbnail));
+    assertAssetExists(
+      postDirectory,
+      normalizeRelativeAssetPath(frontmatter.thumbnail),
+    );
   }
 
   return {
@@ -194,7 +212,8 @@ function main() {
     .filter((record) => includeDrafts || record.draft === false)
     .sort(
       (left, right) =>
-        new Date(right.publishedAt).getTime() - new Date(left.publishedAt).getTime(),
+        new Date(right.publishedAt).getTime() -
+        new Date(left.publishedAt).getTime(),
     );
 
   writeGeneratedManifest(filteredRecords);

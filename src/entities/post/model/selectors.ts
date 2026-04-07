@@ -6,6 +6,10 @@ import type {
 import { postsManifest } from "@/shared/generated/posts-manifest";
 import { toKebabCase } from "@/shared/lib/text/toKebabCase";
 
+function getPostActivityAt(post: PostManifestEntry) {
+  return post.updatedAt ?? post.publishedAt;
+}
+
 function compareSeriesPosts(left: PostManifestEntry, right: PostManifestEntry) {
   const leftOrder = left.seriesOrder ?? Number.POSITIVE_INFINITY;
   const rightOrder = right.seriesOrder ?? Number.POSITIVE_INFINITY;
@@ -15,6 +19,64 @@ function compareSeriesPosts(left: PostManifestEntry, right: PostManifestEntry) {
   }
 
   return right.publishedAt.localeCompare(left.publishedAt);
+}
+
+function getSeriesGroups() {
+  const seriesMap = new Map<
+    string,
+    { label: string; posts: PostManifestEntry[] }
+  >();
+
+  for (const post of postsManifest) {
+    if (!post.series) {
+      continue;
+    }
+
+    const slug = toKebabCase(post.series);
+    const existing = seriesMap.get(slug);
+
+    if (existing) {
+      existing.posts.push(post);
+      continue;
+    }
+
+    seriesMap.set(slug, {
+      label: post.series,
+      posts: [post],
+    });
+  }
+
+  return [...seriesMap.entries()]
+    .map(([slug, group]) => {
+      const posts = [...group.posts].sort(compareSeriesPosts);
+      const latestUpdatedAt = posts.reduce((latest, post) => {
+        const postActivityAt = getPostActivityAt(post);
+
+        return postActivityAt.localeCompare(latest) > 0 ? postActivityAt : latest;
+      }, getPostActivityAt(posts[0]));
+
+      return {
+        posts,
+        summary: {
+          count: posts.length,
+          label: group.label,
+          latestUpdatedAt,
+          slug,
+          thumbnail: posts[0].thumbnail,
+        } satisfies SeriesSummary,
+      };
+    })
+    .sort((left, right) => {
+      const activityComparison = right.summary.latestUpdatedAt.localeCompare(
+        left.summary.latestUpdatedAt,
+      );
+
+      if (activityComparison !== 0) {
+        return activityComparison;
+      }
+
+      return left.summary.label.localeCompare(right.summary.label);
+    });
 }
 
 export function getAllPosts() {
@@ -36,11 +98,7 @@ export function getPostsByTag(tagSlug: string) {
 }
 
 export function getPostsBySeries(seriesSlug: string) {
-  return postsManifest
-    .filter(
-      (post) => post.series && toKebabCase(post.series) === seriesSlug,
-    )
-    .sort(compareSeriesPosts);
+  return getSeriesGroups().find((group) => group.summary.slug === seriesSlug)?.posts ?? [];
 }
 
 export function getRelatedPosts(
@@ -91,33 +149,9 @@ export function getTagSummary(tagSlug: string) {
 }
 
 export function getSeriesSummaries(): SeriesSummary[] {
-  const seriesMap = new Map<string, SeriesSummary>();
+  return getSeriesGroups().map((group) => group.summary);
+}
 
-  for (const post of postsManifest) {
-    if (!post.series) {
-      continue;
-    }
-
-    const slug = toKebabCase(post.series);
-    const existing = seriesMap.get(slug);
-
-    if (existing) {
-      existing.count += 1;
-      continue;
-    }
-
-    seriesMap.set(slug, {
-      count: 1,
-      label: post.series,
-      slug,
-    });
-  }
-
-  return [...seriesMap.values()].sort((left, right) => {
-    if (right.count !== left.count) {
-      return right.count - left.count;
-    }
-
-    return left.label.localeCompare(right.label);
-  });
+export function getSeriesSummary(seriesSlug: string) {
+  return getSeriesGroups().find((group) => group.summary.slug === seriesSlug)?.summary ?? null;
 }

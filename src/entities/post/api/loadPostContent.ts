@@ -1,5 +1,6 @@
 import type { LoadedPost, PostManifestEntry } from "@/entities/post/model/types";
 import { extractMarkdownHeadings } from "@/shared/lib/markdown/extractMarkdownHeadings";
+import { stripMarkdownFrontmatter } from "@/shared/lib/markdown/stripMarkdownFrontmatter";
 import { toPublicAssetUrl } from "@/shared/lib/base-path/toPublicAssetUrl";
 
 const postContentCache = new Map<string, Promise<LoadedPost>>();
@@ -16,7 +17,8 @@ export function loadPostContent(post: PostManifestEntry) {
       throw new Error(`Unable to load markdown for "${post.slug}"`);
     }
 
-    const content = await response.text();
+    const rawContent = await response.text();
+    const content = stripMarkdownFrontmatter(rawContent);
 
     return {
       ...post,

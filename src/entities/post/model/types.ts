@@ -34,5 +34,7 @@ export interface TagSummary {
 export interface SeriesSummary {
   count: number;
   label: string;
+  latestUpdatedAt: string;
   slug: string;
+  thumbnail?: string;
 }

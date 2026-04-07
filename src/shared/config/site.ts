@@ -1,7 +1,7 @@
 import { getAboutPath, getPostsPath, getSeriesPath } from "@/shared/lib/routes";
 
 export const siteConfig = {
-  title: "Tongmon Notes",
+  title: "Tongstar Notes",
   description:
     "A static personal blog about frontend systems, product-minded engineering, and the small decisions that make interfaces feel finished.",
   author: "Tongmon",
