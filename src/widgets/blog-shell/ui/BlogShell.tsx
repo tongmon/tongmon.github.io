@@ -43,43 +43,21 @@ function isHeaderNavigationItemActive(currentPath: string, href: string) {
   );
 }
 
-function useLockedBodyScroll(locked: boolean) {
+function useMobileNavbarBodyScrollbarState(opened: boolean) {
   useEffect(() => {
-    if (!locked) {
-      return undefined;
+    const { documentElement } = document;
+    const attributeName = "data-mobile-navbar-opened";
+
+    if (opened) {
+      documentElement.setAttribute(attributeName, "true");
+    } else {
+      documentElement.removeAttribute(attributeName);
     }
 
-    const { body, documentElement } = document;
-    const scrollY = window.scrollY;
-    const originalBodyStyles = {
-      left: body.style.left,
-      overflow: body.style.overflow,
-      position: body.style.position,
-      right: body.style.right,
-      top: body.style.top,
-      width: body.style.width,
-    };
-    const originalHtmlOverflow = documentElement.style.overflow;
-
-    documentElement.style.overflow = "hidden";
-    body.style.overflow = "hidden";
-    body.style.position = "fixed";
-    body.style.top = `-${scrollY}px`;
-    body.style.left = "0";
-    body.style.right = "0";
-    body.style.width = "100%";
-
     return () => {
-      documentElement.style.overflow = originalHtmlOverflow;
-      body.style.left = originalBodyStyles.left;
-      body.style.overflow = originalBodyStyles.overflow;
-      body.style.position = originalBodyStyles.position;
-      body.style.right = originalBodyStyles.right;
-      body.style.top = originalBodyStyles.top;
-      body.style.width = originalBodyStyles.width;
-      window.scrollTo({ top: scrollY });
+      documentElement.removeAttribute(attributeName);
     };
-  }, [locked]);
+  }, [opened]);
 }
 
 export default function BlogShell() {
@@ -94,20 +72,22 @@ export default function BlogShell() {
   const topTags = getTagSummaries().slice(0, 8);
   const isMobileNavbarOpened = opened && isMobileViewport;
 
-  useLockedBodyScroll(isMobileNavbarOpened);
+  useMobileNavbarBodyScrollbarState(isMobileNavbarOpened);
 
   return (
     <AppShell
       header={{ height: 76 }}
       navbar={{ breakpoint: "md", width: 300, collapsed: { mobile: !opened } }}
       padding="md"
-      transitionDuration={0}
+      transitionDuration={150}
     >
       <ScrollRestoration />
       <PostSpotlight />
       <AppShell.Header
         // bg="transparent"
-        style={{ backdropFilter: "blur(18px)" }}
+        style={{
+          backdropFilter: "blur(18px)",
+        }}
       >
         <Container
           h="100%"

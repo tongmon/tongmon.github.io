@@ -26,11 +26,21 @@
   box-sizing: border-box;
 }
 
-/*
 html {
-  scroll-behavior: smooth; 
+  /* scroll-behavior: smooth; */
+  /* scrollbar-gutter: auto; */
+  /* scrollbar-gutter: stable; */
+  /* scrollbar-width: auto; */
 }
-*/
+
+html[data-mobile-navbar-opened="true"] {
+  /* background-color: var(--mantine-color-body); */
+  overflow-y: clip;
+}
+
+html[data-mobile-navbar-opened="true"] body::-webkit-scrollbar {
+  background-color: transparent;
+}
 
 body {
   margin: 0;
@@ -41,6 +51,7 @@ body {
     var(--app-gradient),
     var(--mantine-color-body);
   color: var(--mantine-color-text);
+  overflow-y: scroll;
 }
 
 body::before {
