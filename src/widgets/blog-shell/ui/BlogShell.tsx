@@ -214,7 +214,7 @@ export default function BlogShell() {
               ))}
             </Group>
 
-            <Group gap="xs" mr={{ base: "var(--app-scrollbar-width))" }}>
+            <Group gap="xs">
               <ActionIcon
                 aria-label="Search posts"
                 onClick={openSpotlight}

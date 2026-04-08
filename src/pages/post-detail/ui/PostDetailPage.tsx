@@ -120,17 +120,24 @@ export default function PostDetailPage() {
 
       {loadedPost ? (
         <Grid align="start" gap="xl">
-          <Grid.Col span={{ base: 12, lg: 8 }}>
+          <Grid.Col order={{ base: 2, lg: 1 }} span={{ base: 12, lg: 8 }}>
             <Paper
               bg="var(--app-surface-1)"
               p={{ base: "lg", md: "xl" }}
               shadow="sm"
               style={{ border: "1px solid var(--app-muted-border)" }}
             >
-              <MarkdownViewer markdown={loadedPost.content} postSlug={loadedPost.slug} />
+              <MarkdownViewer
+                markdown={loadedPost.content}
+                postSlug={loadedPost.slug}
+              />
             </Paper>
           </Grid.Col>
-          <Grid.Col span={{ base: 12, lg: 4 }} style={{ alignSelf: "stretch" }}>
+          <Grid.Col
+            order={{ base: 1, lg: 2 }}
+            span={{ base: 12, lg: 4 }}
+            style={{ alignSelf: "stretch" }}
+          >
             <PostTableOfContents headings={loadedPost.headings} />
           </Grid.Col>
         </Grid>
@@ -145,7 +152,11 @@ export default function PostDetailPage() {
           <Title order={2}>Related posts</Title>
           <SimpleGrid cols={{ base: 1, xl: 2 }}>
             {relatedPosts.map((relatedPost) => (
-              <PostCard key={relatedPost.slug} post={relatedPost} variant="compact" />
+              <PostCard
+                key={relatedPost.slug}
+                post={relatedPost}
+                variant="compact"
+              />
             ))}
           </SimpleGrid>
         </Stack>
