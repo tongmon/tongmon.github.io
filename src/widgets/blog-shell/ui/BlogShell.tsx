@@ -181,12 +181,12 @@ export default function BlogShell() {
                 />
               </Box>
               <Stack gap={0}>
-                <Title
-                  order={3}
+                <Text
                   renderRoot={(props) => <Link {...props} to="/" />}
+                  fw={600}
                 >
                   Tongstar Notes
-                </Title>
+                </Text>
                 <Text c="var(--app-muted)" size="sm" visibleFrom="sm">
                   Quietly polished frontend notes.
                 </Text>
@@ -211,7 +211,7 @@ export default function BlogShell() {
               ))}
             </Group>
 
-            <Group gap="xs" /* visibleFrom="md" */>
+            <Group gap="xs" pr={{ base: "md", md: "xl" }}>
               <ActionIcon
                 aria-label="Search posts"
                 onClick={openSpotlight}
