@@ -150,13 +150,16 @@ export default function BlogShell() {
         <Container
           h="100%"
           // maw="var(--app-shell-max-width)"
+          //             ? "md"
+          //   : "calc(var(--mantine-spacing-md) - var(--app-scrollbar-width))"
+          // : "md",
           pl={{ base: "md", md: "xl" }}
           pr={{
             base: isBodyScrollable
               ? isMobileNavbarOpened
-                ? "md"
-                : "calc(var(--mantine-spacing-md) - var(--app-scrollbar-width))"
-              : "md",
+                ? "calc(var(--mantine-spacing-md) + var(--app-scrollbar-width))"
+                : "md"
+              : "calc(var(--mantine-spacing-md) + var(--app-scrollbar-width))",
             md: isBodyScrollable
               ? "xl"
               : "calc(var(--mantine-spacing-xl) + var(--app-scrollbar-width))",
