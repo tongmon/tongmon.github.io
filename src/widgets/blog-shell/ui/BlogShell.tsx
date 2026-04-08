@@ -16,7 +16,12 @@ import {
   Title,
   useMantineTheme,
 } from "@mantine/core";
-import { useDisclosure, useMediaQuery } from "@mantine/hooks";
+import {
+  useDisclosure,
+  useElementSize,
+  useMediaQuery,
+  useViewportSize,
+} from "@mantine/hooks";
 import { openSpotlight } from "@mantine/spotlight";
 import { IconArrowUpRight, IconHash, IconSearch } from "@tabler/icons-react";
 import { Link, Outlet, ScrollRestoration, useLocation } from "react-router-dom";
@@ -60,9 +65,25 @@ function useMobileNavbarBodyScrollbarState(opened: boolean) {
   }, [opened]);
 }
 
+function useBodyScrollbarRequirementState(isScrollable: boolean) {
+  useEffect(() => {
+    const { documentElement } = document;
+    const attributeName = "data-body-scrollable";
+
+    documentElement.setAttribute(attributeName, isScrollable ? "true" : "false");
+
+    return () => {
+      documentElement.removeAttribute(attributeName);
+    };
+  }, [isScrollable]);
+}
+
 export default function BlogShell() {
   const [opened, { close, toggle }] = useDisclosure(false);
   const theme = useMantineTheme();
+  const { ref: shellRef, height: shellHeight } =
+    useElementSize<HTMLDivElement>();
+  const { height: viewportHeight } = useViewportSize();
   const isMobileViewport = useMediaQuery(
     `(max-width: ${theme.breakpoints.md})`,
   );
@@ -71,11 +92,14 @@ export default function BlogShell() {
   const allPostsCount = getAllPosts().length;
   const topTags = getTagSummaries().slice(0, 8);
   const isMobileNavbarOpened = opened && isMobileViewport;
+  const isBodyScrollable = shellHeight > viewportHeight + 1;
 
   useMobileNavbarBodyScrollbarState(isMobileNavbarOpened);
+  useBodyScrollbarRequirementState(isBodyScrollable);
 
   return (
     <AppShell
+      ref={shellRef}
       header={{ height: 76 }}
       navbar={{ breakpoint: "md", width: 300, collapsed: { mobile: !opened } }}
       padding="md"
@@ -91,7 +115,7 @@ export default function BlogShell() {
       >
         <Container
           h="100%"
-          maw="var(--app-shell-max-width)"
+          // maw="var(--app-shell-max-width)"
           px={{ base: "md", md: "xl" }}
           size="100%"
         >

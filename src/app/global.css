@@ -33,12 +33,13 @@ html {
   /* scrollbar-width: auto; */
 }
 
+html[data-body-scrollable="false"],
 html[data-mobile-navbar-opened="true"] {
-  /* background-color: var(--mantine-color-body); */
   overflow-y: clip;
 }
 
-html[data-mobile-navbar-opened="true"] body::-webkit-scrollbar {
+html[data-mobile-navbar-opened="true"] body::-webkit-scrollbar,
+html[data-body-scrollable="false"] body::-webkit-scrollbar {
   background-color: transparent;
 }
 
