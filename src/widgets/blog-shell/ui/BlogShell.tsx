@@ -48,6 +48,32 @@ function isHeaderNavigationItemActive(currentPath: string, href: string) {
   );
 }
 
+export function useScrollbarWidth() {
+  useEffect(() => {
+    const measure = () => {
+      const outer = document.createElement("div");
+      outer.style.visibility = "hidden";
+      outer.style.overflow = "scroll";
+
+      document.body.appendChild(outer);
+
+      const inner = document.createElement("div");
+      outer.appendChild(inner);
+
+      const w = outer.offsetWidth - inner.offsetWidth;
+
+      outer.remove();
+
+      document.documentElement.style.setProperty(
+        "--app-scrollbar-width",
+        `${w}px`,
+      );
+    };
+
+    measure();
+  }, []);
+}
+
 function useMobileNavbarBodyScrollbarState(opened: boolean) {
   useEffect(() => {
     const { documentElement } = document;
@@ -70,7 +96,10 @@ function useBodyScrollbarRequirementState(isScrollable: boolean) {
     const { documentElement } = document;
     const attributeName = "data-body-scrollable";
 
-    documentElement.setAttribute(attributeName, isScrollable ? "true" : "false");
+    documentElement.setAttribute(
+      attributeName,
+      isScrollable ? "true" : "false",
+    );
 
     return () => {
       documentElement.removeAttribute(attributeName);
@@ -96,6 +125,7 @@ export default function BlogShell() {
 
   useMobileNavbarBodyScrollbarState(isMobileNavbarOpened);
   useBodyScrollbarRequirementState(isBodyScrollable);
+  useScrollbarWidth();
 
   return (
     <AppShell
@@ -116,7 +146,15 @@ export default function BlogShell() {
         <Container
           h="100%"
           // maw="var(--app-shell-max-width)"
-          px={{ base: "md", md: "xl" }}
+          pl={{ base: "md", md: "xl" }}
+          pr={{
+            base: isBodyScrollable
+              ? "md"
+              : "calc(var(--mantine-spacing-md) + var(--app-scrollbar-width))",
+            md: isBodyScrollable
+              ? "xl"
+              : "calc(var(--mantine-spacing-xl) + var(--app-scrollbar-width))",
+          }}
           size="100%"
         >
           <Group h="100%" justify="space-between">
