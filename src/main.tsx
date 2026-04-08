@@ -20,6 +20,7 @@ import App from "@/app/App";
 // 11. 블로그 카드에서 태그 누르면 해당 태그로 이동시키기
 // 12. tags와 post list 컴포넌트 통합
 // 13. blog image processing 로직 수정
+// 14. 모바일 화면 구성
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <StrictMode>

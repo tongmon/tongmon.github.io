@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import {
   ActionIcon,
   AppShell,
@@ -9,17 +10,15 @@ import {
   Group,
   Image,
   NavLink,
+  ScrollArea,
   Stack,
   Text,
   Title,
+  useMantineTheme,
 } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
+import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import { openSpotlight } from "@mantine/spotlight";
-import {
-  IconArrowUpRight,
-  IconHash,
-  IconSearch,
-} from "@tabler/icons-react";
+import { IconArrowUpRight, IconHash, IconSearch } from "@tabler/icons-react";
 import { Link, Outlet, ScrollRestoration, useLocation } from "react-router-dom";
 import { getAllPosts, getTagSummaries } from "@/entities/post";
 import { PostSpotlight } from "@/features/post-search";
@@ -44,23 +43,70 @@ function isHeaderNavigationItemActive(currentPath: string, href: string) {
   );
 }
 
+function useLockedBodyScroll(locked: boolean) {
+  useEffect(() => {
+    if (!locked) {
+      return undefined;
+    }
+
+    const { body, documentElement } = document;
+    const scrollY = window.scrollY;
+    const originalBodyStyles = {
+      left: body.style.left,
+      overflow: body.style.overflow,
+      position: body.style.position,
+      right: body.style.right,
+      top: body.style.top,
+      width: body.style.width,
+    };
+    const originalHtmlOverflow = documentElement.style.overflow;
+
+    documentElement.style.overflow = "hidden";
+    body.style.overflow = "hidden";
+    body.style.position = "fixed";
+    body.style.top = `-${scrollY}px`;
+    body.style.left = "0";
+    body.style.right = "0";
+    body.style.width = "100%";
+
+    return () => {
+      documentElement.style.overflow = originalHtmlOverflow;
+      body.style.left = originalBodyStyles.left;
+      body.style.overflow = originalBodyStyles.overflow;
+      body.style.position = originalBodyStyles.position;
+      body.style.right = originalBodyStyles.right;
+      body.style.top = originalBodyStyles.top;
+      body.style.width = originalBodyStyles.width;
+      window.scrollTo({ top: scrollY });
+    };
+  }, [locked]);
+}
+
 export default function BlogShell() {
   const [opened, { close, toggle }] = useDisclosure(false);
+  const theme = useMantineTheme();
+  const isMobileViewport = useMediaQuery(
+    `(max-width: ${theme.breakpoints.md})`,
+  );
   const location = useLocation();
   const allPostsHref = getPostsPath();
   const allPostsCount = getAllPosts().length;
   const topTags = getTagSummaries().slice(0, 8);
+  const isMobileNavbarOpened = opened && isMobileViewport;
+
+  useLockedBodyScroll(isMobileNavbarOpened);
 
   return (
     <AppShell
       header={{ height: 76 }}
       navbar={{ breakpoint: "md", width: 300, collapsed: { mobile: !opened } }}
       padding="md"
+      transitionDuration={0}
     >
       <ScrollRestoration />
       <PostSpotlight />
       <AppShell.Header
-        bg="transparent"
+        // bg="transparent"
         style={{ backdropFilter: "blur(18px)" }}
       >
         <Container
@@ -133,7 +179,16 @@ export default function BlogShell() {
         </Container>
       </AppShell.Header>
 
-      <AppShell.Navbar bg="var(--app-surface-2)" p="md">
+      <AppShell.Navbar
+        bg="var(--app-surface-2)"
+        p="md"
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          minHeight: 0,
+          overflow: "hidden",
+        }}
+      >
         {
           // <AppShell.Section>
           //   <Stack gap="xs">
@@ -152,54 +207,62 @@ export default function BlogShell() {
           // <Divider my="lg" />
         }
 
-        <AppShell.Section grow>
-          <Stack gap="sm">
-            <Text c="var(--app-muted)" fw={700} size="xs" tt="uppercase">
-              Tag List
-            </Text>
-            {[
-              {
-                count: allPostsCount,
-                href: allPostsHref,
-                key: "all-posts",
-                label: "All",
-              },
-              ...topTags.map((tag) => ({
-                count: tag.count,
-                href: getTagPath(tag.label),
-                key: tag.slug,
-                label: tag.label,
-              })),
-            ].map((item) => {
-              const isActive =
-                item.href === allPostsHref
-                  ? location.pathname === "/" ||
-                    isNavigationItemActive(location.pathname, item.href)
-                  : isNavigationItemActive(location.pathname, item.href);
+        <AppShell.Section grow style={{ display: "flex", minHeight: 0 }}>
+          <ScrollArea
+            offsetScrollbars="present"
+            overscrollBehavior="contain"
+            scrollbars="y"
+            style={{ flex: 1, minHeight: 0 }}
+            type="auto"
+          >
+            <Stack gap="sm" pr="xs">
+              <Text c="var(--app-muted)" fw={700} size="xs" tt="uppercase">
+                Tag List
+              </Text>
+              {[
+                {
+                  count: allPostsCount,
+                  href: allPostsHref,
+                  key: "all-posts",
+                  label: "All",
+                },
+                ...topTags.map((tag) => ({
+                  count: tag.count,
+                  href: getTagPath(tag.label),
+                  key: tag.slug,
+                  label: tag.label,
+                })),
+              ].map((item) => {
+                const isActive =
+                  item.href === allPostsHref
+                    ? location.pathname === "/" ||
+                      isNavigationItemActive(location.pathname, item.href)
+                    : isNavigationItemActive(location.pathname, item.href);
 
-              return (
-                <NavLink
-                  active={isActive}
-                  color="brand"
-                  component={Link}
-                  key={item.key}
-                  label={`${item.label} (${item.count})`}
-                  leftSection={<IconHash size={14} />}
-                  onClick={close}
-                  style={{
-                    backgroundColor: isActive
-                      ? "var(--app-nav-active-bg)"
-                      : undefined,
-                    border: `1px solid ${isActive ? "var(--app-nav-active-border)" : "transparent"}`,
-                    transition:
-                      "background-color 150ms ease, border-color 150ms ease",
-                  }}
-                  to={item.href}
-                  variant="light"
-                />
-              );
-            })}
-          </Stack>
+                return (
+                  <NavLink
+                    active={isActive}
+                    color="brand"
+                    component={Link}
+                    key={item.key}
+                    label={`${item.label} (${item.count})`}
+                    leftSection={<IconHash size={14} />}
+                    onClick={close}
+                    style={{
+                      backgroundColor: isActive
+                        ? "var(--app-nav-active-bg)"
+                        : undefined,
+                      border: `1px solid ${isActive ? "var(--app-nav-active-border)" : "transparent"}`,
+                      transition:
+                        "background-color 150ms ease, border-color 150ms ease",
+                    }}
+                    to={item.href}
+                    variant="light"
+                  />
+                );
+              })}
+            </Stack>
+          </ScrollArea>
         </AppShell.Section>
 
         <Divider my="lg" />
