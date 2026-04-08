@@ -166,7 +166,7 @@ export default function BlogShell() {
           }}
           size="100%"
         >
-          <Group h="100%" justify="space-between">
+          <Group h="100%" /* justify="space-between" */>
             <Group gap="md" h="100%">
               <Burger
                 hiddenFrom="md"
