@@ -114,7 +114,7 @@ export default function BlogShell() {
     useElementSize<HTMLDivElement>();
   const { height: viewportHeight } = useViewportSize();
   const isMobileViewport = useMediaQuery(
-    `(max-width: ${theme.breakpoints.md})`,
+    `(max-width: ${theme.breakpoints.lg})`,
   );
   const location = useLocation();
   const allPostsHref = getPostsPath();
@@ -248,7 +248,7 @@ export default function BlogShell() {
             style={{ flex: 1, minHeight: 0 }}
             type="never"
           >
-            <Stack gap="xs" hiddenFrom="sm">
+            <Stack gap="xs" hiddenFrom="md">
               <Text c="var(--app-muted)" fw={700} size="xs" tt="uppercase">
                 Sections
               </Text>
