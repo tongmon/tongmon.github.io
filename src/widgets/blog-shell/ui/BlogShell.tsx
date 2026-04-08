@@ -256,6 +256,12 @@ export default function BlogShell() {
             overscrollBehavior="contain"
             scrollbars="y"
             style={{ flex: 1, minHeight: 0 }}
+            viewportProps={{
+              style: {
+                touchAction: "pan-y",
+                WebkitOverflowScrolling: "touch",
+              },
+            }}
             type="never"
           >
             <Stack gap="xs" hiddenFrom="md">
