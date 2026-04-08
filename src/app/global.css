@@ -26,12 +26,14 @@
   box-sizing: border-box;
 }
 
+/*
 html {
-  /* scroll-behavior: smooth; */
-  /* scrollbar-gutter: auto; */
-  /* scrollbar-gutter: stable; */
-  /* scrollbar-width: auto; */
+  scroll-behavior: smooth;
+  scrollbar-gutter: auto; 
+  scrollbar-gutter: stable; 
+  scrollbar-width: auto; 
 }
+*/
 
 html[data-body-scrollable="false"],
 html[data-mobile-navbar-opened="true"] {
@@ -41,6 +43,7 @@ html[data-mobile-navbar-opened="true"] {
 html[data-mobile-navbar-opened="true"] body {
   touch-action: none;
   overscroll-behavior: none;
+  position: fixed;
 }
 
 html[data-mobile-navbar-opened="true"] body::-webkit-scrollbar,
