@@ -188,7 +188,7 @@ export default function BlogShell() {
                   renderRoot={(props) => <Link {...props} to="/" />}
                   fw={600}
                 >
-                  Tongstar Notes
+                  Tongstar
                 </Text>
                 <Text c="var(--app-muted)" size="sm" visibleFrom="sm">
                   Quietly polished frontend notes.
