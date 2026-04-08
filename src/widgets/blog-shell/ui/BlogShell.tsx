@@ -131,7 +131,11 @@ export default function BlogShell() {
     <AppShell
       ref={shellRef}
       header={{ height: 76 }}
-      navbar={{ breakpoint: "md", width: 300, collapsed: { mobile: !opened } }}
+      navbar={{
+        breakpoint: "md",
+        width: 300,
+        collapsed: { mobile: !opened },
+      }}
       padding="md"
       transitionDuration={150}
     >
@@ -149,8 +153,10 @@ export default function BlogShell() {
           pl={{ base: "md", md: "xl" }}
           pr={{
             base: isBodyScrollable
-              ? "md"
-              : "calc(var(--mantine-spacing-md) + var(--app-scrollbar-width))",
+              ? isMobileNavbarOpened
+                ? "md"
+                : "calc(var(--mantine-spacing-md) - var(--app-scrollbar-width))"
+              : "md",
             md: isBodyScrollable
               ? "xl"
               : "calc(var(--mantine-spacing-xl) + var(--app-scrollbar-width))",
@@ -205,7 +211,7 @@ export default function BlogShell() {
               ))}
             </Group>
 
-            <Group gap="xs" visibleFrom="md">
+            <Group gap="xs" /* visibleFrom="md" */>
               <ActionIcon
                 aria-label="Search posts"
                 onClick={openSpotlight}
@@ -231,33 +237,33 @@ export default function BlogShell() {
           overflow: "hidden",
         }}
       >
-        {
-          // <AppShell.Section>
-          //   <Stack gap="xs">
-          //     {siteConfig.navigation.map((item) => (
-          //       <NavLink
-          //         active={isNavigationItemActive(location.pathname, item.href)}
-          //         component={Link}
-          //         key={item.href}
-          //         label={item.label}
-          //         onClick={close}
-          //         to={item.href}
-          //       />
-          //     ))}
-          //   </Stack>
-          // </AppShell.Section>
-          // <Divider my="lg" />
-        }
-
         <AppShell.Section grow style={{ display: "flex", minHeight: 0 }}>
           <ScrollArea
             offsetScrollbars="present"
             overscrollBehavior="contain"
             scrollbars="y"
             style={{ flex: 1, minHeight: 0 }}
-            scrollHideDelay={150}
-            type="hover"
+            type="never"
           >
+            <Stack gap="xs" hiddenFrom="sm">
+              <Text c="var(--app-muted)" fw={700} size="xs" tt="uppercase">
+                Sections
+              </Text>
+              {siteConfig.navigation.map((item) => (
+                <NavLink
+                  active={isHeaderNavigationItemActive(
+                    location.pathname,
+                    item.href,
+                  )}
+                  component={Link}
+                  key={item.href}
+                  label={item.label}
+                  onClick={close}
+                  to={item.href}
+                />
+              ))}
+              <Divider mb="lg" />
+            </Stack>
             <Stack gap="sm" pr="xs">
               <Text c="var(--app-muted)" fw={700} size="xs" tt="uppercase">
                 Tag List
@@ -279,7 +285,7 @@ export default function BlogShell() {
                 const isActive =
                   item.href === allPostsHref
                     ? location.pathname === "/" ||
-                      isNavigationItemActive(location.pathname, item.href)
+                      location.pathname === allPostsHref
                     : isNavigationItemActive(location.pathname, item.href);
 
                 return (
