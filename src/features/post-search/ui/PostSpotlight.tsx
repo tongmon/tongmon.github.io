@@ -92,6 +92,7 @@ export default function PostSpotlight() {
       limit={5}
       maxHeight={420}
       nothingFound="No posts found"
+      removeScrollProps={{ removeScrollBar: false }}
       searchProps={{
         leftSection: <IconSearch size={18} />,
         placeholder: "Search posts, tags, or topics",
