@@ -38,6 +38,11 @@ html[data-mobile-navbar-opened="true"] {
   overflow-y: clip;
 }
 
+html[data-mobile-navbar-opened="true"] body {
+  touch-action: none;
+  overscroll-behavior: none;
+}
+
 html[data-mobile-navbar-opened="true"] body::-webkit-scrollbar,
 html[data-body-scrollable="false"] body::-webkit-scrollbar {
   background-color: transparent;

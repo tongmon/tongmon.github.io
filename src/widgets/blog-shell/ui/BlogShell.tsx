@@ -255,7 +255,8 @@ export default function BlogShell() {
             overscrollBehavior="contain"
             scrollbars="y"
             style={{ flex: 1, minHeight: 0 }}
-            type="auto"
+            scrollHideDelay={150}
+            type="hover"
           >
             <Stack gap="sm" pr="xs">
               <Text c="var(--app-muted)" fw={700} size="xs" tt="uppercase">

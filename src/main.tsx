@@ -21,6 +21,7 @@ import App from "@/app/App";
 // 12. tags와 post list 컴포넌트 통합
 // 13. blog image processing 로직 수정
 // 14. 모바일 화면 구성
+// 15. 모바일 포스트 화면 구성 패딩 줄이기
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <StrictMode>
