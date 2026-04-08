@@ -74,19 +74,29 @@ export function useScrollbarWidth() {
   }, []);
 }
 
-function useMobileNavbarBodyScrollbarState(opened: boolean) {
+function useMobileNavbarBodyScrollLock(opened: boolean) {
   useEffect(() => {
     const { documentElement } = document;
     const attributeName = "data-mobile-navbar-opened";
 
-    if (opened) {
-      documentElement.setAttribute(attributeName, "true");
-    } else {
+    if (!opened) {
       documentElement.removeAttribute(attributeName);
+      documentElement.style.removeProperty("--app-mobile-navbar-scroll-top");
+      return;
     }
+
+    const scrollTop = window.scrollY;
+
+    documentElement.style.setProperty(
+      "--app-mobile-navbar-scroll-top",
+      `-${scrollTop}px`,
+    );
+    documentElement.setAttribute(attributeName, "true");
 
     return () => {
       documentElement.removeAttribute(attributeName);
+      documentElement.style.removeProperty("--app-mobile-navbar-scroll-top");
+      window.scrollTo({ top: scrollTop });
     };
   }, [opened]);
 }
@@ -123,7 +133,7 @@ export default function BlogShell() {
   const isMobileNavbarOpened = opened && isMobileViewport;
   const isBodyScrollable = shellHeight > viewportHeight + 1;
 
-  useMobileNavbarBodyScrollbarState(isMobileNavbarOpened);
+  useMobileNavbarBodyScrollLock(isMobileNavbarOpened);
   useBodyScrollbarRequirementState(isBodyScrollable);
   useScrollbarWidth();
 

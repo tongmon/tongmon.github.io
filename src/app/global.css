@@ -41,9 +41,12 @@ html[data-mobile-navbar-opened="true"] {
 }
 
 html[data-mobile-navbar-opened="true"] body {
+  inset-inline: 0;
   touch-action: none;
   overscroll-behavior: none;
   position: fixed;
+  top: var(--app-mobile-navbar-scroll-top, 0px);
+  width: 100%;
 }
 
 html[data-mobile-navbar-opened="true"] body::-webkit-scrollbar,
