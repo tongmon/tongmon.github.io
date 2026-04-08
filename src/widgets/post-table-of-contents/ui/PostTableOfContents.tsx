@@ -1,4 +1,6 @@
+import type { MouseEvent } from "react";
 import { Anchor, Paper, Stack, Text } from "@mantine/core";
+import { useReducedMotion } from "@mantine/hooks";
 import type { PostHeading } from "@/entities/post";
 
 interface PostTableOfContentsProps {
@@ -13,9 +15,29 @@ const TOC_MAX_HEIGHT =
 export default function PostTableOfContents({
   headings,
 }: PostTableOfContentsProps) {
+  const prefersReducedMotion = useReducedMotion();
+
   if (headings.length === 0) {
     return null;
   }
+
+  const handleHeadingClick = (
+    event: MouseEvent<HTMLAnchorElement>,
+    headingId: string,
+  ) => {
+    const targetElement = document.getElementById(headingId);
+
+    if (!targetElement) {
+      return;
+    }
+
+    event.preventDefault();
+    window.history.replaceState(null, "", `#${headingId}`);
+    targetElement.scrollIntoView({
+      behavior: prefersReducedMotion ? "auto" : "smooth",
+      block: "start",
+    });
+  };
 
   return (
     <Paper
@@ -37,6 +59,7 @@ export default function PostTableOfContents({
             c="var(--app-muted)"
             href={`#${heading.id}`}
             key={heading.id}
+            onClick={(event) => handleHeadingClick(event, heading.id)}
             size="sm"
             style={{ paddingLeft: heading.depth === 3 ? "1rem" : undefined }}
             underline="never"
