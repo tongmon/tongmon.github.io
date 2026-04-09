@@ -35,6 +35,12 @@ export default function PostDetailPage() {
   const [loadedPost, setLoadedPost] = useState<LoadedPost | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const isMobileViewport = useIsMobileViewport();
+  const pageGap = isMobileViewport ? "md" : "xl";
+  const sectionGap = isMobileViewport ? "sm" : "md";
+  const contentGap = isMobileViewport ? "md" : "xl";
+  const relatedGap = isMobileViewport ? "md" : "lg";
+  const relatedSpacing = isMobileViewport ? "md" : "xl";
+  const descriptionSize = isMobileViewport ? "md" : "lg";
 
   useEffect(() => {
     let active = true;
@@ -84,15 +90,15 @@ export default function PostDetailPage() {
   const coverImage = post.thumbnail ? toPublicAssetUrl(post.thumbnail) : null;
 
   return (
-    <Stack gap="xl" py="xl">
-      <Stack gap="md">
+    <Stack gap={pageGap} py={{ base: "lg", md: "xl" }}>
+      <Stack gap={sectionGap}>
         {post.category ? (
           <Text c="var(--app-muted)" fw={700} size="xs" tt="uppercase">
             {post.category}
           </Text>
         ) : null}
         <Title order={1}>{post.title}</Title>
-        <Text c="var(--app-muted)" maw={760} size="lg">
+        <Text c="var(--app-muted)" maw={760} size={descriptionSize}>
           {post.description}
         </Text>
         <PostMeta
@@ -106,7 +112,8 @@ export default function PostDetailPage() {
       {coverImage ? (
         <Paper
           bg="var(--app-surface-1)"
-          p="sm"
+          p={{ base: "xs", md: "sm" }}
+          mt={isMobileViewport ? "lg" : undefined}
           shadow="sm"
           style={{ border: "1px solid var(--app-muted-border)" }}
         >
@@ -121,7 +128,7 @@ export default function PostDetailPage() {
       ) : null}
 
       {loadedPost ? (
-        <Grid align="start" gap="xl">
+        <Grid align="start" gap={contentGap}>
           <Grid.Col order={{ base: 2, lg: 1 }} span={{ base: 12, lg: 8 }}>
             <Paper
               bg="var(--app-surface-1)"
@@ -150,9 +157,9 @@ export default function PostDetailPage() {
       )}
 
       {relatedPosts.length > 0 ? (
-        <Stack gap="lg">
+        <Stack gap={relatedGap}>
           <Title order={2}>Related posts</Title>
-          <SimpleGrid cols={{ base: 1, xl: 2 }}>
+          <SimpleGrid cols={{ base: 1, xl: 2 }} spacing={relatedSpacing}>
             {relatedPosts.map((relatedPost) => (
               <PostCard
                 key={relatedPost.slug}

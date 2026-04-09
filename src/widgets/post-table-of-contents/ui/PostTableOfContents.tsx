@@ -2,6 +2,7 @@ import type { MouseEvent } from "react";
 import { Anchor, Paper, Stack, Text } from "@mantine/core";
 import { useReducedMotion } from "@mantine/hooks";
 import type { PostHeading } from "@/entities/post";
+import { useIsMobileViewport } from "@/shared/lib/useIsMobileViewport";
 
 interface PostTableOfContentsProps {
   headings: PostHeading[];
@@ -16,6 +17,8 @@ export default function PostTableOfContents({
   headings,
 }: PostTableOfContentsProps) {
   const prefersReducedMotion = useReducedMotion();
+  const isMobileViewport = useIsMobileViewport();
+  const gap = isMobileViewport ? "xs" : "sm";
 
   if (headings.length === 0) {
     return null;
@@ -42,7 +45,7 @@ export default function PostTableOfContents({
   return (
     <Paper
       bg="var(--app-surface-1)"
-      p="lg"
+      p={{ base: "md", md: "lg" }}
       shadow="sm"
       style={{
         border: "1px solid var(--app-muted-border)",
@@ -52,7 +55,7 @@ export default function PostTableOfContents({
         top: TOC_STICKY_TOP,
       }}
     >
-      <Stack gap="sm">
+      <Stack gap={gap}>
         <Text fw={700}>On this page</Text>
         {headings.map((heading) => (
           <Anchor
