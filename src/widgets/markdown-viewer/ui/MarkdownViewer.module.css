@@ -12,9 +12,7 @@
 .prose :global(h4),
 .prose :global(h5),
 .prose :global(h6) {
-  scroll-margin-top: calc(
-    var(--app-shell-header-offset, 0rem) + var(--mantine-spacing-md)
-  );
+  scroll-margin-top: calc(var(--app-shell-header-offset, 0rem) + var(--mantine-spacing-md));
 }
 
 .prose :global(a) {
@@ -31,8 +29,10 @@
 
 .prose :global(pre) {
   overflow-x: auto;
-  border: 1px solid var(--app-code-border);
-  border-radius: 1rem;
+}
+
+.codeBlock {
+  overflow-x: auto;
 }
 
 .prose :global(img) {
@@ -45,21 +45,34 @@
 .prose :global(table) {
   width: 100%;
   margin: 1.5rem 0;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
   border: 1px solid var(--app-muted-border);
   border-radius: 1rem;
   overflow: hidden;
+  background: var(--app-surface-1);
+  box-shadow: 0 0 0 1px var(--app-muted-border);
 }
 
 .prose :global(th),
 .prose :global(td) {
   padding: 0.85rem 1rem;
+  border-right: 1px solid var(--app-muted-border);
   border-bottom: 1px solid var(--app-muted-border);
   text-align: left;
 }
 
 .prose :global(th) {
   background: rgba(84, 188, 146, 0.08);
+}
+
+.prose :global(th:last-child),
+.prose :global(td:last-child) {
+  border-right: 0;
+}
+
+.prose :global(tbody tr:last-child td) {
+  border-bottom: 0;
 }
 
 .prose :global(hr) {

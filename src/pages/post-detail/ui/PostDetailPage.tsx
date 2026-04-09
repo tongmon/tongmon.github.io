@@ -27,12 +27,14 @@ import { EmptyState } from "@/shared/ui";
 import { MarkdownViewer } from "@/widgets/markdown-viewer";
 import { PostCard } from "@/widgets/post-card";
 import { PostTableOfContents } from "@/widgets/post-table-of-contents";
+import { useIsMobileViewport } from "@/shared/lib/useIsMobileViewport";
 
 export default function PostDetailPage() {
   const { slug } = useParams();
   const post = slug ? getPostBySlug(slug) : null;
   const [loadedPost, setLoadedPost] = useState<LoadedPost | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const isMobileViewport = useIsMobileViewport();
 
   useEffect(() => {
     let active = true;
@@ -78,7 +80,7 @@ export default function PostDetailPage() {
     );
   }
 
-  const relatedPosts = getRelatedPosts(post);
+  const relatedPosts = getRelatedPosts(post, isMobileViewport ? 2 : 4);
   const coverImage = post.thumbnail ? toPublicAssetUrl(post.thumbnail) : null;
 
   return (
@@ -123,7 +125,7 @@ export default function PostDetailPage() {
           <Grid.Col order={{ base: 2, lg: 1 }} span={{ base: 12, lg: 8 }}>
             <Paper
               bg="var(--app-surface-1)"
-              p={{ base: "lg", md: "xl" }}
+              p={{ base: "md", md: "xl" }}
               shadow="sm"
               style={{ border: "1px solid var(--app-muted-border)" }}
             >

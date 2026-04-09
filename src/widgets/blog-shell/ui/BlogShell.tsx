@@ -17,12 +17,7 @@ import {
   Title,
   useMantineTheme,
 } from "@mantine/core";
-import {
-  useDisclosure,
-  useElementSize,
-  useMediaQuery,
-  useViewportSize,
-} from "@mantine/hooks";
+import { useDisclosure, useElementSize, useViewportSize } from "@mantine/hooks";
 import { openSpotlight } from "@mantine/spotlight";
 import { IconArrowUpRight, IconHash, IconSearch } from "@tabler/icons-react";
 import { Link, Outlet, ScrollRestoration, useLocation } from "react-router-dom";
@@ -32,6 +27,7 @@ import { ThemeToggle } from "@/features/theme-toggle";
 import { siteConfig } from "@/shared/config/site";
 import { getPostsPath, getTagPath } from "@/shared/lib/routes";
 import pixelateProfile from "@/assets/images/pictures/profile_pixelate.png";
+import { useIsMobileViewport } from "@/shared/lib/useIsMobileViewport";
 
 function isNavigationItemActive(currentPath: string, href: string) {
   // if (href === "/") {
@@ -97,9 +93,7 @@ export default function BlogShell() {
   const { ref: shellRef, height: shellHeight } =
     useElementSize<HTMLDivElement>();
   const { height: viewportHeight } = useViewportSize();
-  const isMobileViewport = useMediaQuery(
-    `(max-width: ${theme.breakpoints.lg})`,
-  );
+  const isMobileViewport = useIsMobileViewport();
   const location = useLocation();
   const allPostsHref = getPostsPath();
   const allPostsCount = getAllPosts().length;
@@ -338,7 +332,7 @@ export default function BlogShell() {
       <AppShell.Main pb="xl">
         <Container
           maw="var(--app-shell-max-width)"
-          px={{ base: "md", md: "xl" }}
+          px={{ base: "0", md: "xl" }}
           size="100%"
         >
           <Outlet />

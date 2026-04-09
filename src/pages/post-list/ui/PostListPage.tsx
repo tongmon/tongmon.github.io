@@ -52,7 +52,7 @@ export default function PostListPage() {
   return (
     <Stack gap="xl" py="xl">
       <PageIntro
-        description={`${filteredPosts.length} post${filteredPosts.length === 1 ? "" : "s"}${" "} found.`}
+        description={`There are ${filteredPosts.length} post${filteredPosts.length === 1 ? "" : "s"} in total.`}
         eyebrow="Archive"
         title="All posts"
       />
@@ -61,7 +61,7 @@ export default function PostListPage() {
         <Stack gap="lg">
           <SimpleGrid
             cols={{ base: 1 /*, xl: viewMode === "grid" ? 2 : 1*/ }}
-            spacing="xl"
+            spacing={{ base: "md", md: "xl" }}
           >
             {visiblePosts.map((post) => (
               <PostCard key={post.slug} post={post} variant={viewMode} />

@@ -1,5 +1,13 @@
-import { Anchor, Code, Typography, useComputedColorScheme } from "@mantine/core";
-import ReactMarkdown, { type Components, type UrlTransform } from "react-markdown";
+import {
+  Anchor,
+  Code,
+  Typography,
+  useComputedColorScheme,
+} from "@mantine/core";
+import ReactMarkdown, {
+  type Components,
+  type UrlTransform,
+} from "react-markdown";
 import { PrismAsyncLight as SyntaxHighlighter } from "react-syntax-highlighter";
 import {
   oneDark,
@@ -22,6 +30,23 @@ export default function MarkdownViewer({
   postSlug,
 }: MarkdownViewerProps) {
   const colorScheme = useComputedColorScheme("light");
+  const syntaxTheme = colorScheme === "dark" ? oneDark : oneLight;
+  const syntaxStyle = {
+    ...syntaxTheme,
+    ['code[class*="language-"]']: {
+      ...syntaxTheme['code[class*="language-"]'],
+      background: "transparent",
+      fontFamily: "var(--mantine-font-family-monospace)",
+    },
+    ['pre[class*="language-"]']: {
+      ...syntaxTheme['pre[class*="language-"]'],
+      background: "var(--app-code-bg)",
+      borderRadius: "1rem",
+      fontSize: "0.92rem",
+      margin: 0,
+      padding: 0,
+    },
+  };
 
   const markdownComponents: Components = {
     a({ href, children, ...props }) {
@@ -38,6 +63,9 @@ export default function MarkdownViewer({
         </Anchor>
       );
     },
+    pre({ children }) {
+      return <>{children}</>;
+    },
     code({ children, className, ...props }) {
       const match = /language-(\w+)/.exec(className ?? "");
       const language = match?.[1];
@@ -53,16 +81,24 @@ export default function MarkdownViewer({
 
       return (
         <SyntaxHighlighter
+          className={classes.codeBlock}
+          codeTagProps={{
+            style: {
+              background: "transparent",
+              fontFamily: "var(--mantine-font-family-monospace)",
+            },
+          }}
           customStyle={{
             background: "var(--app-code-bg)",
+            border: "1px solid var(--app-code-border)",
             borderRadius: "1rem",
+            boxShadow: "inset 0 1px 0 rgba(255, 255, 255, 0.03)",
             fontSize: "0.92rem",
             margin: "1.5rem 0",
             padding: "1rem",
           }}
           language={language}
-          PreTag="div"
-          style={colorScheme === "dark" ? oneDark : oneLight}
+          style={syntaxStyle}
         >
           {rawContent}
         </SyntaxHighlighter>

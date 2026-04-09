@@ -52,7 +52,9 @@ function getSeriesGroups() {
       const latestUpdatedAt = posts.reduce((latest, post) => {
         const postActivityAt = getPostActivityAt(post);
 
-        return postActivityAt.localeCompare(latest) > 0 ? postActivityAt : latest;
+        return postActivityAt.localeCompare(latest) > 0
+          ? postActivityAt
+          : latest;
       }, getPostActivityAt(posts[0]));
 
       return {
@@ -84,7 +86,9 @@ export function getAllPosts() {
 }
 
 export function getLatestPosts(limit?: number) {
-  return typeof limit === "number" ? postsManifest.slice(0, limit) : postsManifest;
+  return typeof limit === "number"
+    ? postsManifest.slice(0, limit)
+    : postsManifest;
 }
 
 export function getPostBySlug(slug: string) {
@@ -98,20 +102,78 @@ export function getPostsByTag(tagSlug: string) {
 }
 
 export function getPostsBySeries(seriesSlug: string) {
-  return getSeriesGroups().find((group) => group.summary.slug === seriesSlug)?.posts ?? [];
+  return (
+    getSeriesGroups().find((group) => group.summary.slug === seriesSlug)
+      ?.posts ?? []
+  );
 }
 
-export function getRelatedPosts(
+function getRelatedSeriesPosts(
   currentPost: PostManifestEntry,
-  limit = 3,
+  limit: number,
 ) {
-  return postsManifest
+  if (!currentPost.series || limit <= 0) {
+    return [];
+  }
+
+  const seriesPosts = getPostsBySeries(toKebabCase(currentPost.series));
+  const currentIndex = seriesPosts.findIndex(
+    (post) => post.slug === currentPost.slug,
+  );
+
+  if (currentIndex < 0) {
+    return [];
+  }
+
+  const relatedPosts: PostManifestEntry[] = [];
+
+  for (
+    let offset = 1;
+    relatedPosts.length < limit &&
+    (currentIndex - offset >= 0 || currentIndex + offset < seriesPosts.length);
+    offset += 1
+  ) {
+    const previousPost = seriesPosts[currentIndex - offset];
+
+    if (previousPost) {
+      relatedPosts.push(previousPost);
+    }
+
+    if (relatedPosts.length >= limit) {
+      break;
+    }
+
+    const nextPost = seriesPosts[currentIndex + offset];
+
+    if (nextPost) {
+      relatedPosts.push(nextPost);
+    }
+  }
+
+  return relatedPosts;
+}
+
+export function getRelatedPosts(currentPost: PostManifestEntry, limit = 2) {
+  const relatedSeriesPosts = getRelatedSeriesPosts(currentPost, limit);
+  const excludedSlugs = new Set([
+    currentPost.slug,
+    ...relatedSeriesPosts.map((post) => post.slug),
+  ]);
+  const remainingSlots = limit - relatedSeriesPosts.length;
+
+  if (remainingSlots <= 0) {
+    return relatedSeriesPosts;
+  }
+
+  const relatedTagPosts = postsManifest
     .filter(
       (post) =>
-        post.slug !== currentPost.slug &&
+        !excludedSlugs.has(post.slug) &&
         post.tags.some((tag) => currentPost.tags.includes(tag)),
     )
-    .slice(0, limit);
+    .slice(0, remainingSlots);
+
+  return [...relatedSeriesPosts, ...relatedTagPosts];
 }
 
 export function getTagSummaries(): TagSummary[] {
@@ -153,5 +215,8 @@ export function getSeriesSummaries(): SeriesSummary[] {
 }
 
 export function getSeriesSummary(seriesSlug: string) {
-  return getSeriesGroups().find((group) => group.summary.slug === seriesSlug)?.summary ?? null;
+  return (
+    getSeriesGroups().find((group) => group.summary.slug === seriesSlug)
+      ?.summary ?? null
+  );
 }
