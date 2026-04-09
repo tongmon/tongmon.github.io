@@ -1,13 +1,4 @@
-import {
-  Button,
-  Card,
-  Flex,
-  Group,
-  Image,
-  Stack,
-  Text,
-  Title,
-} from "@mantine/core";
+import { Card, Flex, Group, Image, Stack, Text, Title } from "@mantine/core";
 import { Link } from "react-router-dom";
 import { PostMeta, PostTagList, type PostManifestEntry } from "@/entities/post";
 import { toPublicAssetUrl } from "@/shared/lib/base-path/toPublicAssetUrl";
@@ -35,12 +26,14 @@ export default function PostCard({ post, variant = "grid" }: PostCardProps) {
     >
       <Flex direction={isCompact ? { base: "column", sm: "row" } : "column"}>
         {thumbnail ? (
-          <Image
-            alt={post.title}
-            h={isCompact ? { base: 220, sm: "100%" } : 220}
-            maw={isCompact ? { sm: 220 } : undefined}
-            src={thumbnail}
-          />
+          <Link style={{ display: "block", lineHeight: 0 }} to={postPath}>
+            <Image
+              alt={post.title}
+              h={isCompact ? { base: 220, sm: "100%" } : 220}
+              maw={isCompact ? { sm: 220 } : undefined}
+              src={thumbnail}
+            />
+          </Link>
         ) : null}
 
         <Stack gap="md" p={isCompact ? 0 : "lg"} style={{ flex: 1 }}>
@@ -56,7 +49,13 @@ export default function PostCard({ post, variant = "grid" }: PostCardProps) {
             >
               {post.title}
             </Title>
-            <Text c="var(--app-muted)" size="sm">
+            <Text
+              c="var(--app-muted)"
+              component={Link}
+              size="sm"
+              style={{ textDecoration: "none" }}
+              to={postPath}
+            >
               {post.description}
             </Text>
           </Stack>

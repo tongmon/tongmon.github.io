@@ -10,7 +10,6 @@ import App from "@/app/App";
 // 11. 블로그 카드에서 태그 누르면 해당 태그로 이동시키기
 // 13. blog image processing 로직 수정
 // 14. 모바일 header 화면 구성
-// 15. 모바일 포스트 화면 구성 패딩 줄이기
 // 16. Spotlight 목록이 모바일에서 깨져서 보이는 문제 수정
 // 6. 1 min read 같은 reading time 가중치 based로 수정
 // 17. 다국어 지원도 가능한지 -> 선택
