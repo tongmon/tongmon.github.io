@@ -28,10 +28,15 @@ Useful scripts:
 
 ## Writing a post
 
-Each post owns one folder:
+Each post owns one folder somewhere under `content/posts`:
 
 ```text
 content/posts/my-post/
+  index.md
+  cover.png
+  images/
+
+content/posts/react-blog-making/building-a-static-blog/
   index.md
   cover.png
   images/
@@ -54,21 +59,25 @@ seriesOrder: number?
 
 Notes:
 
-- The folder name is the canonical slug.
+- The canonical authoring source is `content/posts`, not `public/content/posts`.
 - `index.md` is required for every post.
 - `thumbnail` should be relative to the post folder, for example `./cover.png`.
+- `slug` is optional. If omitted, the post folder name becomes the flat URL slug.
+- `slug` must stay unique across all posts. The content generator fails fast on duplicates.
 - Draft posts are excluded from the generated manifest by default.
 
 ## Content pipeline
 
 `scripts/generate-post-manifest.ts` does the following:
 
-1. Scans `content/posts/*/index.md`
+1. Scans `content/posts/**/index.md`
 2. Parses and validates frontmatter
-3. Copies each post folder into `public/content/posts/<slug>`
-4. Estimates reading time
-5. Sorts posts by `publishedAt` descending
-6. Writes `src/shared/generated/posts-manifest.ts`
+3. Resolves a flat slug from `frontmatter.slug` or the post folder name
+4. Fails the build when two posts resolve to the same slug
+5. Copies each post folder into `public/content/posts/<slug>`
+6. Estimates reading time
+7. Sorts posts by `publishedAt` descending
+8. Writes `src/shared/generated/posts-manifest.ts`
 
 The app loads markdown content from the copied public paths and uses the generated manifest for archive, tags, and post metadata.
 

@@ -75,8 +75,17 @@ interface PostManifestRecord {
   contentPath: string;
 }
 
+interface CollectedPost {
+  postDirectory: string;
+  record: PostManifestRecord;
+}
+
 function ensureDirectory(directoryPath: string) {
   fs.mkdirSync(directoryPath, { recursive: true });
+}
+
+function toPosixRelativePath(targetPath: string) {
+  return path.relative(rootDirectory, targetPath).split(path.sep).join("/");
 }
 
 function normalizeRelativeAssetPath(assetPath: string) {
@@ -92,6 +101,22 @@ function normalizeRelativeAssetPath(assetPath: string) {
   }
 
   return cleanedPath;
+}
+
+function normalizeSlug(slug: string) {
+  const normalizedSlug = slug.trim();
+
+  if (!normalizedSlug) {
+    throw new Error("Post slug cannot be empty");
+  }
+
+  if (/[\\/]/.test(normalizedSlug)) {
+    throw new Error(
+      `Post slug "${slug}" must stay flat and cannot contain path separators`,
+    );
+  }
+
+  return normalizedSlug;
 }
 
 function estimateReadingTime(markdown: string) {
@@ -131,29 +156,38 @@ function collectPostDirectories() {
     return [];
   }
 
-  return fs
-    .readdirSync(postsDirectory, { withFileTypes: true })
-    .filter((entry) => entry.isDirectory())
-    .map((entry) => path.join(postsDirectory, entry.name));
+  function visit(directoryPath: string): string[] {
+    const entries = fs
+      .readdirSync(directoryPath, { withFileTypes: true })
+      .sort((left, right) => left.name.localeCompare(right.name));
+    const nestedDirectories = entries
+      .filter((entry) => entry.isDirectory())
+      .flatMap((entry) => visit(path.join(directoryPath, entry.name)));
+    const markdownFile = path.join(directoryPath, "index.md");
+
+    if (fs.existsSync(markdownFile)) {
+      return [directoryPath, ...nestedDirectories];
+    }
+
+    return nestedDirectories;
+  }
+
+  return visit(postsDirectory);
 }
 
 function getPostManifestRecord(postDirectory: string): PostManifestRecord {
-  const slug = path.basename(postDirectory);
   const markdownFile = path.join(postDirectory, "index.md");
 
   if (!fs.existsSync(markdownFile)) {
-    throw new Error(`Missing index.md for post "${slug}"`);
+    throw new Error(
+      `Missing index.md for post "${toPosixRelativePath(postDirectory)}"`,
+    );
   }
 
   const rawMarkdown = fs.readFileSync(markdownFile, "utf8");
   const { data, content } = matter(rawMarkdown);
   const frontmatter = frontmatterSchema.parse(data) satisfies Frontmatter;
-
-  if (frontmatter.slug && frontmatter.slug !== slug) {
-    throw new Error(
-      `Frontmatter slug "${frontmatter.slug}" does not match folder slug "${slug}"`,
-    );
-  }
+  const slug = normalizeSlug(frontmatter.slug ?? path.basename(postDirectory));
 
   if (frontmatter.thumbnail) {
     assertAssetExists(
@@ -186,6 +220,27 @@ function getPostManifestRecord(postDirectory: string): PostManifestRecord {
   };
 }
 
+function assertUniqueSlugs(posts: CollectedPost[]) {
+  const postsBySlug = new Map<string, CollectedPost>();
+
+  for (const post of posts) {
+    const existingPost = postsBySlug.get(post.record.slug);
+
+    if (existingPost) {
+      throw new Error(
+        [
+          `Duplicate post slug "${post.record.slug}" detected.`,
+          `- ${toPosixRelativePath(existingPost.postDirectory)}`,
+          `- ${toPosixRelativePath(post.postDirectory)}`,
+          'Use a unique frontmatter "slug" for one of these posts.',
+        ].join("\n"),
+      );
+    }
+
+    postsBySlug.set(post.record.slug, post);
+  }
+}
+
 function writeGeneratedManifest(records: PostManifestRecord[]) {
   const fileContents = `import type { PostManifestEntry } from "@/entities/post";
 
@@ -198,15 +253,22 @@ export const postsManifest: PostManifestEntry[] = ${JSON.stringify(records, null
 
 function main() {
   const postDirectories = collectPostDirectories();
-  const manifestRecords = postDirectories.map(getPostManifestRecord);
+  const collectedPosts = postDirectories.map((postDirectory) => ({
+    postDirectory,
+    record: getPostManifestRecord(postDirectory),
+  }));
+
+  assertUniqueSlugs(collectedPosts);
 
   ensureDirectory(publicPostsDirectory);
   fs.rmSync(publicPostsDirectory, { recursive: true, force: true });
   ensureDirectory(publicPostsDirectory);
 
-  for (const postDirectory of postDirectories) {
-    copyPostContentDirectory(postDirectory, path.basename(postDirectory));
+  for (const post of collectedPosts) {
+    copyPostContentDirectory(post.postDirectory, post.record.slug);
   }
+
+  const manifestRecords = collectedPosts.map((post) => post.record);
 
   const filteredRecords = manifestRecords
     .filter((record) => includeDrafts || record.draft === false)
