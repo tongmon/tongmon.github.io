@@ -9,10 +9,18 @@ import App from "@/app/App";
 
 // 11. 블로그 카드에서 태그 누르면 해당 태그로 이동시키기
 // 13. blog image processing 로직 수정
-// 14. 모바일 header 화면 구성
-// 16. Spotlight 목록이 모바일에서 깨져서 보이는 문제 수정
+// 14. 모바일 글 폭 좁은 것 개선
+// 11. 모바일 navbar view repository 쪽에 해당 내용 지우고 내 프로필 간략 설명과 themetoggle, github link, linkedin 이런 것들 몰아 넣기
+// 11. 모바일 header에 post, series, about 이런 텍스트 뜨게 만들고 themetoggle 버튼 날리기
 // 6. 1 min read 같은 reading time 가중치 based로 수정
+// 1. giscus 사용해서 댓글 기능 구현
 // 17. 다국어 지원도 가능한지 -> 선택
+// 1. 버그 존재
+// 시리즈의 경우에 앞, 뒤 시리즈와 related post 분리
+
+// 1. cover 이미지가 제공이 된다면 해당 이미지를 PostCard에 사용
+// 2. cover 이미지는 없지만 블로그 내부 글에 이미지가 존재한다면 해당 이미지를 PostCard에 사용
+// 3. cover 이미지도 없고 블로그 글 내부 이미지도 없다면 글자만 있다는 정보를 주는 이미지를 대신 삽입
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <StrictMode>

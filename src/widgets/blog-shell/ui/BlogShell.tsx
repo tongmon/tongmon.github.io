@@ -207,7 +207,7 @@ export default function BlogShell() {
                   >
                     <IconSearch size={18} />
                   </ActionIcon>
-                  <ThemeToggle />
+                  <ThemeToggle visibleFrom="md" />
                 </Group>
               </Group>
             </Container>

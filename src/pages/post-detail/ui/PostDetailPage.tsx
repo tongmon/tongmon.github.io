@@ -114,8 +114,8 @@ export default function PostDetailPage() {
           bg="var(--app-surface-1)"
           p={{ base: "xs", md: "sm" }}
           mt={isMobileViewport ? "lg" : undefined}
-          shadow="sm"
-          style={{ border: "1px solid var(--app-muted-border)" }}
+          // shadow="sm"
+          // style={{ border: "1px solid var(--app-muted-border)" }}
         >
           <Image alt={post.title} radius="lg" src={coverImage} />
         </Paper>
@@ -131,10 +131,14 @@ export default function PostDetailPage() {
         <Grid align="start" gap={contentGap}>
           <Grid.Col order={{ base: 2, lg: 1 }} span={{ base: 12, lg: 8 }}>
             <Paper
-              bg="var(--app-surface-1)"
-              p={{ base: "md", md: "xl" }}
-              shadow="sm"
-              style={{ border: "1px solid var(--app-muted-border)" }}
+              bg="transparent"
+              // bg="var(--app-surface-1)"
+              py={{ base: "xs", md: "lg" }}
+              radius={0}
+              style={{
+                borderTop: "2px dashed var(--app-muted-border)",
+                borderBottom: "2px dashed var(--app-muted-border)",
+              }}
             >
               <MarkdownViewer
                 markdown={loadedPost.content}
