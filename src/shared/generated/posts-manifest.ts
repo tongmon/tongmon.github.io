@@ -17,7 +17,7 @@ export const postsManifest: PostManifestEntry[] = [
     "draft": false,
     "series": "Build log",
     "seriesOrder": 1,
-    "readingTime": 1,
+    "readingTime": 2,
     "contentPath": "content/posts/building-a-static-blog/index.md"
   },
   {
@@ -35,7 +35,7 @@ export const postsManifest: PostManifestEntry[] = [
     "draft": false,
     "series": "Build log",
     "seriesOrder": 4,
-    "readingTime": 1,
+    "readingTime": 2,
     "contentPath": "content/posts/mantine-markdown-diff-double-notes/index.md"
   },
   {
@@ -53,7 +53,7 @@ export const postsManifest: PostManifestEntry[] = [
     "draft": false,
     "series": "Build log",
     "seriesOrder": 3,
-    "readingTime": 1,
+    "readingTime": 2,
     "contentPath": "content/posts/mantine-markdown-diff-notes/index.md"
   },
   {
@@ -71,7 +71,7 @@ export const postsManifest: PostManifestEntry[] = [
     "draft": false,
     "series": "Build log",
     "seriesOrder": 2,
-    "readingTime": 1,
+    "readingTime": 2,
     "contentPath": "content/posts/mantine-markdown-notes/index.md"
   },
   {
@@ -89,7 +89,7 @@ export const postsManifest: PostManifestEntry[] = [
     "draft": false,
     "series": "Build log",
     "seriesOrder": 5,
-    "readingTime": 1,
+    "readingTime": 2,
     "contentPath": "content/posts/mantine-markdown-diff-triple-notes/index.md"
   },
   {

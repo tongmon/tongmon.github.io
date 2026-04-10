@@ -3,6 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import matter from "gray-matter";
 import { z } from "zod";
+import { estimateReadingTime } from "./lib/estimate-reading-time";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDirectory = path.resolve(__dirname, "..");
@@ -117,21 +118,6 @@ function normalizeSlug(slug: string) {
   }
 
   return normalizedSlug;
-}
-
-function estimateReadingTime(markdown: string) {
-  const textOnly = markdown
-    .replace(/```[\s\S]*?```/g, " ")
-    .replace(/`[^`]*`/g, " ")
-    .replace(/!\[[^\]]*]\([^)]*\)/g, " ")
-    .replace(/\[[^\]]*]\([^)]*\)/g, " ")
-    .replace(/[#>*_\-\n]/g, " ");
-  const words = textOnly
-    .split(/\s+/)
-    .map((word) => word.trim())
-    .filter(Boolean);
-
-  return Math.max(1, Math.round(words.length / 220));
 }
 
 function assertAssetExists(postDirectory: string, assetPath: string) {
