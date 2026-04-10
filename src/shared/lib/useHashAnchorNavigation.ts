@@ -11,7 +11,7 @@ function getHashAnchorOffset() {
   const probe = document.createElement("div");
 
   probe.style.position = "fixed";
-  probe.style.top = `calc(var(--app-shell-header-offset, 0rem) + var(--mantine-spacing-md) + ${ANCHOR_VIEWPORT_GAP_PX}px)`;
+  probe.style.top = `var(--app-shell-header-offset, 0rem)`;
   probe.style.visibility = "hidden";
   probe.style.pointerEvents = "none";
 
