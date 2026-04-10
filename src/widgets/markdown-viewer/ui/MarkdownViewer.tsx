@@ -141,7 +141,7 @@ export default function MarkdownViewer({
   useHashAnchorNavigation(markdown);
 
   return (
-    <Typography className={classes.prose}>
+    <Typography className={classes.prose} data-post-content-root>
       <ReactMarkdown
         components={markdownComponents}
         rehypePlugins={[

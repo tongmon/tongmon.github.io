@@ -7,7 +7,7 @@ interface NavigateToHashAnchorOptions {
 
 const ANCHOR_VIEWPORT_GAP_PX = 8;
 
-function getHashAnchorOffset() {
+export function getHashAnchorOffset() {
   const probe = document.createElement("div");
 
   probe.style.position = "fixed";
