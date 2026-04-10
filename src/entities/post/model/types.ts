@@ -25,6 +25,13 @@ export interface LoadedPost extends PostManifestEntry {
   headings: PostHeading[];
 }
 
+export interface SeriesPostNavigation {
+  nextPost: PostManifestEntry | null;
+  previousPost: PostManifestEntry | null;
+  seriesLabel: string;
+  totalPosts: number;
+}
+
 export interface TagSummary {
   count: number;
   label: string;

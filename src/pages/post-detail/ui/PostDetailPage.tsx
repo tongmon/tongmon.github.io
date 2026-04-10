@@ -18,6 +18,7 @@ import {
   PostTagList,
   getPostBySlug,
   getRelatedPosts,
+  getSeriesPostNavigation,
   loadPostContent,
   type LoadedPost,
 } from "@/entities/post";
@@ -26,6 +27,7 @@ import { getPostsPath } from "@/shared/lib/routes";
 import { EmptyState } from "@/shared/ui";
 import { MarkdownViewer } from "@/widgets/markdown-viewer";
 import { PostCard } from "@/widgets/post-card";
+import { SeriesPostNavigation } from "@/widgets/series-post-navigation";
 import { PostTableOfContents } from "@/widgets/post-table-of-contents";
 import { useIsMobileViewport } from "@/shared/lib/useIsMobileViewport";
 
@@ -87,6 +89,7 @@ export default function PostDetailPage() {
   }
 
   const relatedPosts = getRelatedPosts(post, isMobileViewport ? 2 : 4);
+  const seriesNavigation = getSeriesPostNavigation(post);
   const coverImage = post.thumbnail ? toPublicAssetUrl(post.thumbnail) : null;
 
   return (
@@ -159,6 +162,10 @@ export default function PostDetailPage() {
           <Loader />
         </Group>
       )}
+
+      {seriesNavigation ? (
+        <SeriesPostNavigation navigation={seriesNavigation} />
+      ) : null}
 
       {relatedPosts.length > 0 ? (
         <Stack gap={relatedGap}>

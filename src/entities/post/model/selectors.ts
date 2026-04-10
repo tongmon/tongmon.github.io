@@ -1,5 +1,6 @@
 import type {
   PostManifestEntry,
+  SeriesPostNavigation,
   SeriesSummary,
   TagSummary,
 } from "@/entities/post/model/types";
@@ -108,12 +109,11 @@ export function getPostsBySeries(seriesSlug: string) {
   );
 }
 
-function getRelatedSeriesPosts(
+export function getSeriesPostNavigation(
   currentPost: PostManifestEntry,
-  limit: number,
-) {
-  if (!currentPost.series || limit <= 0) {
-    return [];
+): SeriesPostNavigation | null {
+  if (!currentPost.series) {
+    return null;
   }
 
   const seriesPosts = getPostsBySeries(toKebabCase(currentPost.series));
@@ -122,58 +122,32 @@ function getRelatedSeriesPosts(
   );
 
   if (currentIndex < 0) {
-    return [];
+    return null;
   }
 
-  const relatedPosts: PostManifestEntry[] = [];
+  const previousPost = seriesPosts[currentIndex - 1] ?? null;
+  const nextPost = seriesPosts[currentIndex + 1] ?? null;
 
-  for (
-    let offset = 1;
-    relatedPosts.length < limit &&
-    (currentIndex - offset >= 0 || currentIndex + offset < seriesPosts.length);
-    offset += 1
-  ) {
-    const previousPost = seriesPosts[currentIndex - offset];
-
-    if (previousPost) {
-      relatedPosts.push(previousPost);
-    }
-
-    if (relatedPosts.length >= limit) {
-      break;
-    }
-
-    const nextPost = seriesPosts[currentIndex + offset];
-
-    if (nextPost) {
-      relatedPosts.push(nextPost);
-    }
+  if (!previousPost && !nextPost) {
+    return null;
   }
 
-  return relatedPosts;
+  return {
+    nextPost,
+    previousPost,
+    seriesLabel: currentPost.series,
+    totalPosts: seriesPosts.length,
+  };
 }
 
 export function getRelatedPosts(currentPost: PostManifestEntry, limit = 2) {
-  const relatedSeriesPosts = getRelatedSeriesPosts(currentPost, limit);
-  const excludedSlugs = new Set([
-    currentPost.slug,
-    ...relatedSeriesPosts.map((post) => post.slug),
-  ]);
-  const remainingSlots = limit - relatedSeriesPosts.length;
-
-  if (remainingSlots <= 0) {
-    return relatedSeriesPosts;
-  }
-
-  const relatedTagPosts = postsManifest
+  return postsManifest
     .filter(
       (post) =>
-        !excludedSlugs.has(post.slug) &&
+        post.slug !== currentPost.slug &&
         post.tags.some((tag) => currentPost.tags.includes(tag)),
     )
-    .slice(0, remainingSlots);
-
-  return [...relatedSeriesPosts, ...relatedTagPosts];
+    .slice(0, limit);
 }
 
 export function getTagSummaries(): TagSummary[] {
