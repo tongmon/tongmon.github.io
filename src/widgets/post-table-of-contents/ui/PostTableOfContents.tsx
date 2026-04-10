@@ -3,6 +3,7 @@ import { Anchor, Paper, Stack, Text } from "@mantine/core";
 import { useReducedMotion } from "@mantine/hooks";
 import type { PostHeading } from "@/entities/post";
 import { useIsMobileViewport } from "@/shared/lib/useIsMobileViewport";
+import { navigateToHashAnchor } from "@/shared/lib/useHashAnchorNavigation";
 
 interface PostTableOfContentsProps {
   headings: PostHeading[];
@@ -28,17 +29,9 @@ export default function PostTableOfContents({
     event: MouseEvent<HTMLAnchorElement>,
     headingId: string,
   ) => {
-    const targetElement = document.getElementById(headingId);
-
-    if (!targetElement) {
-      return;
-    }
-
     event.preventDefault();
-    window.history.replaceState(null, "", `#${headingId}`);
-    targetElement.scrollIntoView({
+    navigateToHashAnchor(`#${headingId}`, {
       behavior: prefersReducedMotion ? "auto" : "smooth",
-      block: "start",
     });
   };
 

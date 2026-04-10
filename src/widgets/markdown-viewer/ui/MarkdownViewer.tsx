@@ -4,6 +4,8 @@ import {
   Typography,
   useComputedColorScheme,
 } from "@mantine/core";
+import { useReducedMotion } from "@mantine/hooks";
+import type { MouseEvent } from "react";
 import ReactMarkdown, {
   type Components,
   type UrlTransform,
@@ -13,6 +15,10 @@ import {
   oneDark,
   oneLight,
 } from "react-syntax-highlighter/dist/esm/styles/prism";
+import {
+  navigateToHashAnchor,
+  useHashAnchorNavigation,
+} from "@/shared/lib/useHashAnchorNavigation";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
@@ -30,6 +36,7 @@ export default function MarkdownViewer({
   postSlug,
 }: MarkdownViewerProps) {
   const colorScheme = useComputedColorScheme("light");
+  const prefersReducedMotion = useReducedMotion();
   const syntaxTheme = colorScheme === "dark" ? oneDark : oneLight;
   const syntaxStyle = {
     ...syntaxTheme,
@@ -49,13 +56,28 @@ export default function MarkdownViewer({
   };
 
   const markdownComponents: Components = {
-    a({ href, children, ...props }) {
+    a({ href, children, onClick, ...props }) {
       const isExternalLink = href?.startsWith("http");
+      const isHashLink = href?.startsWith("#");
+
+      const handleClick = (event: MouseEvent<HTMLAnchorElement>) => {
+        onClick?.(event);
+
+        if (event.defaultPrevented || !isHashLink || !href) {
+          return;
+        }
+
+        event.preventDefault();
+        navigateToHashAnchor(href, {
+          behavior: prefersReducedMotion ? "auto" : "smooth",
+        });
+      };
 
       return (
         <Anchor
           {...props}
           href={href}
+          onClick={handleClick}
           rel={isExternalLink ? "noreferrer" : undefined}
           target={isExternalLink ? "_blank" : undefined}
         >
@@ -115,6 +137,8 @@ export default function MarkdownViewer({
 
     return `${import.meta.env.BASE_URL}content/posts/${postSlug}/${normalizedUrl}`;
   };
+
+  useHashAnchorNavigation(markdown);
 
   return (
     <Typography className={classes.prose}>
