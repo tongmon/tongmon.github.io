@@ -7,6 +7,7 @@ import { getPostPath } from "@/shared/lib/routes";
 interface PostCardProps {
   post: PostManifestEntry;
   variant?: "grid" | "compact";
+  gridThumbnailHeight?: number;
 }
 
 export default function PostCard({ post, variant = "grid" }: PostCardProps) {
@@ -24,13 +25,13 @@ export default function PostCard({ post, variant = "grid" }: PostCardProps) {
         overflow: "hidden",
       }}
     >
-      <Flex direction={isCompact ? { base: "column", sm: "row" } : "column"}>
+      <Flex direction={isCompact ? { base: "column", md: "row" } : "column"}>
         {thumbnail ? (
           <Link style={{ display: "block", lineHeight: 0 }} to={postPath}>
             <Image
               alt={post.title}
-              h={isCompact ? { base: 220, sm: "100%" } : 220}
-              maw={isCompact ? { sm: 220 } : undefined}
+              h={isCompact ? { base: 220, md: "100%" } : { base: 220, md: 300 }}
+              maw={isCompact ? { md: 220 } : undefined}
               radius={isCompact ? "xl" : undefined}
               src={thumbnail}
             />

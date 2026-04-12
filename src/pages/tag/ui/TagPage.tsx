@@ -58,7 +58,7 @@ export default function TagPage() {
 
       <Stack gap="lg">
         <SimpleGrid
-          cols={{ base: 1 /*, xl: 2*/ }}
+          cols={{ base: 1, md: 2 /*, xl: 2*/ }}
           spacing={{ base: "md", md: "xl" }}
         >
           {visiblePosts.map((post) => (
