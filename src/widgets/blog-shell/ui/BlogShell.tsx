@@ -159,9 +159,15 @@ export default function BlogShell() {
                 <IconLayoutSidebarLeftExpandFilled size={18} />
               </ActionIcon>
 
-              <Space visibleFrom="md" w="var(--app-nav-width)" />
-
-              <Group gap="xs" visibleFrom="md">
+              <Group
+                gap="xs"
+                visibleFrom="md"
+                style={{
+                  position: "absolute",
+                  left: "50%",
+                  transform: "translateX(-50%)",
+                }}
+              >
                 {siteConfig.navigation.map((item) => (
                   <Button
                     component={Link}
@@ -187,12 +193,7 @@ export default function BlogShell() {
                 ) : null}
               </Group>
 
-              <Group
-                gap="xs"
-                visibleFrom="md"
-                justify="flex-end"
-                w="var(--app-nav-width)"
-              >
+              <Group gap="xs" visibleFrom="md" justify="flex-end" ml="auto">
                 <ActionIcon
                   aria-label="Search posts"
                   onClick={openSpotlight}
