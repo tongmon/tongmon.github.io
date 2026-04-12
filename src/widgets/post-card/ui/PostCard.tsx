@@ -17,7 +17,7 @@ export default function PostCard({ post, variant = "grid" }: PostCardProps) {
   return (
     <Card
       bg="var(--app-surface-1)"
-      p={isCompact ? "lg" : 0}
+      p={isCompact ? "xs" : 0}
       shadow="sm"
       style={{
         border: "1px solid var(--app-muted-border)",
@@ -31,6 +31,7 @@ export default function PostCard({ post, variant = "grid" }: PostCardProps) {
               alt={post.title}
               h={isCompact ? { base: 220, sm: "100%" } : 220}
               maw={isCompact ? { sm: 220 } : undefined}
+              radius={isCompact ? "xl" : undefined}
               src={thumbnail}
             />
           </Link>

@@ -1,6 +1,6 @@
 const DEFAULT_PAGE = 1;
 
-export const POSTS_PER_PAGE = 5;
+export const POSTS_PER_PAGE = 6;
 
 export function parsePageParam(pageParam: string | null) {
   const parsedPage = Number(pageParam);

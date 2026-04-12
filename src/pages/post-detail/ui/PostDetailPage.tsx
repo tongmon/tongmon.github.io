@@ -177,7 +177,7 @@ export default function PostDetailPage() {
               <PostCard
                 key={relatedPost.slug}
                 post={relatedPost}
-                variant="compact"
+                // variant="compact"
               />
             ))}
           </SimpleGrid>

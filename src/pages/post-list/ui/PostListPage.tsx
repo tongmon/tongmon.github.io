@@ -60,7 +60,7 @@ export default function PostListPage() {
       {filteredPosts.length > 0 ? (
         <Stack gap="lg">
           <SimpleGrid
-            cols={{ base: 1 /*, xl: viewMode === "grid" ? 2 : 1*/ }}
+            cols={{ base: 1, md: 2 /*, xl: viewMode === "grid" ? 2 : 1*/ }}
             spacing={{ base: "md", md: "xl" }}
           >
             {visiblePosts.map((post) => (
