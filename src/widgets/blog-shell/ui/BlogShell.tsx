@@ -116,6 +116,9 @@ export default function BlogShell() {
   const topTags = getTagSummaries().slice(0, 8);
   const isMobileNavbarOpened = opened && isMobileViewport;
   const isBodyScrollable = shellHeight > viewportHeight + 1;
+  const currentSectionLabel = siteConfig.navigation.find((item) =>
+    isHeaderNavigationItemActive(location.pathname, item.href),
+  )?.label;
 
   useBodyScrollbarRequirementState(isBodyScrollable);
   useScrollbarWidth();
@@ -174,6 +177,14 @@ export default function BlogShell() {
                     {item.label}
                   </Button>
                 ))}
+              </Group>
+
+              <Group hiddenFrom="md" justify="center">
+                {currentSectionLabel ? (
+                  <Text fw={700} size="xl" ta="center">
+                    {currentSectionLabel}
+                  </Text>
+                ) : null}
               </Group>
 
               <Group
