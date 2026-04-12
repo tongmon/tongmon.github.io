@@ -15,9 +15,11 @@ import { toPublicAssetUrl } from "@/shared/lib/base-path/toPublicAssetUrl";
 import { formatDateTime } from "@/shared/lib/date/formatDateTime";
 import { getPostsPath, getSeriesDetailPath } from "@/shared/lib/routes";
 import { EmptyState, PageIntro } from "@/shared/ui";
+import { useIsMobileViewport } from "@/shared/lib/useIsMobileViewport";
 
 export default function SeriesPage() {
   const seriesSummaries = getSeriesSummaries();
+  const isMobileViewport = useIsMobileViewport();
 
   if (seriesSummaries.length === 0) {
     return (
@@ -50,7 +52,11 @@ export default function SeriesPage() {
             <UnstyledButton
               component={Link}
               key={series.slug}
-              style={{ color: "inherit", display: "block", textDecoration: "none" }}
+              style={{
+                color: "inherit",
+                display: "block",
+                textDecoration: "none",
+              }}
               to={getSeriesDetailPath(series.label)}
             >
               <Paper
@@ -61,11 +67,22 @@ export default function SeriesPage() {
                   overflow: "hidden",
                 }}
               >
-                {coverImage ? <Image alt={series.label} h={220} src={coverImage} /> : null}
+                {coverImage ? (
+                  <Image
+                    alt={series.label}
+                    h={isMobileViewport ? 220 : 300}
+                    src={coverImage}
+                  />
+                ) : null}
 
                 <Stack gap="lg" p="xl">
                   <Stack gap="xs">
-                    <Text c="var(--app-muted)" fw={700} size="xs" tt="uppercase">
+                    <Text
+                      c="var(--app-muted)"
+                      fw={700}
+                      size="xs"
+                      tt="uppercase"
+                    >
                       Series
                     </Text>
                     <Title order={2}>{series.label}</Title>

@@ -19,9 +19,9 @@ export function extractMarkdownHeadings(markdown: string): PostHeading[] {
   visit(tree, "heading", (node) => {
     const headingNode = node as unknown as MarkdownHeadingNode;
 
-    if (headingNode.depth < 2 || headingNode.depth > 3) {
-      return;
-    }
+    // if (headingNode.depth < 2 || headingNode.depth > 3) {
+    //   return;
+    // }
 
     const value = toString({
       children: headingNode.children,

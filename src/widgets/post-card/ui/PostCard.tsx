@@ -21,17 +21,13 @@ interface PostCardProps {
   gridThumbnailHeight?: number;
 }
 
-export default function PostCard({
-  post,
-  variant = "grid",
-  gridThumbnailHeight = 300,
-}: PostCardProps) {
+export default function PostCard({ post, variant = "grid" }: PostCardProps) {
   const thumbnail = post.thumbnail ? toPublicAssetUrl(post.thumbnail) : null;
   const isCompact = variant === "compact";
   const postPath = getPostPath(post.slug);
   const mediaHeight = isCompact
     ? { base: 220, md: "100%" }
-    : { base: 220, md: gridThumbnailHeight };
+    : { base: 220, md: 300 };
   const mediaWidth = isCompact ? { base: "100%", md: 220 } : "100%";
 
   return (
@@ -78,10 +74,6 @@ export default function PostCard({
                   "radial-gradient(circle at top right, rgba(84, 188, 146, 0.42), transparent 30%), linear-gradient(155deg, rgba(84, 188, 146, 0.22), rgba(31, 106, 80, 0.08)), var(--app-surface-0)",
               }}
             >
-              <Space />
-              <Title ta="center" fw={700} order={1}>
-                {post.title}
-              </Title>
               <Group justify="space-between" wrap="nowrap">
                 <Text c="var(--app-muted)" fw={700} size="xs" tt="uppercase">
                   {post.series ?? "Short"}
@@ -90,6 +82,10 @@ export default function PostCard({
                   No Thumbnail
                 </Text>
               </Group>
+              <Title ta="center" fw={700} order={1}>
+                {post.title}
+              </Title>
+              <Space />
             </Stack>
           )}
         </Box>
