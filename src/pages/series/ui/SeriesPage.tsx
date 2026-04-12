@@ -42,7 +42,7 @@ export default function SeriesPage() {
         title="Browse by series"
       />
 
-      <SimpleGrid cols={{ base: 1, xl: 2 }}>
+      <SimpleGrid cols={{ base: 1, xl: 2 }} spacing={{ base: "md", md: "xl" }}>
         {seriesSummaries.map((series) => {
           const coverImage = series.thumbnail
             ? toPublicAssetUrl(series.thumbnail)
