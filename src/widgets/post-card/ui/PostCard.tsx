@@ -1,6 +1,17 @@
-import { Card, Flex, Group, Image, Stack, Text, Title } from "@mantine/core";
+import {
+  Box,
+  Card,
+  Flex,
+  Group,
+  Image,
+  Space,
+  Stack,
+  Text,
+  Title,
+} from "@mantine/core";
 import { Link } from "react-router-dom";
 import { PostMeta, PostTagList, type PostManifestEntry } from "@/entities/post";
+import { siteConfig } from "@/shared/config/site";
 import { toPublicAssetUrl } from "@/shared/lib/base-path/toPublicAssetUrl";
 import { getPostPath } from "@/shared/lib/routes";
 
@@ -10,10 +21,18 @@ interface PostCardProps {
   gridThumbnailHeight?: number;
 }
 
-export default function PostCard({ post, variant = "grid" }: PostCardProps) {
+export default function PostCard({
+  post,
+  variant = "grid",
+  gridThumbnailHeight = 300,
+}: PostCardProps) {
   const thumbnail = post.thumbnail ? toPublicAssetUrl(post.thumbnail) : null;
   const isCompact = variant === "compact";
   const postPath = getPostPath(post.slug);
+  const mediaHeight = isCompact
+    ? { base: 220, md: "100%" }
+    : { base: 220, md: gridThumbnailHeight };
+  const mediaWidth = isCompact ? { base: "100%", md: 220 } : "100%";
 
   return (
     <Card
@@ -26,17 +45,54 @@ export default function PostCard({ post, variant = "grid" }: PostCardProps) {
       }}
     >
       <Flex direction={isCompact ? { base: "column", md: "row" } : "column"}>
-        {thumbnail ? (
-          <Link style={{ display: "block", lineHeight: 0 }} to={postPath}>
+        <Box
+          component={Link}
+          display="block"
+          h={mediaHeight}
+          miw={isCompact ? { md: 220 } : undefined}
+          style={{
+            alignSelf: "stretch",
+            overflow: "hidden",
+            textDecoration: "none",
+          }}
+          to={postPath}
+          w={mediaWidth}
+        >
+          {thumbnail ? (
             <Image
               alt={post.title}
-              h={isCompact ? { base: 220, md: "100%" } : { base: 220, md: 300 }}
-              maw={isCompact ? { md: 220 } : undefined}
+              fit="cover"
+              h="100%"
               radius={isCompact ? "xl" : undefined}
               src={thumbnail}
+              w="100%"
             />
-          </Link>
-        ) : null}
+          ) : (
+            <Stack
+              gap="xl"
+              h="100%"
+              justify="space-between"
+              p={isCompact ? "md" : "lg"}
+              style={{
+                background:
+                  "radial-gradient(circle at top right, rgba(84, 188, 146, 0.42), transparent 30%), linear-gradient(155deg, rgba(84, 188, 146, 0.22), rgba(31, 106, 80, 0.08)), var(--app-surface-0)",
+              }}
+            >
+              <Space />
+              <Title ta="center" fw={700} order={1}>
+                {post.title}
+              </Title>
+              <Group justify="space-between" wrap="nowrap">
+                <Text c="var(--app-muted)" fw={700} size="xs" tt="uppercase">
+                  {post.series ?? "Short"}
+                </Text>
+                <Text c="var(--app-muted)" size="xs">
+                  No Thumbnail
+                </Text>
+              </Group>
+            </Stack>
+          )}
+        </Box>
 
         <Stack gap="md" p={isCompact ? "xs" : "lg"} style={{ flex: 1 }}>
           <Stack gap={8}>

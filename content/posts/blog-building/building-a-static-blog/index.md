@@ -13,6 +13,12 @@ series: Build log
 seriesOrder: 1
 ---
 
+![Content ownership diagram](./images/content-ownership.png)
+
+# Test header
+
+Test header one.
+
 ## Why folder-owned content works
 
 I wanted the content model to stay obvious even after the blog grows past a handful of posts. One folder per post keeps ownership simple:
@@ -29,12 +35,12 @@ The generator only needs to care about `content/posts/<slug>/index.md` and every
 
 ## What the build script produces
 
-| Output | Why it exists |
-| --- | --- |
-| Typed manifest | Fast post list rendering |
+| Output               | Why it exists                    |
+| -------------------- | -------------------------------- |
+| Typed manifest       | Fast post list rendering         |
 | Copied public assets | GitHub Pages-safe image delivery |
-| Reading time | Better archive scanning |
-| Draft filtering | Cleaner production output |
+| Reading time         | Better archive scanning          |
+| Draft filtering      | Cleaner production output        |
 
 ## The authoring checklist
 

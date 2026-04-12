@@ -17,7 +17,7 @@ export const postsManifest: PostManifestEntry[] = [
     "draft": false,
     "series": "Build log",
     "seriesOrder": 1,
-    "readingTime": 2,
+    "readingTime": 3,
     "contentPath": "content/posts/building-a-static-blog/index.md"
   },
   {
