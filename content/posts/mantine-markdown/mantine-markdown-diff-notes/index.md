@@ -7,7 +7,7 @@ tags:
   - Zustand
   - TypeScript
 category: Frontend
-thumbnail: ./cover.png
+thumbnail: ./cover.jpg
 series: Build log
 seriesOrder: 3
 ---

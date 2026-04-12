@@ -31,7 +31,6 @@ export const postsManifest: PostManifestEntry[] = [
       "TypeScript"
     ],
     "category": "Frontend",
-    "thumbnail": "content/posts/mantine-markdown-diff-double-notes/cover.png",
     "draft": false,
     "series": "Build log",
     "seriesOrder": 4,
@@ -49,7 +48,7 @@ export const postsManifest: PostManifestEntry[] = [
       "TypeScript"
     ],
     "category": "Frontend",
-    "thumbnail": "content/posts/mantine-markdown-diff-notes/cover.png",
+    "thumbnail": "content/posts/mantine-markdown-diff-notes/cover.jpg",
     "draft": false,
     "series": "Build log",
     "seriesOrder": 3,

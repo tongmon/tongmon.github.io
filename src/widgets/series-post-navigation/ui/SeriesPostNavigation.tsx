@@ -54,7 +54,7 @@ function SeriesPostNavigationCard({
           transition: "transform 150ms ease, border-color 150ms ease",
         }}
       >
-        <Group align="center" justify="space-between" wrap="nowrap">
+        <Group align="center" justify="space-between" wrap="nowrap" h="100%">
           {isPrevious ? icon : null}
 
           <Stack gap={4} style={{ flex: 1 }}>
@@ -108,23 +108,6 @@ export default function SeriesPostNavigation({
 
   return (
     <Stack gap="sm">
-      {
-        // <Group justify="space-between">
-        //   <Text c="var(--app-muted)" fw={700} size="xs" tt="uppercase">
-        //     Continue this series
-        //   </Text>
-        //   <Text
-        //     c="var(--app-muted)"
-        //     component={Link}
-        //     size="sm"
-        //     style={{ textDecoration: "none" }}
-        //     to={getSeriesDetailPath(navigation.seriesLabel)}
-        //   >
-        //     {navigation.totalPosts} post{navigation.totalPosts === 1 ? "" : "s"} in{" "}
-        //     {navigation.seriesLabel}
-        //   </Text>
-        // </Group>
-      }
       <SimpleGrid cols={{ base: 1, md: cards.length > 1 ? 2 : 1 }} spacing="md">
         {cards.map((card) => (
           <SeriesPostNavigationCard

@@ -90,7 +90,7 @@ export default function PostDetailPage() {
 
   const relatedPosts = getRelatedPosts(post, isMobileViewport ? 2 : 4);
   const seriesNavigation = getSeriesPostNavigation(post);
-  const coverImage = post.thumbnail ? toPublicAssetUrl(post.thumbnail) : null;
+  // const coverImage = post.thumbnail ? toPublicAssetUrl(post.thumbnail) : null;
 
   return (
     <Stack gap={pageGap} py={{ base: "lg", md: "xl" }}>
@@ -112,17 +112,19 @@ export default function PostDetailPage() {
         <PostTagList tags={post.tags} />
       </Stack>
 
-      {coverImage ? (
-        <Paper
-          bg="var(--app-surface-1)"
-          p={{ base: "xs", md: "sm" }}
-          mt={isMobileViewport ? "lg" : undefined}
-          // shadow="sm"
-          // style={{ border: "1px solid var(--app-muted-border)" }}
-        >
-          <Image alt={post.title} radius="lg" src={coverImage} />
-        </Paper>
-      ) : null}
+      {
+        // coverImage ? (
+        // <Paper
+        //   bg="var(--app-surface-1)"
+        //   p={{ base: "xs", md: "sm" }}
+        //   mt={isMobileViewport ? "lg" : undefined}
+        //   // shadow="sm"
+        //   // style={{ border: "1px solid var(--app-muted-border)" }}
+        // >
+        //   <Image alt={post.title} radius="lg" src={coverImage} />
+        // </Paper>
+        // ) : null
+      }
 
       {errorMessage ? (
         <Alert color="red" icon={<IconAlertCircle size={16} />} radius="xl">

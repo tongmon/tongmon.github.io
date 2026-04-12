@@ -36,7 +36,7 @@ export default function PostCard({ post, variant = "grid" }: PostCardProps) {
           </Link>
         ) : null}
 
-        <Stack gap="md" p={isCompact ? 0 : "lg"} style={{ flex: 1 }}>
+        <Stack gap="md" p={isCompact ? "xs" : "lg"} style={{ flex: 1 }}>
           <Stack gap={8}>
             {post.category ? (
               <Text c="var(--app-muted)" fw={700} size="xs" tt="uppercase">

@@ -228,6 +228,7 @@ export default function BlogShell() {
             minHeight: 0,
             overflow: "hidden",
           }}
+          bd={isMobileViewport ? "transparent" : undefined}
         >
           <AppShell.Section grow style={{ display: "flex", minHeight: 0 }}>
             <Stack p={0} w="100%">
@@ -261,13 +262,10 @@ export default function BlogShell() {
                     alt="it's me"
                     size="xl"
                     mb="xs"
-                  />
-                  <Text
                     renderRoot={(props) => <Link {...props} to="/" />}
-                    fw={600}
-                  >
-                    Tongstar
-                  </Text>
+                    onClick={close}
+                  />
+                  <Text fw={600}>Tongstar</Text>
                   <Text c="var(--app-muted)" size="sm">
                     Focus on what you can control.
                   </Text>

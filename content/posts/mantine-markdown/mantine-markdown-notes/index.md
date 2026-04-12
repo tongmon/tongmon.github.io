@@ -29,11 +29,11 @@ Raw HTML is easy to enable and easy to regret. For a personal blog like this one
 
 Zustand is only used for post list preferences, not for static content.
 
-| Store field | Reason |
-| --- | --- |
-| `searchQuery` | Persistent archive search |
-| `selectedTag` | Keep filter context |
-| `viewMode` | Remember preferred list density |
+| Store field   | Reason                          |
+| ------------- | ------------------------------- |
+| `searchQuery` | Persistent archive search       |
+| `selectedTag` | Keep filter context             |
+| `viewMode`    | Remember preferred list density |
 
 ![Markdown layout preview](./images/markdown-layout.png)
 
