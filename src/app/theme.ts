@@ -82,6 +82,7 @@ export const cssVariablesResolver: CSSVariablesResolver = (mantineTheme) => ({
     "--app-grid-border": "rgba(15, 23, 42, 0.08)",
     "--app-muted-border": "rgba(15, 23, 42, 0.1)",
     "--app-soft-shadow": "0 24px 80px rgba(15, 23, 42, 0.08)",
+    "--app-nav-width": "300px",
   },
   light: {
     "--mantine-color-body": "#f4f2ec",

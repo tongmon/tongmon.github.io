@@ -13,6 +13,7 @@ import {
   NavLink,
   RemoveScroll,
   ScrollArea,
+  Space,
   Stack,
   Text,
   Tooltip,
@@ -20,11 +21,15 @@ import {
 import { useDisclosure, useElementSize, useViewportSize } from "@mantine/hooks";
 import { openSpotlight } from "@mantine/spotlight";
 import {
+  IconArrowBarRight,
   IconBrandGithub,
   IconBrandLinkedin,
   IconHash,
+  IconLayoutSidebarLeftExpand,
+  IconLayoutSidebarLeftExpandFilled,
   IconMail,
   IconSearch,
+  IconX,
 } from "@tabler/icons-react";
 import { Link, Outlet, ScrollRestoration, useLocation } from "react-router-dom";
 import { getAllPosts, getTagSummaries } from "@/entities/post";
@@ -121,11 +126,12 @@ export default function BlogShell() {
       header={{ height: 76 }}
       navbar={{
         breakpoint: "md",
-        width: 300,
+        width: "var(--app-nav-width)",
         collapsed: { mobile: !opened },
       }}
       padding="md"
       transitionDuration={150}
+      layout="alt"
     >
       <ScrollRestoration />
       <PostSpotlight />
@@ -135,53 +141,22 @@ export default function BlogShell() {
           style={{
             backdropFilter: "blur(18px)",
           }}
+          pr={isBodyScrollable ? 0 : "var(--app-scrollbar-width)"}
         >
-          <Container
-            h="100%"
-            // maw="var(--app-shell-max-width)"
-            //             ? "md"
-            //   : "calc(var(--mantine-spacing-md) - var(--app-scrollbar-width))"
-            // : "md",
-            pl={{ base: "md", md: "xl" }}
-            pr={{
-              base: isBodyScrollable
-                ? "md"
-                : "calc(var(--mantine-spacing-md) + var(--app-scrollbar-width))",
-              md: isBodyScrollable
-                ? "xl"
-                : "calc(var(--mantine-spacing-xl) + var(--app-scrollbar-width))",
-            }}
-            size="100%"
-          >
+          <Container h="100%" size="100%">
             <Group h="100%" justify="space-between">
-              <Group gap="md" h="100%">
-                <Burger
-                  hiddenFrom="md"
-                  onClick={toggle}
-                  opened={opened}
-                  size="sm"
-                />
-                <Box h="60%" style={{ aspectRatio: "1 / 1", flex: "0 0 auto" }}>
-                  <Image
-                    src={pixelateProfile}
-                    fit="cover"
-                    radius="md"
-                    h="100%"
-                    w="100%"
-                  />
-                </Box>
-                <Stack gap={0}>
-                  <Text
-                    renderRoot={(props) => <Link {...props} to="/" />}
-                    fw={600}
-                  >
-                    Tongstar
-                  </Text>
-                  <Text c="var(--app-muted)" size="sm" visibleFrom="sm">
-                    Quietly polished frontend notes.
-                  </Text>
-                </Stack>
-              </Group>
+              <ActionIcon
+                aria-label={"nav-close"}
+                onClick={toggle}
+                radius="xl"
+                size="lg"
+                variant="default"
+                hiddenFrom="md"
+              >
+                <IconLayoutSidebarLeftExpandFilled size={18} />
+              </ActionIcon>
+
+              <Space visibleFrom="md" w="var(--app-nav-width)" />
 
               <Group gap="xs" visibleFrom="md">
                 {siteConfig.navigation.map((item) => (
@@ -201,7 +176,12 @@ export default function BlogShell() {
                 ))}
               </Group>
 
-              <Group gap="xs">
+              <Group
+                gap="xs"
+                visibleFrom="md"
+                justify="flex-end"
+                w="var(--app-nav-width)"
+              >
                 <ActionIcon
                   aria-label="Search posts"
                   onClick={openSpotlight}
@@ -211,8 +191,19 @@ export default function BlogShell() {
                 >
                   <IconSearch size={18} />
                 </ActionIcon>
-                <ThemeToggle visibleFrom="md" />
+                <ThemeToggle />
               </Group>
+
+              <ActionIcon
+                aria-label="Search posts"
+                onClick={openSpotlight}
+                radius="xl"
+                size="lg"
+                variant="default"
+                hiddenFrom="md"
+              >
+                <IconSearch size={18} />
+              </ActionIcon>
             </Group>
           </Container>
         </AppShell.Header>
@@ -228,21 +219,32 @@ export default function BlogShell() {
           }}
         >
           <AppShell.Section grow style={{ display: "flex", minHeight: 0 }}>
-            <ScrollArea
-              offsetScrollbars="present"
-              overscrollBehavior="contain"
-              scrollbars="y"
-              style={{ flex: 1, minHeight: 0 }}
-              viewportProps={{
-                style: {
-                  touchAction: "pan-y",
-                  WebkitOverflowScrolling: "touch",
-                },
-              }}
-              type="never"
-            >
-              <Stack gap="xs" mb="xs" hiddenFrom="md">
-                <Stack gap={0} align="center" mb="xs">
+            <Stack p={0} w="100%">
+              <Group gap="md" justify="flex-end" wrap="wrap" hiddenFrom="md">
+                <ActionIcon
+                  aria-label={"nav-close"}
+                  onClick={toggle}
+                  radius="xl"
+                  size="lg"
+                  variant="default"
+                >
+                  <IconX size={18} />
+                </ActionIcon>
+              </Group>
+              <ScrollArea
+                offsetScrollbars="present"
+                overscrollBehavior="contain"
+                scrollbars="y"
+                style={{ flex: 1, minHeight: 0 }}
+                viewportProps={{
+                  style: {
+                    touchAction: "pan-y",
+                    WebkitOverflowScrolling: "touch",
+                  },
+                }}
+                type="never"
+              >
+                <Stack gap={0} align="center" mb="xl">
                   <Avatar
                     src={pixelateProfile}
                     alt="it's me"
@@ -259,71 +261,73 @@ export default function BlogShell() {
                     Focus on what you can control.
                   </Text>
                 </Stack>
-                <Text c="var(--app-muted)" fw={700} size="xs" tt="uppercase">
-                  Sections
-                </Text>
-                {siteConfig.navigation.map((item) => (
-                  <NavLink
-                    active={isHeaderNavigationItemActive(
-                      location.pathname,
-                      item.href,
-                    )}
-                    component={Link}
-                    key={item.href}
-                    label={item.label}
-                    onClick={close}
-                    to={item.href}
-                  />
-                ))}
-              </Stack>
-              <Stack gap="sm" pr="xs">
-                <Text c="var(--app-muted)" fw={700} size="xs" tt="uppercase">
-                  Tag List
-                </Text>
-                {[
-                  {
-                    count: allPostsCount,
-                    href: allPostsHref,
-                    key: "all-posts",
-                    label: "All",
-                  },
-                  ...topTags.map((tag) => ({
-                    count: tag.count,
-                    href: getTagPath(tag.label),
-                    key: tag.slug,
-                    label: tag.label,
-                  })),
-                ].map((item) => {
-                  const isActive =
-                    item.href === allPostsHref
-                      ? location.pathname === "/" ||
-                        location.pathname === allPostsHref
-                      : isNavigationItemActive(location.pathname, item.href);
-
-                  return (
+                <Stack gap="xs" mb="xs" hiddenFrom="md">
+                  <Text c="var(--app-muted)" fw={700} size="xs" tt="uppercase">
+                    Sections
+                  </Text>
+                  {siteConfig.navigation.map((item) => (
                     <NavLink
-                      active={isActive}
-                      color="brand"
+                      active={isHeaderNavigationItemActive(
+                        location.pathname,
+                        item.href,
+                      )}
                       component={Link}
-                      key={item.key}
-                      label={`${item.label} (${item.count})`}
-                      leftSection={<IconHash size={14} />}
+                      key={item.href}
+                      label={item.label}
                       onClick={close}
-                      style={{
-                        backgroundColor: isActive
-                          ? "var(--app-nav-active-bg)"
-                          : undefined,
-                        border: `1px solid ${isActive ? "var(--app-nav-active-border)" : "transparent"}`,
-                        transition:
-                          "background-color 150ms ease, border-color 150ms ease",
-                      }}
                       to={item.href}
-                      variant="light"
                     />
-                  );
-                })}
-              </Stack>
-            </ScrollArea>
+                  ))}
+                </Stack>
+                <Stack gap="sm" pr="xs">
+                  <Text c="var(--app-muted)" fw={700} size="xs" tt="uppercase">
+                    Tag List
+                  </Text>
+                  {[
+                    {
+                      count: allPostsCount,
+                      href: allPostsHref,
+                      key: "all-posts",
+                      label: "All",
+                    },
+                    ...topTags.map((tag) => ({
+                      count: tag.count,
+                      href: getTagPath(tag.label),
+                      key: tag.slug,
+                      label: tag.label,
+                    })),
+                  ].map((item) => {
+                    const isActive =
+                      item.href === allPostsHref
+                        ? location.pathname === "/" ||
+                          location.pathname === allPostsHref
+                        : isNavigationItemActive(location.pathname, item.href);
+
+                    return (
+                      <NavLink
+                        active={isActive}
+                        color="brand"
+                        component={Link}
+                        key={item.key}
+                        label={`${item.label} (${item.count})`}
+                        leftSection={<IconHash size={14} />}
+                        onClick={close}
+                        style={{
+                          backgroundColor: isActive
+                            ? "var(--app-nav-active-bg)"
+                            : undefined,
+                          border: `1px solid ${isActive ? "var(--app-nav-active-border)" : "transparent"}`,
+                          transition:
+                            "background-color 150ms ease, border-color 150ms ease",
+                        }}
+                        to={item.href}
+                        variant="light"
+                      />
+                    );
+                  })}
+                </Stack>
+              </ScrollArea>
+            </Stack>
           </AppShell.Section>
 
           <Divider my="lg" />
@@ -356,53 +360,6 @@ export default function BlogShell() {
               })}
             </Group>
           </AppShell.Section>
-
-          {
-            // <AppShell.Section h="10%">
-            //   {
-            //     //   <Text c="var(--app-muted)" size="sm">
-            //     //   Static-first writing workflow, Markdown ownership per post
-            //     //   folder, and GitHub Pages deployment.
-            //     // </Text>
-            //     // <Button
-            //     //   component="a"
-            //     //   href="https://github.com/tongm/tongmon.github.io"
-            //     //   leftSection={<IconArrowUpRight size={16} />}
-            //     //   mt="md"
-            //     //   rel="noreferrer"
-            //     //   target="_blank"
-            //     //   variant="light"
-            //     // >
-            //     //   View repository
-            //     // </Button>
-            //   }
-            //   <Group gap="md" h="100%">
-            //     <Box
-            //       h="100%"
-            //       style={{ aspectRatio: "1 / 1", flex: "0 0 auto" }}
-            //     >
-            //       <Image
-            //         src={pixelateProfile}
-            //         fit="cover"
-            //         radius="md"
-            //         h="100%"
-            //         w="100%"
-            //       />
-            //     </Box>
-            //     <Stack gap={0}>
-            //       <Text
-            //         renderRoot={(props) => <Link {...props} to="/" />}
-            //         fw={600}
-            //       >
-            //         Tongstar
-            //       </Text>
-            //       <Text c="var(--app-muted)" size="sm">
-            //         Focus on what you can control.
-            //       </Text>
-            //     </Stack>
-            //   </Group>
-            // </AppShell.Section>
-          }
         </AppShell.Navbar>
       </RemoveScroll>
 
