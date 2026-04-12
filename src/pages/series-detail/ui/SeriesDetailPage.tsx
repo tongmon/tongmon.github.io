@@ -5,12 +5,14 @@ import { formatDateTime } from "@/shared/lib/date/formatDateTime";
 import { getSeriesPath } from "@/shared/lib/routes";
 import { EmptyState, PageIntro } from "@/shared/ui";
 import { PostCard } from "@/widgets/post-card";
+import { useIsMobileViewport } from "@/shared/lib/useIsMobileViewport";
 
 export default function SeriesDetailPage() {
   const { series } = useParams();
   const seriesSlug = series ?? "";
   const seriesSummary = getSeriesSummary(seriesSlug);
   const posts = getPostsBySeries(seriesSlug);
+  const isMobileViewport = useIsMobileViewport();
 
   if (!seriesSummary) {
     return (
@@ -44,7 +46,10 @@ export default function SeriesDetailPage() {
             <Text c="var(--app-muted)" fw={700} size="xs" tt="uppercase">
               Part {post.seriesOrder ?? index + 1}
             </Text>
-            <PostCard post={post} variant="compact" />
+            <PostCard
+              post={post}
+              variant={isMobileViewport ? "grid" : "compact"}
+            />
           </Stack>
         ))}
       </Stack>

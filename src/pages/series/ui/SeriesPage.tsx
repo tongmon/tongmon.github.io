@@ -1,4 +1,5 @@
 import {
+  Box,
   Group,
   Image,
   Paper,
@@ -14,12 +15,10 @@ import { getSeriesSummaries } from "@/entities/post";
 import { toPublicAssetUrl } from "@/shared/lib/base-path/toPublicAssetUrl";
 import { formatDateTime } from "@/shared/lib/date/formatDateTime";
 import { getPostsPath, getSeriesDetailPath } from "@/shared/lib/routes";
-import { EmptyState, PageIntro } from "@/shared/ui";
-import { useIsMobileViewport } from "@/shared/lib/useIsMobileViewport";
+import { EmptyState, FallbackCover, PageIntro } from "@/shared/ui";
 
 export default function SeriesPage() {
   const seriesSummaries = getSeriesSummaries();
-  const isMobileViewport = useIsMobileViewport();
 
   if (seriesSummaries.length === 0) {
     return (
@@ -67,13 +66,24 @@ export default function SeriesPage() {
                   overflow: "hidden",
                 }}
               >
-                {coverImage ? (
-                  <Image
-                    alt={series.label}
-                    h={isMobileViewport ? 220 : 300}
-                    src={coverImage}
-                  />
-                ) : null}
+                <Box h={{ base: 220, md: 300 }} style={{ overflow: "hidden" }}>
+                  {coverImage ? (
+                    <Image
+                      alt={series.label}
+                      fit="cover"
+                      h="100%"
+                      src={coverImage}
+                      w="100%"
+                    />
+                  ) : (
+                    <FallbackCover
+                      aside={`${series.count} post${series.count === 1 ? "" : "s"}`}
+                      eyebrow="Series"
+                      meta={`Updated ${formatDateTime(series.latestUpdatedAt)}`}
+                      title={series.label}
+                    />
+                  )}
+                </Box>
 
                 <Stack gap="lg" p="xl">
                   <Stack gap="xs">
