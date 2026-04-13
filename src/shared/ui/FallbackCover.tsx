@@ -21,13 +21,14 @@ export default function FallbackCover({
     <Stack
       gap="xl"
       h="100%"
+      w="100%"
       justify="space-between"
       p={compact ? "md" : "lg"}
       style={{
         background:
           "radial-gradient(circle at top right, rgba(84, 188, 146, 0.42), transparent 30%), linear-gradient(155deg, rgba(84, 188, 146, 0.22), rgba(31, 106, 80, 0.08)), var(--app-surface-0)",
         borderRadius: radius ? `var(--mantine-radius-${radius})` : undefined,
-        boxShadow: "inset 0 0 0 1px var(--app-muted-border)",
+        // boxShadow: "inset 0 0 0 1px var(--app-muted-border)",
       }}
     >
       <Group justify="space-between" wrap="nowrap">

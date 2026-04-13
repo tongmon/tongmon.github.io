@@ -24,8 +24,8 @@ export default function PostCard({ post, variant = "grid" }: PostCardProps) {
   const thumbnail = post.thumbnail ? toPublicAssetUrl(post.thumbnail) : null;
   const isCompact = variant === "compact";
   const postPath = getPostPath(post.slug);
-  const mediaHeight = isCompact ? 170 : { base: 220, md: 250 };
-  const mediaWidth = isCompact ? { base: "100%", md: 270 } : "100%";
+  const mediaHeight = isCompact ? 180 : { base: 220, md: 250 };
+  const mediaWidth = isCompact ? { base: "100%", md: 260 } : "100%";
   const fallbackEyebrow = post.series ?? "Short";
   const fallbackMeta =
     post.tags.slice(0, 2).join(" / ") || `${post.readingTime} min read`;
@@ -44,20 +44,23 @@ export default function PostCard({ post, variant = "grid" }: PostCardProps) {
         direction={isCompact ? { base: "column", md: "row" } : "column"}
         align="center"
       >
-        <Box
-          component={Link}
-          display="block"
-          h={mediaHeight}
-          w={mediaWidth}
-          miw={isCompact ? { md: 220 } : undefined}
-          style={{
-            alignSelf: "stretch",
-            overflow: "hidden",
-            textDecoration: "none",
-          }}
-          to={postPath}
-          mr="xs"
-        >
+        {
+          // <Box
+          // component={Link}
+          // display="block"
+          // h={mediaHeight}
+          // w={mediaWidth}
+          // miw={isCompact ? { md: 220 } : undefined}
+          // style={{
+          //   alignSelf: "stretch",
+          //   overflow: "hidden",
+          //   textDecoration: "none",
+          // }}
+          // to={postPath}
+          // mr="xs"
+          // >
+        }
+        <Group component={Link} h={mediaHeight} w={mediaWidth}>
           {thumbnail ? (
             <Image
               alt={post.title}
@@ -77,8 +80,7 @@ export default function PostCard({ post, variant = "grid" }: PostCardProps) {
               title={siteConfig.title}
             />
           )}
-        </Box>
-
+        </Group>
         <Stack gap="md" p={isCompact ? "xs" : "lg"} style={{ flex: 1 }}>
           <Stack gap={8}>
             {post.category ? (
