@@ -2,10 +2,10 @@ import { useDeferredValue, useState } from "react";
 import {
   Badge,
   Box,
-  Flex,
+  Divider,
   Group,
-  Highlight,
   Image,
+  OverflowList,
   Stack,
   Text,
 } from "@mantine/core";
@@ -15,6 +15,8 @@ import { useNavigate } from "react-router-dom";
 import { getAllPosts, type PostManifestEntry } from "@/entities/post";
 import { toPublicAssetUrl } from "@/shared/lib/base-path/toPublicAssetUrl";
 import { getPostPath } from "@/shared/lib/routes";
+
+const SPOTLIGHT_LIMIT = 5;
 
 function PostSpotlightActionPreview({
   thumbnail,
@@ -28,24 +30,31 @@ function PostSpotlightActionPreview({
       miw={88}
       style={{
         alignSelf: "stretch",
-        border: "1px solid var(--app-muted-border)",
+        // border: "1px solid var(--app-muted-border)",
         display: "flex",
         flexShrink: 0,
         borderRadius: "0.75rem",
         overflow: "hidden",
       }}
-      w={88}
+      w="100%"
+      h={{ base: 150, md: 250 }}
     >
       {thumbnail ? (
         <Image
           alt={title}
           h="100%"
+          w="100%"
           fit="cover"
           src={toPublicAssetUrl(thumbnail)}
-          w="100%"
         />
       ) : (
-        <Group c="var(--app-muted)" h="100%" justify="center" w="100%">
+        <Group
+          c="var(--app-muted)"
+          h="100%"
+          justify="center"
+          w="100%"
+          bd="1px solid var(--app-muted-border)"
+        >
           <IconSearch size={18} />
         </Group>
       )}
@@ -56,60 +65,45 @@ function PostSpotlightActionPreview({
 function PostSpotlightActionContent({
   post,
   query,
+  isLast,
 }: {
   post: PostManifestEntry;
   query: string;
+  isLast: boolean;
 }) {
-  const visibleTags = post.tags.slice(0, 3);
-  const hiddenTagCount = post.tags.length - visibleTags.length;
-
   return (
-    <Flex align="stretch" gap="md" wrap="nowrap">
+    <Stack w="100%" gap="xs">
       <PostSpotlightActionPreview
         thumbnail={post.thumbnail}
         title={post.title}
       />
-
-      <Stack gap={6} miw={0} style={{ flex: 1 }}>
-        {post.category ? (
-          <Text c="var(--app-muted)" fw={700} size="xs" tt="uppercase">
-            {post.category}
-          </Text>
-        ) : null}
-
-        <Text
-          fw={700}
-          size="sm"
-          style={{
-            WebkitBoxOrient: "vertical",
-            WebkitLineClamp: 2,
-            display: "-webkit-box",
-            lineHeight: 1.35,
-            overflow: "hidden",
-          }}
-        >
-          <Highlight component="span" highlight={query ? [query] : []}>
-            {post.title}
-          </Highlight>
-        </Text>
-
-        {visibleTags.length > 0 || hiddenTagCount > 0 ? (
-          <Group c="var(--app-muted)" gap={8} wrap="wrap">
-            {visibleTags.map((tag) => (
-              <Badge key={tag} size="xs" variant="light">
-                {tag}
-              </Badge>
-            ))}
-
-            {hiddenTagCount > 0 ? (
-              <Badge size="xs" variant="light">
-                +{hiddenTagCount}
-              </Badge>
-            ) : null}
-          </Group>
-        ) : null}
-      </Stack>
-    </Flex>
+      <Text
+        fw={700}
+        size="lg"
+        style={{
+          WebkitBoxOrient: "vertical",
+          WebkitLineClamp: 2,
+          display: "-webkit-box",
+          lineHeight: 1.35,
+          overflow: "hidden",
+        }}
+        px="xs"
+      >
+        {post.title}
+      </Text>
+      <Text px="xs" size="sm">
+        {post.description}
+      </Text>
+      <OverflowList
+        data={post.tags}
+        gap="xs"
+        renderOverflow={(items) => <Badge>+{items.length} more</Badge>}
+        renderItem={(item, index) => <Badge key={index}>{item}</Badge>}
+        w="100%"
+        px="xs"
+      />
+      {!isLast && <Divider my="xs" variant="dashed" size="sm" />}
+    </Stack>
   );
 }
 
@@ -118,21 +112,29 @@ export default function PostSpotlight() {
   const [query, setQuery] = useState("");
   const deferredQuery = useDeferredValue(query.trim());
 
-  const actions: SpotlightActionData[] = getAllPosts().map((post) => ({
-    children: <PostSpotlightActionContent post={post} query={deferredQuery} />,
-    id: post.slug,
-    keywords: [post.category, post.series, ...post.tags, post.slug].filter(
-      (item): item is string => Boolean(item),
-    ),
-    label: post.title,
-    description: post.tags.join(" / "),
-    onClick: () => navigate(getPostPath(post.slug)),
-  }));
+  const actions: SpotlightActionData[] = getAllPosts().map(
+    (post, ind, arr) => ({
+      children: (
+        <PostSpotlightActionContent
+          post={post}
+          query={deferredQuery}
+          isLast={ind >= SPOTLIGHT_LIMIT - 1 || arr.length - 1 === ind}
+        />
+      ),
+      id: post.slug,
+      keywords: [post.category, post.series, ...post.tags, post.slug].filter(
+        (item): item is string => Boolean(item),
+      ),
+      label: post.title,
+      description: post.tags.join(" / "),
+      onClick: () => navigate(getPostPath(post.slug)),
+    }),
+  );
 
   return (
     <Spotlight
       actions={actions}
-      limit={5}
+      limit={SPOTLIGHT_LIMIT}
       maxHeight={420}
       nothingFound="No posts found"
       onQueryChange={setQuery}

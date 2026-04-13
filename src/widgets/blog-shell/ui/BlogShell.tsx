@@ -167,6 +167,7 @@ export default function BlogShell() {
                   left: "50%",
                   transform: "translateX(-50%)",
                 }}
+                pr={isBodyScrollable ? 0 : "var(--app-scrollbar-width)"}
               >
                 {siteConfig.navigation.map((item) => (
                   <Button

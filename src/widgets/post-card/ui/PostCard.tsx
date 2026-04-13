@@ -24,8 +24,8 @@ export default function PostCard({ post, variant = "grid" }: PostCardProps) {
   const thumbnail = post.thumbnail ? toPublicAssetUrl(post.thumbnail) : null;
   const isCompact = variant === "compact";
   const postPath = getPostPath(post.slug);
-  const mediaHeight = isCompact ? 180 : { base: 220, md: 250 };
-  const mediaWidth = isCompact ? { base: "100%", md: 260 } : "100%";
+  const mediaHeight = isCompact ? "100%" : { base: 220, md: 250 };
+  const mediaWidth = isCompact ? { base: "100%", md: 280 } : "100%";
   const fallbackEyebrow = post.series ?? "Short";
   const fallbackMeta =
     post.tags.slice(0, 2).join(" / ") || `${post.readingTime} min read`;
@@ -34,6 +34,7 @@ export default function PostCard({ post, variant = "grid" }: PostCardProps) {
     <Card
       bg="var(--app-surface-1)"
       p={isCompact ? "xs" : 0}
+      h={isCompact ? { base: 260, lg: 220 } : undefined}
       shadow="sm"
       style={{
         border: "1px solid var(--app-muted-border)",
@@ -43,24 +44,14 @@ export default function PostCard({ post, variant = "grid" }: PostCardProps) {
       <Flex
         direction={isCompact ? { base: "column", md: "row" } : "column"}
         align="center"
+        h="100%"
       >
-        {
-          // <Box
-          // component={Link}
-          // display="block"
-          // h={mediaHeight}
-          // w={mediaWidth}
-          // miw={isCompact ? { md: 220 } : undefined}
-          // style={{
-          //   alignSelf: "stretch",
-          //   overflow: "hidden",
-          //   textDecoration: "none",
-          // }}
-          // to={postPath}
-          // mr="xs"
-          // >
-        }
-        <Group component={Link} h={mediaHeight} w={mediaWidth}>
+        <Group
+          component={Link}
+          h={mediaHeight}
+          w={mediaWidth}
+          pr={isCompact ? "xs" : undefined}
+        >
           {thumbnail ? (
             <Image
               alt={post.title}
