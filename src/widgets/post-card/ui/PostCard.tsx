@@ -18,20 +18,15 @@ import { FallbackCover } from "@/shared/ui";
 interface PostCardProps {
   post: PostManifestEntry;
   variant?: "grid" | "compact";
-  gridThumbnailHeight?: number;
 }
 
-export default function PostCard({
-  post,
-  variant = "grid",
-  gridThumbnailHeight = 300,
-}: PostCardProps) {
+export default function PostCard({ post, variant = "grid" }: PostCardProps) {
   const thumbnail = post.thumbnail ? toPublicAssetUrl(post.thumbnail) : null;
   const isCompact = variant === "compact";
   const postPath = getPostPath(post.slug);
-  const mediaHeight = isCompact ? 220 : { base: 220, md: gridThumbnailHeight };
-  const mediaWidth = isCompact ? { base: "100%", md: 220 } : "100%";
-  const fallbackEyebrow = post.category ?? post.series ?? "Notes";
+  const mediaHeight = isCompact ? 170 : { base: 220, md: 250 };
+  const mediaWidth = isCompact ? { base: "100%", md: 270 } : "100%";
+  const fallbackEyebrow = post.series ?? "Short";
   const fallbackMeta =
     post.tags.slice(0, 2).join(" / ") || `${post.readingTime} min read`;
 
@@ -53,6 +48,7 @@ export default function PostCard({
           component={Link}
           display="block"
           h={mediaHeight}
+          w={mediaWidth}
           miw={isCompact ? { md: 220 } : undefined}
           style={{
             alignSelf: "stretch",
@@ -60,7 +56,6 @@ export default function PostCard({
             textDecoration: "none",
           }}
           to={postPath}
-          w={mediaWidth}
           mr="xs"
         >
           {thumbnail ? (
@@ -68,9 +63,9 @@ export default function PostCard({
               alt={post.title}
               fit="cover"
               h="100%"
+              w="100%"
               radius={isCompact ? "xl" : undefined}
               src={thumbnail}
-              w="100%"
             />
           ) : (
             <FallbackCover
