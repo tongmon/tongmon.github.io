@@ -13,7 +13,7 @@ import { IconBooks, IconRefresh } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
 import { getSeriesSummaries } from "@/entities/post";
 import { toPublicAssetUrl } from "@/shared/lib/base-path/toPublicAssetUrl";
-import { formatDateTime } from "@/shared/lib/date/formatDateTime";
+import { formatDate } from "@/shared/lib/date/formatDate";
 import { getPostsPath, getSeriesDetailPath } from "@/shared/lib/routes";
 import { EmptyState, FallbackCover, PageIntro } from "@/shared/ui";
 
@@ -79,7 +79,7 @@ export default function SeriesPage() {
                     <FallbackCover
                       aside={`${series.count} post${series.count === 1 ? "" : "s"}`}
                       eyebrow="Series"
-                      meta={`Updated ${formatDateTime(series.latestUpdatedAt)}`}
+                      meta={`Updated ${formatDate(series.latestUpdatedAt)}`}
                       title={series.label}
                     />
                   )}
@@ -101,9 +101,7 @@ export default function SeriesPage() {
                   <Group c="var(--app-muted)" gap="md" wrap="wrap">
                     <Group gap={6}>
                       <IconRefresh size={16} stroke={1.8} />
-                      <Text size="sm">
-                        Updated {formatDateTime(series.latestUpdatedAt)}
-                      </Text>
+                      <Text size="sm">Updated {formatDate(series.latestUpdatedAt)}</Text>
                     </Group>
                     <Group gap={6}>
                       <IconBooks size={16} stroke={1.8} />
@@ -112,10 +110,6 @@ export default function SeriesPage() {
                       </Text>
                     </Group>
                   </Group>
-
-                  <Text c="var(--app-anchor)" fw={700} size="sm">
-                    Open series
-                  </Text>
                 </Stack>
               </Paper>
             </UnstyledButton>
