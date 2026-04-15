@@ -37,7 +37,7 @@ import { PostSpotlight } from "@/features/post-search";
 import { ThemeToggle } from "@/features/theme-toggle";
 import { siteConfig } from "@/shared/config/site";
 import { getPostsPath, getTagPath } from "@/shared/lib/routes";
-import pixelateProfile from "@/assets/images/pictures/profile_pixelate.png";
+import profileImg from "@/assets/images/pictures/profile_detailed.png";
 import { useIsMobileViewport } from "@/shared/lib/useIsMobileViewport";
 
 function isNavigationItemActive(currentPath: string, href: string) {
@@ -260,10 +260,11 @@ export default function BlogShell() {
               >
                 <Stack gap={0} align="center" mb="xl">
                   <Avatar
-                    src={pixelateProfile}
+                    src={profileImg}
                     alt="it's me"
-                    size="xl"
+                    size={isMobileViewport ? "xl" : "150"}
                     mb="xs"
+                    radius="md"
                     renderRoot={(props) => <Link {...props} to="/" />}
                     onClick={close}
                   />

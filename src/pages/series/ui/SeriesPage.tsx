@@ -41,7 +41,7 @@ export default function SeriesPage() {
         title="Browse by series"
       />
 
-      <SimpleGrid cols={{ base: 1, md: 2 }} spacing={{ base: "md", md: "xl" }}>
+      <SimpleGrid cols={{ base: 1, md: 1 }} spacing={{ base: "md", md: "xl" }}>
         {seriesSummaries.map((series) => {
           const coverImage = series.thumbnail
             ? toPublicAssetUrl(series.thumbnail)
@@ -101,7 +101,9 @@ export default function SeriesPage() {
                   <Group c="var(--app-muted)" gap="md" wrap="wrap">
                     <Group gap={6}>
                       <IconRefresh size={16} stroke={1.8} />
-                      <Text size="sm">Updated {formatDate(series.latestUpdatedAt)}</Text>
+                      <Text size="sm">
+                        Updated {formatDate(series.latestUpdatedAt)}
+                      </Text>
                     </Group>
                     <Group gap={6}>
                       <IconBooks size={16} stroke={1.8} />
