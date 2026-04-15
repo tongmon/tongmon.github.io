@@ -47,10 +47,10 @@ export default function PostCard({ post, variant = "grid" }: PostCardProps) {
         h="100%"
       >
         <Group
-          component={Link}
           h={mediaHeight}
           w={mediaWidth}
           pr={isCompact ? "xs" : undefined}
+          renderRoot={(props) => <Link {...props} to={postPath} />}
         >
           {thumbnail ? (
             <Image

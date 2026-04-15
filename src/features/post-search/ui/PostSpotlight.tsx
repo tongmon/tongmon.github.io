@@ -1,20 +1,21 @@
-import { useDeferredValue, useState } from "react";
+import { useDeferredValue, useState, Fragment } from "react";
 import {
   Badge,
   Box,
   Divider,
-  Group,
   Image,
   OverflowList,
+  Paper,
   Stack,
   Text,
 } from "@mantine/core";
 import { Spotlight, type SpotlightActionData } from "@mantine/spotlight";
-import { IconSearch } from "@tabler/icons-react";
+import { IconPhotoOff, IconSearch } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
 import { getAllPosts, type PostManifestEntry } from "@/entities/post";
 import { toPublicAssetUrl } from "@/shared/lib/base-path/toPublicAssetUrl";
 import { getPostPath } from "@/shared/lib/routes";
+import { useIsMobileViewport } from "@/shared/lib/useIsMobileViewport";
 
 const SPOTLIGHT_LIMIT = 5;
 
@@ -37,7 +38,7 @@ function PostSpotlightActionPreview({
         overflow: "hidden",
       }}
       w="100%"
-      h={{ base: 150, md: 250 }}
+      h={{ base: 150, md: 260 }}
     >
       {thumbnail ? (
         <Image
@@ -48,15 +49,19 @@ function PostSpotlightActionPreview({
           src={toPublicAssetUrl(thumbnail)}
         />
       ) : (
-        <Group
-          c="var(--app-muted)"
+        <Paper
           h="100%"
-          justify="center"
           w="100%"
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+          bg="transparent"
           bd="1px solid var(--app-muted-border)"
         >
-          <IconSearch size={18} />
-        </Group>
+          <IconPhotoOff size={80} color="var(--app-muted)" />
+        </Paper>
       )}
     </Box>
   );
@@ -65,11 +70,9 @@ function PostSpotlightActionPreview({
 function PostSpotlightActionContent({
   post,
   query,
-  isLast,
 }: {
   post: PostManifestEntry;
   query: string;
-  isLast: boolean;
 }) {
   return (
     <Stack w="100%" gap="xs">
@@ -102,7 +105,6 @@ function PostSpotlightActionContent({
         w="100%"
         px="xs"
       />
-      {!isLast && <Divider my="xs" variant="dashed" size="sm" />}
     </Stack>
   );
 }
@@ -111,25 +113,29 @@ export default function PostSpotlight() {
   const navigate = useNavigate();
   const [query, setQuery] = useState("");
   const deferredQuery = useDeferredValue(query.trim());
+  const isMobileViewport = useIsMobileViewport();
 
-  const actions: SpotlightActionData[] = getAllPosts().map(
-    (post, ind, arr) => ({
-      children: (
-        <PostSpotlightActionContent
-          post={post}
-          query={deferredQuery}
-          isLast={ind >= SPOTLIGHT_LIMIT - 1 || arr.length - 1 === ind}
-        />
-      ),
-      id: post.slug,
-      keywords: [post.category, post.series, ...post.tags, post.slug].filter(
-        (item): item is string => Boolean(item),
-      ),
-      label: post.title,
-      description: post.tags.join(" / "),
-      onClick: () => navigate(getPostPath(post.slug)),
-    }),
-  );
+  const actions: SpotlightActionData[] = getAllPosts().map((post, ind) => ({
+    children: (
+      <Stack gap="xs">
+        {ind !== 0 && (
+          <Divider
+            mb="calc(var(--mantine-spacing-xs) / 2)"
+            variant="dashed"
+            size="sm"
+          />
+        )}
+        <PostSpotlightActionContent post={post} query={deferredQuery} />
+      </Stack>
+    ),
+    id: post.slug,
+    keywords: [post.category, post.series, ...post.tags, post.slug].filter(
+      (item): item is string => Boolean(item),
+    ),
+    label: post.title,
+    description: post.tags.join(" / "),
+    onClick: () => navigate(getPostPath(post.slug)),
+  }));
 
   return (
     <Spotlight
@@ -146,7 +152,7 @@ export default function PostSpotlight() {
         size: "md",
       }}
       shortcut="mod + K"
-      size="xl"
+      size={isMobileViewport ? "xl" : "lg"}
     />
   );
 }

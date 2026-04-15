@@ -272,7 +272,7 @@ export default function BlogShell() {
                     Focus on what you can control.
                   </Text>
                 </Stack>
-                <Stack gap="xs" mb="xs" hiddenFrom="md">
+                <Stack gap="xs" mb="lg" hiddenFrom="md">
                   <Text c="var(--app-muted)" fw={700} size="xs" tt="uppercase">
                     Sections
                   </Text>
