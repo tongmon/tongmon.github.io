@@ -35,9 +35,8 @@ export default function SeriesDetailPage() {
         title={seriesSummary.label}
       />
 
-      <Text c="var(--app-muted)" size="sm">
-        {seriesSummary.count} post{seriesSummary.count === 1 ? "" : "s"} in this
-        series. Latest update {formatDateTime(seriesSummary.latestUpdatedAt)}.
+      <Text c="var(--app-muted)" style={{ whiteSpace: "pre-wrap" }} size="sm">
+        {`${seriesSummary.count} post${seriesSummary.count === 1 ? "" : "s"} in this series.\nLatest update ${formatDateTime(seriesSummary.latestUpdatedAt)}`}
       </Text>
 
       <Stack gap="lg">

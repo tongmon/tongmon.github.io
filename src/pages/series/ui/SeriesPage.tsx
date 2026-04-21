@@ -2,6 +2,7 @@ import {
   Box,
   Group,
   Image,
+  Pagination,
   Paper,
   SimpleGrid,
   Stack,
@@ -10,15 +11,39 @@ import {
   UnstyledButton,
 } from "@mantine/core";
 import { IconBooks, IconRefresh } from "@tabler/icons-react";
-import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { Link, useSearchParams } from "react-router-dom";
 import { getSeriesSummaries } from "@/entities/post";
 import { toPublicAssetUrl } from "@/shared/lib/base-path/toPublicAssetUrl";
 import { formatDate } from "@/shared/lib/date/formatDate";
+import {
+  buildPageSearchParams,
+  paginateItems,
+  parsePageParam,
+} from "@/shared/lib/pagination";
 import { getPostsPath, getSeriesDetailPath } from "@/shared/lib/routes";
 import { EmptyState, FallbackCover, PageIntro } from "@/shared/ui";
 
 export default function SeriesPage() {
+  const [searchParams, setSearchParams] = useSearchParams();
   const seriesSummaries = getSeriesSummaries();
+  const requestedPage = parsePageParam(searchParams.get("page"));
+  const {
+    currentPage,
+    pageItems: visibleSeries,
+    totalPages,
+  } = paginateItems(seriesSummaries, requestedPage);
+
+  useEffect(() => {
+    const normalizedSearchParams = buildPageSearchParams(
+      searchParams,
+      currentPage,
+    );
+
+    if (normalizedSearchParams.toString() !== searchParams.toString()) {
+      setSearchParams(normalizedSearchParams, { replace: true });
+    }
+  }, [currentPage, searchParams, setSearchParams]);
 
   if (seriesSummaries.length === 0) {
     return (
@@ -41,83 +66,103 @@ export default function SeriesPage() {
         title="Browse by series"
       />
 
-      <SimpleGrid cols={{ base: 1, md: 1 }} spacing={{ base: "md", md: "xl" }}>
-        {seriesSummaries.map((series) => {
-          const coverImage = series.thumbnail
-            ? toPublicAssetUrl(series.thumbnail)
-            : null;
+      <Stack gap="lg">
+        <SimpleGrid
+          cols={{ base: 1, md: 1 }}
+          spacing={{ base: "md", md: "xl" }}
+        >
+          {visibleSeries.map((series) => {
+            const coverImage = series.thumbnail
+              ? toPublicAssetUrl(series.thumbnail)
+              : null;
 
-          return (
-            <UnstyledButton
-              component={Link}
-              key={series.slug}
-              style={{
-                color: "inherit",
-                display: "block",
-                textDecoration: "none",
-              }}
-              to={getSeriesDetailPath(series.label)}
-            >
-              <Paper
-                bg="var(--app-surface-1)"
-                shadow="sm"
+            return (
+              <UnstyledButton
+                component={Link}
+                key={series.slug}
                 style={{
-                  border: "1px solid var(--app-muted-border)",
-                  overflow: "hidden",
+                  color: "inherit",
+                  display: "block",
+                  textDecoration: "none",
                 }}
+                to={getSeriesDetailPath(series.label)}
               >
-                <Box h={{ base: 220, md: 300 }} style={{ overflow: "hidden" }}>
-                  {coverImage ? (
-                    <Image
-                      alt={series.label}
-                      fit="cover"
-                      h="100%"
-                      src={coverImage}
-                      w="100%"
-                    />
-                  ) : (
-                    <FallbackCover
-                      aside={`${series.count} post${series.count === 1 ? "" : "s"}`}
-                      eyebrow="Series"
-                      meta={`Updated ${formatDate(series.latestUpdatedAt)}`}
-                      title={series.label}
-                    />
-                  )}
-                </Box>
+                <Paper
+                  bg="var(--app-surface-1)"
+                  shadow="sm"
+                  style={{
+                    border: "1px solid var(--app-muted-border)",
+                    overflow: "hidden",
+                  }}
+                >
+                  <Box
+                    h={{ base: 220, md: 300 }}
+                    style={{ overflow: "hidden" }}
+                  >
+                    {coverImage ? (
+                      <Image
+                        alt={series.label}
+                        fit="cover"
+                        h="100%"
+                        src={coverImage}
+                        w="100%"
+                      />
+                    ) : (
+                      <FallbackCover
+                        aside={`${series.count} post${series.count === 1 ? "" : "s"}`}
+                        eyebrow="Series"
+                        meta={`Updated ${formatDate(series.latestUpdatedAt)}`}
+                        title={series.label}
+                      />
+                    )}
+                  </Box>
 
-                <Stack gap="lg" p="xl">
-                  <Stack gap="xs">
-                    <Text
-                      c="var(--app-muted)"
-                      fw={700}
-                      size="xs"
-                      tt="uppercase"
-                    >
-                      Series
-                    </Text>
-                    <Title order={2}>{series.label}</Title>
+                  <Stack gap="lg" p="xl">
+                    <Stack gap="xs">
+                      <Text
+                        c="var(--app-muted)"
+                        fw={700}
+                        size="xs"
+                        tt="uppercase"
+                      >
+                        Series
+                      </Text>
+                      <Title order={2}>{series.label}</Title>
+                    </Stack>
+
+                    <Group c="var(--app-muted)" gap="md" wrap="wrap">
+                      <Group gap={6}>
+                        <IconRefresh size={16} stroke={1.8} />
+                        <Text size="sm">
+                          Updated {formatDate(series.latestUpdatedAt)}
+                        </Text>
+                      </Group>
+                      <Group gap={6}>
+                        <IconBooks size={16} stroke={1.8} />
+                        <Text size="sm">
+                          {series.count} post{series.count === 1 ? "" : "s"}
+                        </Text>
+                      </Group>
+                    </Group>
                   </Stack>
+                </Paper>
+              </UnstyledButton>
+            );
+          })}
+        </SimpleGrid>
 
-                  <Group c="var(--app-muted)" gap="md" wrap="wrap">
-                    <Group gap={6}>
-                      <IconRefresh size={16} stroke={1.8} />
-                      <Text size="sm">
-                        Updated {formatDate(series.latestUpdatedAt)}
-                      </Text>
-                    </Group>
-                    <Group gap={6}>
-                      <IconBooks size={16} stroke={1.8} />
-                      <Text size="sm">
-                        {series.count} post{series.count === 1 ? "" : "s"}
-                      </Text>
-                    </Group>
-                  </Group>
-                </Stack>
-              </Paper>
-            </UnstyledButton>
-          );
-        })}
-      </SimpleGrid>
+        {totalPages > 1 ? (
+          <Group justify="center">
+            <Pagination
+              onChange={(page) =>
+                setSearchParams(buildPageSearchParams(searchParams, page))
+              }
+              total={totalPages}
+              value={currentPage}
+            />
+          </Group>
+        ) : null}
+      </Stack>
     </Stack>
   );
 }
