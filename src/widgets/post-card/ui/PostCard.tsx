@@ -74,11 +74,6 @@ export default function PostCard({ post, variant = "grid" }: PostCardProps) {
         </Group>
         <Stack gap="md" p={isCompact ? "xs" : "lg"} style={{ flex: 1 }}>
           <Stack gap={8}>
-            {post.category ? (
-              <Text c="var(--app-muted)" fw={700} size="xs" tt="uppercase">
-                {post.category}
-              </Text>
-            ) : null}
             <Title
               order={isCompact ? 4 : 3}
               renderRoot={(props) => <Link {...props} to={postPath} />}

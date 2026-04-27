@@ -43,7 +43,7 @@ export default function PostFilters({ availableTags }: PostFiltersProps) {
             onChange={(event) => {
               setSearchQuery(event.currentTarget.value);
             }}
-            placeholder="Search by title, description, category, or tag"
+            placeholder="Search by title, description, or tag"
             radius="xl"
             style={{ flex: "1 1 360px" }}
             value={searchQuery}

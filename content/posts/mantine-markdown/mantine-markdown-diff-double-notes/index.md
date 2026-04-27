@@ -6,7 +6,6 @@ tags:
   - Markdown
   - Zustand
   - TypeScript
-category: Frontend
 series: Build log
 seriesOrder: 4
 ---

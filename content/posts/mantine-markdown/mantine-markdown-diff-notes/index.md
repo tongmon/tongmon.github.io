@@ -6,7 +6,6 @@ tags:
   - Markdown
   - Zustand
   - TypeScript
-category: Frontend
 thumbnail: ./cover.jpg
 series: Build log
 seriesOrder: 3

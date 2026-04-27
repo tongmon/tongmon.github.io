@@ -5,7 +5,6 @@ publishedAt: "2026-04-01T08:00:00+09:00"
 tags:
   - Draft
   - Routing
-category: Lab
 thumbnail: ./cover.png
 draft: false
 series: Build Some

@@ -12,7 +12,6 @@ export const postsManifest: PostManifestEntry[] = [
       "Mantine",
       "GitHub Pages"
     ],
-    "category": "Engineering",
     "thumbnail": "content/posts/building-a-static-blog/cover.png",
     "draft": false,
     "series": "Build log",
@@ -30,7 +29,6 @@ export const postsManifest: PostManifestEntry[] = [
       "Zustand",
       "TypeScript"
     ],
-    "category": "Frontend",
     "draft": false,
     "series": "Build log",
     "seriesOrder": 4,
@@ -47,7 +45,6 @@ export const postsManifest: PostManifestEntry[] = [
       "Zustand",
       "TypeScript"
     ],
-    "category": "Frontend",
     "thumbnail": "content/posts/mantine-markdown-diff-notes/cover.jpg",
     "draft": false,
     "series": "Build log",
@@ -65,7 +62,6 @@ export const postsManifest: PostManifestEntry[] = [
       "Zustand",
       "TypeScript"
     ],
-    "category": "Frontend",
     "thumbnail": "content/posts/mantine-markdown-notes/cover.png",
     "draft": false,
     "series": "Build log",
@@ -83,7 +79,6 @@ export const postsManifest: PostManifestEntry[] = [
       "Zustand",
       "TypeScript"
     ],
-    "category": "Frontend",
     "thumbnail": "content/posts/mantine-markdown-diff-triple-notes/cover.png",
     "draft": false,
     "series": "Build log",
@@ -100,7 +95,6 @@ export const postsManifest: PostManifestEntry[] = [
       "Draft",
       "Routing"
     ],
-    "category": "Lab",
     "thumbnail": "content/posts/draft-routing-experiment/cover.png",
     "draft": false,
     "series": "Build Some",

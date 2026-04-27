@@ -7,7 +7,6 @@ tags:
   - React
   - Mantine
   - GitHub Pages
-category: Engineering
 thumbnail: ./cover.png
 series: Build log
 seriesOrder: 1

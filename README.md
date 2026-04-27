@@ -50,7 +50,6 @@ description: string
 publishedAt: string
 updatedAt: string?
 tags: string[]
-category: string?
 thumbnail: string?
 draft: boolean?
 series: string?

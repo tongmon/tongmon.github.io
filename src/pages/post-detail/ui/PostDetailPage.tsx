@@ -99,11 +99,6 @@ export default function PostDetailPage() {
   return (
     <Stack gap={pageGap} py={{ base: "lg", md: "xl" }}>
       <Stack gap={sectionGap}>
-        {post.category ? (
-          <Text c="var(--app-muted)" fw={700} size="xs" tt="uppercase">
-            {post.category}
-          </Text>
-        ) : null}
         <Title order={1}>{post.title}</Title>
         <Text c="var(--app-muted)" maw={760} size={descriptionSize}>
           {post.description}

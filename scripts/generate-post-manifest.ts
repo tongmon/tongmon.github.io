@@ -50,7 +50,6 @@ const frontmatterSchema = z.object({
   publishedAt: isoDateWithTimezone,
   updatedAt: isoDateWithTimezone.optional(),
   tags: z.array(z.string().min(1)).min(1),
-  category: z.string().min(1).optional(),
   thumbnail: z.string().min(1).optional(),
   draft: z.boolean().optional().default(false),
   series: z.string().min(1).optional(),
@@ -67,7 +66,6 @@ interface PostManifestRecord {
   publishedAt: string;
   updatedAt?: string;
   tags: string[];
-  category?: string;
   thumbnail?: string;
   draft: boolean;
   series?: string;
@@ -189,7 +187,6 @@ function getPostManifestRecord(postDirectory: string): PostManifestRecord {
     publishedAt: frontmatter.publishedAt,
     updatedAt: frontmatter.updatedAt,
     tags: frontmatter.tags,
-    category: frontmatter.category,
     thumbnail: frontmatter.thumbnail
       ? path.posix.join(
           "content",

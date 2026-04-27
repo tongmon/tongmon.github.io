@@ -10,8 +10,8 @@ import App from "@/app/App";
 // 11. 블로그 카드에서 태그 누르면 해당 태그로 이동시키기
 // 11. fallback cover 내부 ui 개선
 // 1. tag page 레이아웃 개선점 생각하기 -> 애니메이션을 넣어서 개선 가능
-// 1. giscus 사용해서 댓글 기능 구현
-// 1. 카테고리 제거 고려
+// 1. description이 없다면 해당 md 파일에서 자동으로 특정 문단 발췌해 사용하는 것 고려
+// 1. 시리즈 디테일 페이지 페이지네이션 적용
 // 17. 다국어 지원도 가능한지 -> 선택
 
 ReactDOM.createRoot(document.getElementById("root")!).render(

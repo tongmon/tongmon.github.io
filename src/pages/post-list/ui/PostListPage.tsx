@@ -21,7 +21,7 @@ export default function PostListPage() {
   const filteredPosts = posts.filter((post) => {
     const matchesQuery =
       normalizedQuery.length === 0 ||
-      [post.title, post.description, post.category, post.series, ...post.tags]
+      [post.title, post.description, post.series, ...post.tags]
         .filter(Boolean)
         .some((value) => value?.toLowerCase().includes(normalizedQuery));
 

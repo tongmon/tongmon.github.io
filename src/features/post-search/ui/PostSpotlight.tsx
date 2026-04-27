@@ -129,7 +129,7 @@ export default function PostSpotlight() {
       </Stack>
     ),
     id: post.slug,
-    keywords: [post.category, post.series, ...post.tags, post.slug].filter(
+    keywords: [post.series, ...post.tags, post.slug].filter(
       (item): item is string => Boolean(item),
     ),
     label: post.title,
