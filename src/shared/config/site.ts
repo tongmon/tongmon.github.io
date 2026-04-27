@@ -29,4 +29,19 @@ export const siteConfig = {
     { label: "Series", href: getSeriesPath() },
     { label: "About", href: getAboutPath() },
   ],
+  giscus: {
+    repo: "tongmon/tongmon.github.io",
+    repoId: "R_kgDOOkrMQg",
+    category: "Announcements",
+    categoryId: "DIC_kwDOOkrMQs4C7gZb",
+    mapping: "pathname",
+    strict: "1",
+    reactionsEnabled: "0",
+    emitMetadata: "1",
+    inputPosition: "top",
+    lang: "en",
+    loading: "eager", // eager | lazy
+    lightTheme: "light",
+    darkTheme: "dark",
+  },
 } as const;

@@ -66,27 +66,16 @@ export default function SeriesCard({ series }: SeriesCardProps) {
             >
               {series.label}
             </Title>
-            <Group gap="xs" visibleFrom="lg">
+            <Group gap="md" wrap="wrap">
               <Group gap={6}>
                 <IconRefresh size={16} stroke={1.8} />
                 <Text size="sm">{updatedLabel}</Text>
               </Group>
-              <IconPacmanFilled size={8} />
               <Group gap={6}>
                 <IconBooks size={16} stroke={1.8} />
                 <Text size="sm">{seriesCountLabel}</Text>
               </Group>
             </Group>
-            <Stack gap="xs" hiddenFrom="lg">
-              <Group gap={6}>
-                <IconRefresh size={16} stroke={1.8} />
-                <Text size="sm">{updatedLabel}</Text>
-              </Group>
-              <Group gap={6}>
-                <IconBooks size={16} stroke={1.8} />
-                <Text size="sm">{seriesCountLabel}</Text>
-              </Group>
-            </Stack>
           </Stack>
         </Group>
       </Stack>

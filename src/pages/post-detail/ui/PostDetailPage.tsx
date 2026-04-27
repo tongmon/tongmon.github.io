@@ -25,6 +25,7 @@ import {
 import { toPublicAssetUrl } from "@/shared/lib/base-path/toPublicAssetUrl";
 import { getPostsPath } from "@/shared/lib/routes";
 import { EmptyState } from "@/shared/ui";
+import { GiscusComments } from "@/widgets/giscus-comments";
 import { MarkdownViewer } from "@/widgets/markdown-viewer";
 import { PostCard } from "@/widgets/post-card";
 import { SeriesPostNavigation } from "@/widgets/series-post-navigation";
@@ -34,6 +35,7 @@ import { useIsMobileViewport } from "@/shared/lib/useIsMobileViewport";
 export default function PostDetailPage() {
   const { slug } = useParams();
   const post = slug ? getPostBySlug(slug) : null;
+  const [commentCount, setCommentCount] = useState(0);
   const [loadedPost, setLoadedPost] = useState<LoadedPost | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const isMobileViewport = useIsMobileViewport();
@@ -48,6 +50,7 @@ export default function PostDetailPage() {
     let active = true;
 
     if (!post) {
+      setCommentCount(0);
       setLoadedPost(null);
       setErrorMessage(null);
       return () => {
@@ -55,6 +58,7 @@ export default function PostDetailPage() {
       };
     }
 
+    setCommentCount(0);
     setLoadedPost(null);
     setErrorMessage(null);
 
@@ -105,6 +109,7 @@ export default function PostDetailPage() {
           {post.description}
         </Text>
         <PostMeta
+          commentCount={commentCount}
           publishedAt={post.publishedAt}
           readingTime={post.readingTime}
           updatedAt={post.updatedAt}
@@ -168,6 +173,11 @@ export default function PostDetailPage() {
       {seriesNavigation ? (
         <SeriesPostNavigation navigation={seriesNavigation} />
       ) : null}
+
+      <GiscusComments
+        onCommentCountChange={setCommentCount}
+        pageKey={post.slug}
+      />
 
       {relatedPosts.length > 0 ? (
         <Stack gap={relatedGap}>
