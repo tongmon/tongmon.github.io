@@ -54,8 +54,8 @@ export const postsManifest: PostManifestEntry[] = [
   },
   {
     "slug": "mantine-markdown-notes",
-    "title": "Making markdown feel native in a Mantine blog",
-    "description": "Rendering markdown well is less about adding every plugin in sight and more about choosing a restrained pipeline with good defaults.",
+    "title": "Making markdown feel native!",
+    "description": "The core stack here is intentionally narrow:",
     "publishedAt": "2026-04-02T20:30:00+09:00",
     "tags": [
       "Markdown",

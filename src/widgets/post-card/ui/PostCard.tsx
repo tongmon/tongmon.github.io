@@ -72,7 +72,12 @@ export default function PostCard({ post, variant = "grid" }: PostCardProps) {
             />
           )}
         </Group>
-        <Stack gap="md" p={isCompact ? "xs" : "lg"} style={{ flex: 1 }}>
+        <Stack
+          gap="md"
+          p={isCompact ? "xs" : "lg"}
+          style={{ flex: 1 }}
+          w="100%"
+        >
           <Stack gap={8}>
             <Title
               order={isCompact ? 4 : 3}

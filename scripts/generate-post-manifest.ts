@@ -2,6 +2,10 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import matter from "gray-matter";
+import remarkGfm from "remark-gfm";
+import remarkParse from "remark-parse";
+import { unified } from "unified";
+import { visit } from "unist-util-visit";
 import { z } from "zod";
 import { estimateReadingTime } from "./lib/estimate-reading-time";
 
@@ -25,6 +29,7 @@ const generatedManifestFile = path.join(
   "posts-manifest.ts",
 );
 const includeDrafts = process.argv.includes("--include-drafts");
+const descriptionExcerptMaxLength = 180;
 
 const isoDateWithTimezone = z.preprocess(
   (value) => {
@@ -44,9 +49,20 @@ const isoDateWithTimezone = z.preprocess(
     ),
 );
 
+const optionalDescription = z.preprocess(
+  (value) => {
+    if (typeof value === "string" && value.trim() === "") {
+      return undefined;
+    }
+
+    return value;
+  },
+  z.string().trim().min(1).optional(),
+);
+
 const frontmatterSchema = z.object({
   title: z.string().min(1),
-  description: z.string().min(1),
+  description: optionalDescription,
   publishedAt: isoDateWithTimezone,
   updatedAt: isoDateWithTimezone.optional(),
   tags: z.array(z.string().min(1)).min(1),
@@ -77,6 +93,12 @@ interface PostManifestRecord {
 interface CollectedPost {
   postDirectory: string;
   record: PostManifestRecord;
+}
+
+interface MarkdownTextNode {
+  children?: MarkdownTextNode[];
+  type: string;
+  value?: unknown;
 }
 
 function ensureDirectory(directoryPath: string) {
@@ -116,6 +138,71 @@ function normalizeSlug(slug: string) {
   }
 
   return normalizedSlug;
+}
+
+function normalizeDescriptionText(text: string) {
+  return text.replace(/\s+/g, " ").trim();
+}
+
+function truncateDescriptionText(text: string) {
+  if (text.length <= descriptionExcerptMaxLength) {
+    return text;
+  }
+
+  const roughExcerpt = text.slice(0, descriptionExcerptMaxLength).trimEnd();
+  const lastWhitespaceIndex = roughExcerpt.lastIndexOf(" ");
+  const minimumWordBoundaryIndex = Math.floor(descriptionExcerptMaxLength * 0.6);
+  const excerpt =
+    lastWhitespaceIndex >= minimumWordBoundaryIndex
+      ? roughExcerpt.slice(0, lastWhitespaceIndex)
+      : roughExcerpt;
+
+  return `${excerpt.replace(/[.,;:!?]+$/, "")}...`;
+}
+
+function getReadableInlineText(node: MarkdownTextNode): string {
+  if (node.type === "text" || node.type === "inlineCode") {
+    return typeof node.value === "string" ? node.value : "";
+  }
+
+  if (node.type === "image" || node.type === "imageReference") {
+    return "";
+  }
+
+  if (node.type === "break") {
+    return " ";
+  }
+
+  return node.children?.map(getReadableInlineText).join("") ?? "";
+}
+
+function createDescriptionExcerpt(markdown: string, postDirectory: string) {
+  const tree = unified().use(remarkParse).use(remarkGfm).parse(markdown);
+  let excerpt = "";
+
+  visit(tree, "paragraph", (node) => {
+    if (excerpt) {
+      return;
+    }
+
+    const paragraphText = normalizeDescriptionText(
+      getReadableInlineText(node as MarkdownTextNode),
+    );
+
+    if (paragraphText) {
+      excerpt = truncateDescriptionText(paragraphText);
+    }
+  });
+
+  if (!excerpt) {
+    throw new Error(
+      `Missing description in ${toPosixRelativePath(
+        postDirectory,
+      )} and no body paragraph was found to use as an excerpt`,
+    );
+  }
+
+  return excerpt;
 }
 
 function assertAssetExists(postDirectory: string, assetPath: string) {
@@ -172,6 +259,8 @@ function getPostManifestRecord(postDirectory: string): PostManifestRecord {
   const { data, content } = matter(rawMarkdown);
   const frontmatter = frontmatterSchema.parse(data) satisfies Frontmatter;
   const slug = normalizeSlug(frontmatter.slug ?? path.basename(postDirectory));
+  const description =
+    frontmatter.description ?? createDescriptionExcerpt(content, postDirectory);
 
   if (frontmatter.thumbnail) {
     assertAssetExists(
@@ -183,7 +272,7 @@ function getPostManifestRecord(postDirectory: string): PostManifestRecord {
   return {
     slug,
     title: frontmatter.title,
-    description: frontmatter.description,
+    description,
     publishedAt: frontmatter.publishedAt,
     updatedAt: frontmatter.updatedAt,
     tags: frontmatter.tags,
