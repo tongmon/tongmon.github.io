@@ -1,18 +1,46 @@
-import { Stack, Text } from "@mantine/core";
-import { useParams } from "react-router-dom";
+import { Group, Pagination, Stack, Text } from "@mantine/core";
+import { useEffect } from "react";
+import { useParams, useSearchParams } from "react-router-dom";
 import { getPostsBySeries, getSeriesSummary } from "@/entities/post";
 import { formatDateTime } from "@/shared/lib/date/formatDateTime";
+import {
+  buildPageSearchParams,
+  paginateItems,
+  parsePageParam,
+} from "@/shared/lib/pagination";
 import { getSeriesPath } from "@/shared/lib/routes";
 import { EmptyState, PageIntro } from "@/shared/ui";
 import { PostCard } from "@/widgets/post-card";
 import { useIsMobileViewport } from "@/shared/lib/useIsMobileViewport";
 
 export default function SeriesDetailPage() {
+  const [searchParams, setSearchParams] = useSearchParams();
   const { series } = useParams();
   const seriesSlug = series ?? "";
   const seriesSummary = getSeriesSummary(seriesSlug);
   const posts = getPostsBySeries(seriesSlug);
+  const postsWithSeriesIndex = posts.map((post, index) => ({
+    fallbackSeriesOrder: index + 1,
+    post,
+  }));
+  const requestedPage = parsePageParam(searchParams.get("page"));
+  const {
+    currentPage,
+    pageItems: visiblePostItems,
+    totalPages,
+  } = paginateItems(postsWithSeriesIndex, requestedPage, 5);
   const isMobileViewport = useIsMobileViewport();
+
+  useEffect(() => {
+    const normalizedSearchParams = buildPageSearchParams(
+      searchParams,
+      currentPage,
+    );
+
+    if (normalizedSearchParams.toString() !== searchParams.toString()) {
+      setSearchParams(normalizedSearchParams, { replace: true });
+    }
+  }, [currentPage, searchParams, setSearchParams]);
 
   if (!seriesSummary) {
     return (
@@ -40,10 +68,10 @@ export default function SeriesDetailPage() {
       </Text>
 
       <Stack gap="lg">
-        {posts.map((post, index) => (
+        {visiblePostItems.map(({ fallbackSeriesOrder, post }) => (
           <Stack gap="xs" key={post.slug}>
             <Text c="var(--app-muted)" fw={700} size="xs" tt="uppercase">
-              Part {post.seriesOrder ?? index + 1}
+              Part {post.seriesOrder ?? fallbackSeriesOrder}
             </Text>
             <PostCard
               post={post}
@@ -51,6 +79,18 @@ export default function SeriesDetailPage() {
             />
           </Stack>
         ))}
+
+        {totalPages > 1 ? (
+          <Group justify="center">
+            <Pagination
+              onChange={(page) =>
+                setSearchParams(buildPageSearchParams(searchParams, page))
+              }
+              total={totalPages}
+              value={currentPage}
+            />
+          </Group>
+        ) : null}
       </Stack>
     </Stack>
   );
