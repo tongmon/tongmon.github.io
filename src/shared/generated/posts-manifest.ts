@@ -55,7 +55,7 @@ export const postsManifest: PostManifestEntry[] = [
   {
     "slug": "mantine-markdown-notes",
     "title": "Making markdown feel native!",
-    "description": "The core stack here is intentionally narrow:",
+    "description": "something something something something something something somethingsomething something something something something...",
     "publishedAt": "2026-04-02T20:30:00+09:00",
     "tags": [
       "Markdown",

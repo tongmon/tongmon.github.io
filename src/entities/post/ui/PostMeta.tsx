@@ -1,4 +1,4 @@
-import { Group, Text } from "@mantine/core";
+import { Group, Text, type GroupProps } from "@mantine/core";
 import {
   IconCalendar,
   IconClock,
@@ -7,7 +7,7 @@ import {
 } from "@tabler/icons-react";
 import { formatDate } from "@/shared/lib/date/formatDate";
 
-interface PostMetaProps {
+interface PostMetaProps extends Omit<GroupProps, "children"> {
   commentCount?: number;
   publishedAt: string;
   readingTime: number;
@@ -16,12 +16,16 @@ interface PostMetaProps {
 
 export default function PostMeta({
   commentCount,
+  c = "var(--app-muted)",
+  gap = "md",
   publishedAt,
   readingTime,
   updatedAt,
+  wrap = "wrap",
+  ...others
 }: PostMetaProps) {
   return (
-    <Group c="var(--app-muted)" gap="md" wrap="wrap">
+    <Group c={c} gap={gap} wrap={wrap} {...others}>
       <Group gap={6}>
         <IconCalendar size={16} stroke={1.8} />
         <Text size="sm">{formatDate(publishedAt)}</Text>

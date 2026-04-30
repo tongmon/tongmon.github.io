@@ -89,7 +89,9 @@ export default function PostCard({ post, variant = "grid" }: PostCardProps) {
               c="var(--app-muted)"
               component={Link}
               size="sm"
-              style={{ textDecoration: "none" }}
+              style={{
+                textDecoration: "none",
+              }}
               to={postPath}
             >
               {post.description}
@@ -100,6 +102,7 @@ export default function PostCard({ post, variant = "grid" }: PostCardProps) {
             publishedAt={post.publishedAt}
             readingTime={post.readingTime}
             updatedAt={post.updatedAt}
+            mt="auto"
           />
 
           <Group>

@@ -12,6 +12,7 @@ seriesOrder: 2
 
 ## Start with the renderer, not the CSS
 
+something something something something something something somethingsomething something something something something something somethingsomething something something something something something somethingsomething something something something something something somethingsomething something something something something something somethingsomething something something something something something something
 The core stack here is intentionally narrow:
 
 1. `react-markdown` for rendering

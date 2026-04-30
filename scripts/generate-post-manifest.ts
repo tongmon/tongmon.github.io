@@ -29,7 +29,7 @@ const generatedManifestFile = path.join(
   "posts-manifest.ts",
 );
 const includeDrafts = process.argv.includes("--include-drafts");
-const descriptionExcerptMaxLength = 180;
+const descriptionExcerptMaxLength = 120;
 
 const isoDateWithTimezone = z.preprocess(
   (value) => {
@@ -49,16 +49,15 @@ const isoDateWithTimezone = z.preprocess(
     ),
 );
 
-const optionalDescription = z.preprocess(
-  (value) => {
+const optionalDescription = z
+  .preprocess((value) => {
     if (typeof value === "string" && value.trim() === "") {
       return undefined;
     }
 
     return value;
-  },
-  z.string().trim().min(1).optional(),
-);
+  }, z.string().trim().min(1).optional())
+  .optional();
 
 const frontmatterSchema = z.object({
   title: z.string().min(1),
@@ -151,7 +150,9 @@ function truncateDescriptionText(text: string) {
 
   const roughExcerpt = text.slice(0, descriptionExcerptMaxLength).trimEnd();
   const lastWhitespaceIndex = roughExcerpt.lastIndexOf(" ");
-  const minimumWordBoundaryIndex = Math.floor(descriptionExcerptMaxLength * 0.6);
+  const minimumWordBoundaryIndex = Math.floor(
+    descriptionExcerptMaxLength * 0.6,
+  );
   const excerpt =
     lastWhitespaceIndex >= minimumWordBoundaryIndex
       ? roughExcerpt.slice(0, lastWhitespaceIndex)
