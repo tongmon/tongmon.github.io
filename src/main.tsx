@@ -9,7 +9,7 @@ import App from "@/app/App";
 
 // 11. fallback cover 내부 ui 개선
 // 1. about page 개선
-// 1. tag page 레이아웃 개선점 생각하기 -> 애니메이션을 넣어서 개선 가능
+// 1. post detail page에 애니메이션 적용
 // 17. 다국어 지원도 가능한지 -> 선택
 
 ReactDOM.createRoot(document.getElementById("root")!).render(

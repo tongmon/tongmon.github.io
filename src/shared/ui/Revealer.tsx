@@ -25,22 +25,11 @@ interface RevealerProps extends Omit<BoxProps, "style">, NativeDivProps {
   viewportMargin?: string;
 }
 
-const REVEAL_DELAY_GAP = 80;
-const ODD_CARD_REVEAL_DELAY = 40;
-const EVEN_CARD_REVEAL_DELAY = ODD_CARD_REVEAL_DELAY + REVEAL_DELAY_GAP;
+const REVEAL_DELAY_BASE = 40;
+const REVEAL_DELAY_STEP = 80;
 
-export function getSequentialRevealDelay(index: number) {
-  return ODD_CARD_REVEAL_DELAY + index * REVEAL_DELAY_GAP;
-}
-
-export function getRevealDelay(index: number, columns = 1) {
-  if (columns <= 1) {
-    return ODD_CARD_REVEAL_DELAY;
-  }
-
-  const cardNumber = index + 1;
-
-  return cardNumber % 2 === 1 ? ODD_CARD_REVEAL_DELAY : EVEN_CARD_REVEAL_DELAY;
+export function getRevealDelay(index: number) {
+  return REVEAL_DELAY_BASE + index * REVEAL_DELAY_STEP;
 }
 
 const BoxRoot = forwardRef<HTMLDivElement, RevealerProps>(

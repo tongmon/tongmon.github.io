@@ -8,15 +8,12 @@ import {
   parsePageParam,
 } from "@/shared/lib/pagination";
 import { getPostsPath } from "@/shared/lib/routes";
-import { useIsMobileViewport } from "@/shared/lib/useIsMobileViewport";
 import { EmptyState, getRevealDelay, PageIntro, Revealer } from "@/shared/ui";
 import { PostCard } from "@/widgets/post-card";
 
 export default function TagPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const { tag } = useParams();
-  const isMobileViewport = useIsMobileViewport();
-  const revealColumns = isMobileViewport ? 1 : 2;
   const tagSlug = tag ?? "";
   const tagSummary = getTagSummary(tagSlug);
   const posts = getPostsByTag(tagSlug);
@@ -65,10 +62,7 @@ export default function TagPage() {
           spacing={{ base: "md", md: "xl" }}
         >
           {visiblePosts.map((post, index) => (
-            <Revealer
-              delay={getRevealDelay(index, revealColumns)}
-              key={post.slug}
-            >
+            <Revealer delay={getRevealDelay(index)} key={post.slug}>
               <PostCard post={post} />
             </Revealer>
           ))}

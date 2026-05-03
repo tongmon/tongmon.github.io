@@ -8,15 +8,12 @@ import {
   parsePageParam,
 } from "@/shared/lib/pagination";
 import { getPostsPath } from "@/shared/lib/routes";
-import { useIsMobileViewport } from "@/shared/lib/useIsMobileViewport";
 import { EmptyState, getRevealDelay, PageIntro, Revealer } from "@/shared/ui";
 import { SeriesCard } from "@/widgets/series-card";
 
 export default function SeriesPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const seriesSummaries = getSeriesSummaries();
-  const isMobileViewport = useIsMobileViewport();
-  const revealColumns = isMobileViewport ? 1 : 2;
   const requestedPage = parsePageParam(searchParams.get("page"));
   const {
     currentPage,
@@ -62,10 +59,7 @@ export default function SeriesPage() {
           spacing={{ base: "md", md: "xl" }}
         >
           {visibleSeries.map((series, index) => (
-            <Revealer
-              delay={getRevealDelay(index, revealColumns)}
-              key={series.slug}
-            >
+            <Revealer delay={getRevealDelay(index)} key={series.slug}>
               <SeriesCard series={series} />
             </Revealer>
           ))}

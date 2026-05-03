@@ -10,16 +10,11 @@ import {
 } from "@/shared/lib/pagination";
 import { getSeriesPath } from "@/shared/lib/routes";
 import { useIsMobileViewport } from "@/shared/lib/useIsMobileViewport";
-import {
-  EmptyState,
-  getSequentialRevealDelay,
-  PageIntro,
-  Revealer,
-} from "@/shared/ui";
+import { EmptyState, getRevealDelay, PageIntro, Revealer } from "@/shared/ui";
 import { PostCard } from "@/widgets/post-card";
 
 const SERIES_DETAIL_PAGE_LIMIT = 5;
-const SERIES_DETAIL_REVEAL_VIEWPORT_AMOUNT = 0.45;
+// const SERIES_DETAIL_REVEAL_VIEWPORT_AMOUNT = "some"; // 0.45
 const SERIES_DETAIL_REVEAL_VIEWPORT_MARGIN = "0px";
 
 export default function SeriesDetailPage() {
@@ -83,10 +78,10 @@ export default function SeriesDetailPage() {
       <Stack gap="lg">
         {visiblePostItems.map(({ fallbackSeriesOrder, post }, index) => (
           <Revealer
-            delay={getSequentialRevealDelay(index)}
+            delay={getRevealDelay(index)}
             from={isMobileViewport ? "bottom" : "right"}
             key={post.slug}
-            viewportAmount={SERIES_DETAIL_REVEAL_VIEWPORT_AMOUNT}
+            // viewportAmount={SERIES_DETAIL_REVEAL_VIEWPORT_AMOUNT}
             viewportMargin={SERIES_DETAIL_REVEAL_VIEWPORT_MARGIN}
           >
             <Stack gap="xs">

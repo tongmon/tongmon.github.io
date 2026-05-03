@@ -9,7 +9,6 @@ import {
   parsePageParam,
 } from "@/shared/lib/pagination";
 import { toKebabCase } from "@/shared/lib/text/toKebabCase";
-import { useIsMobileViewport } from "@/shared/lib/useIsMobileViewport";
 import { EmptyState, getRevealDelay, PageIntro, Revealer } from "@/shared/ui";
 import { PostCard } from "@/widgets/post-card";
 
@@ -17,8 +16,6 @@ export default function PostListPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const posts = getAllPosts();
   const { searchQuery, selectedTag, viewMode } = usePostFiltersStore();
-  const isMobileViewport = useIsMobileViewport();
-  const revealColumns = isMobileViewport ? 1 : 2;
   const normalizedQuery = searchQuery.trim().toLowerCase();
 
   const filteredPosts = posts.filter((post) => {
@@ -67,10 +64,7 @@ export default function PostListPage() {
             spacing={{ base: "md", md: "xl" }}
           >
             {visiblePosts.map((post, index) => (
-              <Revealer
-                delay={getRevealDelay(index, revealColumns)}
-                key={post.slug}
-              >
+              <Revealer delay={getRevealDelay(index)} key={post.slug}>
                 <PostCard post={post} variant={viewMode} />
               </Revealer>
             ))}
