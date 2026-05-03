@@ -8,12 +8,15 @@ import {
   parsePageParam,
 } from "@/shared/lib/pagination";
 import { getPostsPath } from "@/shared/lib/routes";
-import { EmptyState, PageIntro } from "@/shared/ui";
+import { useIsMobileViewport } from "@/shared/lib/useIsMobileViewport";
+import { EmptyState, getRevealDelay, PageIntro, Revealer } from "@/shared/ui";
 import { PostCard } from "@/widgets/post-card";
 
 export default function TagPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const { tag } = useParams();
+  const isMobileViewport = useIsMobileViewport();
+  const revealColumns = isMobileViewport ? 1 : 2;
   const tagSlug = tag ?? "";
   const tagSummary = getTagSummary(tagSlug);
   const posts = getPostsByTag(tagSlug);
@@ -61,8 +64,13 @@ export default function TagPage() {
           cols={{ base: 1, md: 2 /*, xl: 2*/ }}
           spacing={{ base: "md", md: "xl" }}
         >
-          {visiblePosts.map((post) => (
-            <PostCard key={post.slug} post={post} />
+          {visiblePosts.map((post, index) => (
+            <Revealer
+              delay={getRevealDelay(index, revealColumns)}
+              key={post.slug}
+            >
+              <PostCard post={post} />
+            </Revealer>
           ))}
         </SimpleGrid>
 

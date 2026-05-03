@@ -2,7 +2,6 @@ import {
   Alert,
   Grid,
   Group,
-  Image,
   Loader,
   Paper,
   SimpleGrid,
@@ -22,9 +21,8 @@ import {
   loadPostContent,
   type LoadedPost,
 } from "@/entities/post";
-import { toPublicAssetUrl } from "@/shared/lib/base-path/toPublicAssetUrl";
 import { getPostsPath } from "@/shared/lib/routes";
-import { EmptyState } from "@/shared/ui";
+import { EmptyState, Revealer } from "@/shared/ui";
 import { GiscusComments } from "@/widgets/giscus-comments";
 import { MarkdownViewer } from "@/widgets/markdown-viewer";
 import { PostCard } from "@/widgets/post-card";
@@ -179,11 +177,12 @@ export default function PostDetailPage() {
           <Title order={2}>Related posts</Title>
           <SimpleGrid cols={{ base: 1, xl: 2 }} spacing={relatedSpacing}>
             {relatedPosts.map((relatedPost) => (
-              <PostCard
-                key={relatedPost.slug}
-                post={relatedPost}
-                // variant="compact"
-              />
+              <Revealer key={relatedPost.slug}>
+                <PostCard
+                  post={relatedPost}
+                  // variant="compact"
+                />
+              </Revealer>
             ))}
           </SimpleGrid>
         </Stack>

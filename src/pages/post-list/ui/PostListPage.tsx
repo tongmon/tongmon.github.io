@@ -10,7 +10,7 @@ import {
 } from "@/shared/lib/pagination";
 import { toKebabCase } from "@/shared/lib/text/toKebabCase";
 import { useIsMobileViewport } from "@/shared/lib/useIsMobileViewport";
-import { EmptyState, getRevealDelay, PageIntro } from "@/shared/ui";
+import { EmptyState, getRevealDelay, PageIntro, Revealer } from "@/shared/ui";
 import { PostCard } from "@/widgets/post-card";
 
 export default function PostListPage() {
@@ -67,12 +67,12 @@ export default function PostListPage() {
             spacing={{ base: "md", md: "xl" }}
           >
             {visiblePosts.map((post, index) => (
-              <PostCard
+              <Revealer
+                delay={getRevealDelay(index, revealColumns)}
                 key={post.slug}
-                post={post}
-                revealDelay={getRevealDelay(index, revealColumns)}
-                variant={viewMode}
-              />
+              >
+                <PostCard post={post} variant={viewMode} />
+              </Revealer>
             ))}
           </SimpleGrid>
 

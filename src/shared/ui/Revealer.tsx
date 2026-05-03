@@ -1,5 +1,10 @@
 import { Box, type BoxProps } from "@mantine/core";
-import { motion, useReducedMotion, type MotionProps } from "framer-motion";
+import {
+  motion,
+  useReducedMotion,
+  type MotionProps,
+  type UseInViewOptions,
+} from "framer-motion";
 import {
   forwardRef,
   type ComponentPropsWithoutRef,
@@ -14,12 +19,19 @@ type NativeDivProps = Omit<
 interface RevealerProps extends Omit<BoxProps, "style">, NativeDivProps {
   children: ReactNode;
   delay?: number;
+  from?: "bottom" | "right";
   style?: MotionProps["style"];
+  viewportAmount?: UseInViewOptions["amount"];
+  viewportMargin?: string;
 }
 
 const REVEAL_DELAY_GAP = 80;
 const ODD_CARD_REVEAL_DELAY = 40;
 const EVEN_CARD_REVEAL_DELAY = ODD_CARD_REVEAL_DELAY + REVEAL_DELAY_GAP;
+
+export function getSequentialRevealDelay(index: number) {
+  return ODD_CARD_REVEAL_DELAY + index * REVEAL_DELAY_GAP;
+}
 
 export function getRevealDelay(index: number, columns = 1) {
   if (columns <= 1) {
@@ -42,14 +54,20 @@ const MotionBox = motion.create(BoxRoot);
 export default function Revealer({
   children,
   delay = 0,
+  from = "bottom",
   style,
+  viewportAmount = "some",
+  viewportMargin = "0px 0px -25% 0px",
   ...boxProps
 }: RevealerProps) {
   const shouldReduceMotion = useReducedMotion();
-  const initial = shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 48 };
+  const offset = from === "right" ? { x: 48 } : { y: 48 };
+  const initial = shouldReduceMotion
+    ? { opacity: 0 }
+    : { opacity: 0, ...offset };
   const whileInView = shouldReduceMotion
     ? { opacity: 1 }
-    : { opacity: 1, y: 0 };
+    : { opacity: 1, x: 0, y: 0 };
 
   return (
     <MotionBox
@@ -63,7 +81,7 @@ export default function Revealer({
         duration: shouldReduceMotion ? 0 : 0.5,
         ease: "easeOut",
       }}
-      viewport={{ once: true, margin: "0px 0px -25% 0px" }}
+      viewport={{ amount: viewportAmount, once: true, margin: viewportMargin }}
       whileInView={whileInView}
     >
       {children}

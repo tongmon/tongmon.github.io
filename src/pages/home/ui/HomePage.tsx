@@ -14,6 +14,7 @@ import { Link } from "react-router-dom";
 import { PostTagList, getLatestPosts, getTagSummaries } from "@/entities/post";
 import { siteConfig } from "@/shared/config/site";
 import { getPostsPath } from "@/shared/lib/routes";
+import { Revealer } from "@/shared/ui";
 import { PostCard } from "@/widgets/post-card";
 
 export default function HomePage() {
@@ -134,7 +135,9 @@ export default function HomePage() {
 
         <SimpleGrid cols={{ base: 1, md: 2, xl: 3 }}>
           {recentPosts.map((post) => (
-            <PostCard key={post.slug} post={post} />
+            <Revealer key={post.slug}>
+              <PostCard post={post} />
+            </Revealer>
           ))}
         </SimpleGrid>
       </Stack>

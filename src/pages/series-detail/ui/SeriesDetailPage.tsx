@@ -9,11 +9,18 @@ import {
   parsePageParam,
 } from "@/shared/lib/pagination";
 import { getSeriesPath } from "@/shared/lib/routes";
-import { EmptyState, PageIntro } from "@/shared/ui";
-import { PostCard } from "@/widgets/post-card";
 import { useIsMobileViewport } from "@/shared/lib/useIsMobileViewport";
+import {
+  EmptyState,
+  getSequentialRevealDelay,
+  PageIntro,
+  Revealer,
+} from "@/shared/ui";
+import { PostCard } from "@/widgets/post-card";
 
 const SERIES_DETAIL_PAGE_LIMIT = 5;
+const SERIES_DETAIL_REVEAL_VIEWPORT_AMOUNT = 0.45;
+const SERIES_DETAIL_REVEAL_VIEWPORT_MARGIN = "0px";
 
 export default function SeriesDetailPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -74,16 +81,24 @@ export default function SeriesDetailPage() {
       </Text>
 
       <Stack gap="lg">
-        {visiblePostItems.map(({ fallbackSeriesOrder, post }) => (
-          <Stack gap="xs" key={post.slug}>
-            <Text c="var(--app-muted)" fw={700} size="xs" tt="uppercase">
-              Part {post.seriesOrder ?? fallbackSeriesOrder}
-            </Text>
-            <PostCard
-              post={post}
-              variant={isMobileViewport ? "grid" : "compact"}
-            />
-          </Stack>
+        {visiblePostItems.map(({ fallbackSeriesOrder, post }, index) => (
+          <Revealer
+            delay={getSequentialRevealDelay(index)}
+            from={isMobileViewport ? "bottom" : "right"}
+            key={post.slug}
+            viewportAmount={SERIES_DETAIL_REVEAL_VIEWPORT_AMOUNT}
+            viewportMargin={SERIES_DETAIL_REVEAL_VIEWPORT_MARGIN}
+          >
+            <Stack gap="xs">
+              <Text c="var(--app-muted)" fw={700} size="xs" tt="uppercase">
+                Part {post.seriesOrder ?? fallbackSeriesOrder}
+              </Text>
+              <PostCard
+                post={post}
+                variant={isMobileViewport ? "grid" : "compact"}
+              />
+            </Stack>
+          </Revealer>
         ))}
 
         {totalPages > 1 ? (

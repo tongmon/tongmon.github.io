@@ -4,5 +4,7 @@ import { useMediaQuery } from "@mantine/hooks";
 export function useIsMobileViewport() {
   const theme = useMantineTheme();
 
-  return useMediaQuery(`(max-width: ${theme.breakpoints.md})`);
+  return useMediaQuery(`(max-width: ${theme.breakpoints.md})`, false, {
+    getInitialValueInEffect: false,
+  });
 }
