@@ -8,12 +8,15 @@ import {
   parsePageParam,
 } from "@/shared/lib/pagination";
 import { getPostsPath } from "@/shared/lib/routes";
-import { EmptyState, PageIntro } from "@/shared/ui";
+import { useIsMobileViewport } from "@/shared/lib/useIsMobileViewport";
+import { EmptyState, getRevealDelay, PageIntro, Revealer } from "@/shared/ui";
 import { SeriesCard } from "@/widgets/series-card";
 
 export default function SeriesPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const seriesSummaries = getSeriesSummaries();
+  const isMobileViewport = useIsMobileViewport();
+  const revealColumns = isMobileViewport ? 1 : 2;
   const requestedPage = parsePageParam(searchParams.get("page"));
   const {
     currentPage,
@@ -55,11 +58,16 @@ export default function SeriesPage() {
 
       <Stack gap="lg">
         <SimpleGrid
-          cols={{ base: 1, md: 2 /*, xl: viewMode === "grid" ? 2 : 1*/ }}
+          cols={{ base: 1, md: 2 }}
           spacing={{ base: "md", md: "xl" }}
         >
-          {visibleSeries.map((series) => (
-            <SeriesCard key={series.slug} series={series} />
+          {visibleSeries.map((series, index) => (
+            <Revealer
+              delay={getRevealDelay(index, revealColumns)}
+              key={series.slug}
+            >
+              <SeriesCard series={series} />
+            </Revealer>
           ))}
         </SimpleGrid>
 

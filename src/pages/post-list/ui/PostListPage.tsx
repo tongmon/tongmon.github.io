@@ -9,13 +9,16 @@ import {
   parsePageParam,
 } from "@/shared/lib/pagination";
 import { toKebabCase } from "@/shared/lib/text/toKebabCase";
-import { EmptyState, PageIntro } from "@/shared/ui";
+import { useIsMobileViewport } from "@/shared/lib/useIsMobileViewport";
+import { EmptyState, getRevealDelay, PageIntro } from "@/shared/ui";
 import { PostCard } from "@/widgets/post-card";
 
 export default function PostListPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const posts = getAllPosts();
   const { searchQuery, selectedTag, viewMode } = usePostFiltersStore();
+  const isMobileViewport = useIsMobileViewport();
+  const revealColumns = isMobileViewport ? 1 : 2;
   const normalizedQuery = searchQuery.trim().toLowerCase();
 
   const filteredPosts = posts.filter((post) => {
@@ -60,11 +63,16 @@ export default function PostListPage() {
       {filteredPosts.length > 0 ? (
         <Stack gap="lg">
           <SimpleGrid
-            cols={{ base: 1, md: 2 /*, xl: viewMode === "grid" ? 2 : 1*/ }}
+            cols={{ base: 1, md: 2 }}
             spacing={{ base: "md", md: "xl" }}
           >
-            {visiblePosts.map((post) => (
-              <PostCard key={post.slug} post={post} variant={viewMode} />
+            {visiblePosts.map((post, index) => (
+              <PostCard
+                key={post.slug}
+                post={post}
+                revealDelay={getRevealDelay(index, revealColumns)}
+                variant={viewMode}
+              />
             ))}
           </SimpleGrid>
 

@@ -13,6 +13,8 @@ import { EmptyState, PageIntro } from "@/shared/ui";
 import { PostCard } from "@/widgets/post-card";
 import { useIsMobileViewport } from "@/shared/lib/useIsMobileViewport";
 
+const SERIES_DETAIL_PAGE_LIMIT = 5;
+
 export default function SeriesDetailPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const { series } = useParams();
@@ -28,7 +30,11 @@ export default function SeriesDetailPage() {
     currentPage,
     pageItems: visiblePostItems,
     totalPages,
-  } = paginateItems(postsWithSeriesIndex, requestedPage, 5);
+  } = paginateItems(
+    postsWithSeriesIndex,
+    requestedPage,
+    SERIES_DETAIL_PAGE_LIMIT,
+  );
   const isMobileViewport = useIsMobileViewport();
 
   useEffect(() => {
