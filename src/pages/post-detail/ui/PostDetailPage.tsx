@@ -154,7 +154,9 @@ export default function PostDetailPage() {
             span={{ base: 12, lg: 4 }}
             style={{ alignSelf: "stretch" }}
           >
-            <PostTableOfContents headings={loadedPost.headings} />
+            <Revealer from="bottom" h="100%" viewportMargin="0px">
+              <PostTableOfContents headings={loadedPost.headings} />
+            </Revealer>
           </Grid.Col>
         </Grid>
       ) : (

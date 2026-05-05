@@ -7,9 +7,9 @@ import App from "@/app/App";
 // ref: https://inpa.tistory.com/entry/CSS-%F0%9F%93%9A-%ED%94%8C%EB%9E%99%EC%8A%A4Flex-%F0%9F%92%AF-%EC%B4%9D%EC%A0%95%EB%A6%AC
 // ref: https://velog.io/@cdw8431/2025%EB%85%84-%EC%9D%B4%EC%A7%81-%ED%9A%8C%EA%B3%A0-%EC%88%A8%EA%B3%A0-%EC%B5%9C%EC%A2%85%ED%95%A9%EA%B2%A9
 
+// 1. design 변경
 // 11. fallback cover 내부 ui 개선
 // 1. about page 개선
-// 1. post detail page에 애니메이션 적용
 // 17. 다국어 지원도 가능한지 -> 선택
 
 ReactDOM.createRoot(document.getElementById("root")!).render(

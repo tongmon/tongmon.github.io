@@ -1,6 +1,5 @@
 ---
 title: Making markdown feel native in a Mantine blog
-description: Rendering markdown well is less about adding every plugin in sight and more about choosing a restrained pipeline with good defaults.
 publishedAt: "2026-04-03T20:30:00+09:00"
 tags:
   - Markdown

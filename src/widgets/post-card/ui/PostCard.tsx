@@ -1,12 +1,4 @@
-import {
-  Card,
-  Flex,
-  Group,
-  Image,
-  Stack,
-  Text,
-  Title,
-} from "@mantine/core";
+import { Card, Flex, Group, Image, Stack, Text, Title } from "@mantine/core";
 import { Link } from "react-router-dom";
 import { PostMeta, PostTagList, type PostManifestEntry } from "@/entities/post";
 import { siteConfig } from "@/shared/config/site";
@@ -19,15 +11,12 @@ interface PostCardProps {
   variant?: "grid" | "compact";
 }
 
-export default function PostCard({
-  post,
-  variant = "grid",
-}: PostCardProps) {
+export default function PostCard({ post, variant = "grid" }: PostCardProps) {
   const thumbnail = post.thumbnail ? toPublicAssetUrl(post.thumbnail) : null;
   const isCompact = variant === "compact";
   const postPath = getPostPath(post.slug);
   const mediaHeight = isCompact ? "100%" : { base: 220, md: 250 };
-  const mediaWidth = isCompact ? { base: "100%", md: 280 } : "100%";
+  const mediaWidth = isCompact ? /* { base: "100%", md: 280 }*/ 280 : "100%";
   const fallbackEyebrow = post.series ?? "Short";
   const fallbackMeta =
     post.tags.slice(0, 2).join(" / ") || `${post.readingTime} min read`;
@@ -36,7 +25,7 @@ export default function PostCard({
     <Card
       bg="var(--app-surface-1)"
       p={isCompact ? "xs" : 0}
-      h={isCompact ? { base: 260, lg: 220 } : undefined}
+      h={isCompact ? /* { base: 260, lg: 220 } */ 220 : 450}
       shadow="sm"
       style={{
         border: "1px solid var(--app-muted-border)",
@@ -78,11 +67,14 @@ export default function PostCard({
           gap="md"
           p={isCompact ? "xs" : "lg"}
           style={{ flex: 1 }}
-          w="100%"
+          // h={isCompact ? "100%" : undefined}
+          h="100%"
+          w={isCompact ? undefined : "100%"}
+          //bd="1px solid"
         >
           <Stack gap={8}>
             <Title
-              order={isCompact ? 4 : 3}
+              order={3}
               renderRoot={(props) => <Link {...props} to={postPath} />}
             >
               {post.title}
@@ -90,10 +82,13 @@ export default function PostCard({
             <Text
               c="var(--app-muted)"
               component={Link}
-              size="sm"
+              size={isCompact ? "md" : "sm"}
               style={{
                 textDecoration: "none",
               }}
+              // truncate="end"
+              // w="100%"
+              //bd="1px solid"
               to={postPath}
             >
               {post.description}

@@ -19,7 +19,7 @@ type NativeDivProps = Omit<
 interface RevealerProps extends Omit<BoxProps, "style">, NativeDivProps {
   children: ReactNode;
   delay?: number;
-  from?: "bottom" | "right";
+  from?: "bottom" | "right" | "top";
   style?: MotionProps["style"];
   viewportAmount?: UseInViewOptions["amount"];
   viewportMargin?: string;
@@ -50,7 +50,8 @@ export default function Revealer({
   ...boxProps
 }: RevealerProps) {
   const shouldReduceMotion = useReducedMotion();
-  const offset = from === "right" ? { x: 48 } : { y: 48 };
+  const offset =
+    from === "right" ? { x: 48 } : { y: from === "top" ? -48 : 48 };
   const initial = shouldReduceMotion
     ? { opacity: 0 }
     : { opacity: 0, ...offset };
