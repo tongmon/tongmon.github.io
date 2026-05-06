@@ -66,14 +66,10 @@ export default function SeriesDetailPage() {
   return (
     <Stack gap="xl" py="xl">
       <PageIntro
-        description="Posts in this series are listed from part 1 at the top to the latest entry at the bottom."
+        description={`${seriesSummary.count} post${seriesSummary.count === 1 ? "" : "s"} in this series.`}
         eyebrow="Series"
         title={seriesSummary.label}
       />
-
-      <Text c="var(--app-muted)" style={{ whiteSpace: "pre-wrap" }} size="sm">
-        {`${seriesSummary.count} post${seriesSummary.count === 1 ? "" : "s"} in this series.\nLatest update ${formatDateTime(seriesSummary.latestUpdatedAt)}`}
-      </Text>
 
       <Stack gap="lg">
         {visiblePostItems.map(({ fallbackSeriesOrder, post }, index) => (

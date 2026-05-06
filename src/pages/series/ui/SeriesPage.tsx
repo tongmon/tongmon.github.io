@@ -48,7 +48,7 @@ export default function SeriesPage() {
   return (
     <Stack gap="xl" py="xl">
       <PageIntro
-        description="Each card represents a writing track. Open a series to browse its posts in reading order."
+        description={`There are ${seriesSummaries.length} series in total.`}
         eyebrow="Series"
         title="Browse by series"
       />
