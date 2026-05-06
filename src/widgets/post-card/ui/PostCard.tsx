@@ -67,28 +67,26 @@ export default function PostCard({ post, variant = "grid" }: PostCardProps) {
           gap="md"
           p={isCompact ? "xs" : "lg"}
           style={{ flex: 1 }}
-          // h={isCompact ? "100%" : undefined}
+          miw={0}
           h="100%"
           w={isCompact ? undefined : "100%"}
-          //bd="1px solid"
         >
           <Stack gap={8}>
             <Title
               order={3}
               renderRoot={(props) => <Link {...props} to={postPath} />}
+              lineClamp={1}
             >
               {post.title}
             </Title>
             <Text
               c="var(--app-muted)"
               component={Link}
-              size={isCompact ? "md" : "sm"}
+              size="md"
               style={{
                 textDecoration: "none",
               }}
-              // truncate="end"
-              // w="100%"
-              //bd="1px solid"
+              lineClamp={2}
               to={postPath}
             >
               {post.description}
@@ -98,13 +96,11 @@ export default function PostCard({ post, variant = "grid" }: PostCardProps) {
           <PostMeta
             publishedAt={post.publishedAt}
             readingTime={post.readingTime}
-            updatedAt={post.updatedAt}
+            // updatedAt={post.updatedAt}
             mt="auto"
           />
 
-          <Group>
-            <PostTagList tags={post.tags} />
-          </Group>
+          <PostTagList tags={post.tags} />
         </Stack>
       </Flex>
     </Card>

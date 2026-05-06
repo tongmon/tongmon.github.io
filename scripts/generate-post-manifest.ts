@@ -29,7 +29,7 @@ const generatedManifestFile = path.join(
   "posts-manifest.ts",
 );
 const includeDrafts = process.argv.includes("--include-drafts");
-const descriptionExcerptMaxLength = 120;
+const descriptionExcerptMaxLength = 180;
 
 const isoDateWithTimezone = z.preprocess(
   (value) => {

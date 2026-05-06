@@ -9,6 +9,7 @@ import App from "@/app/App";
 
 // 1. design 변경
 // 11. fallback cover 내부 ui 개선
+// 1. 시리즈와 시리즈 detail page의 header 문구 변경
 // 1. about page 개선
 // 17. 다국어 지원도 가능한지 -> 선택
 
