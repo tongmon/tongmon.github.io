@@ -91,10 +91,11 @@ function PostSpotlightActionContent({
           overflow: "hidden",
         }}
         px="xs"
+        lineClamp={1}
       >
         {post.title}
       </Text>
-      <Text px="xs" size="sm">
+      <Text px="xs" size="sm" lineClamp={2}>
         {post.description}
       </Text>
       <OverflowList
@@ -117,7 +118,7 @@ export default function PostSpotlight() {
 
   const actions: SpotlightActionData[] = getAllPosts().map((post, ind) => ({
     children: (
-      <Stack gap="xs">
+      <Stack gap="xs" w="100%">
         {ind !== 0 && (
           <Divider
             mb="calc(var(--mantine-spacing-xs) / 2)"

@@ -24,11 +24,18 @@ export const theme = createTheme({
     brand,
   },
   fontFamily:
-    '"Manrope", "Avenir Next", "Segoe UI", "Helvetica Neue", sans-serif',
+    '"dalmoori", "Silver", "Manrope", "Avenir Next", "Segoe UI", "Helvetica Neue", sans-serif',
   fontFamilyMonospace:
-    '"IBM Plex Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace',
+    '"dalmoori", "Silver", "IBM Plex Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace',
+  // fontSizes: {
+  //   xs: rem(20),
+  //   sm: rem(22),
+  //   md: rem(24),
+  //   lg: rem(26),
+  //   xl: rem(29),
+  // },
   headings: {
-    fontFamily: '"Instrument Serif", Georgia, serif',
+    fontFamily: '"dalmoori", "Silver", "Instrument Serif", Georgia, serif',
     //sizes: {
     //  h1: { fontSize: rem(44), lineHeight: "1.05", fontWeight: "500" },
     //  h2: { fontSize: rem(34), lineHeight: "1.1", fontWeight: "500" },
