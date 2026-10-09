@@ -29,7 +29,7 @@ Pushing to `main` deploys through `.github/workflows/github_page_deploy.yml`.
 | English copy | `src/content/en.ts` |
 | Korean copy | `src/content/ko.ts` |
 | Links, repos, record times | `src/content/profile.ts` |
-| Player (seated, with chair) | `src/assets/sprites/player.png`, `src/scene/player.ts` |
+| Player (seated, with chair) | `src/assets/sprites/player.png` (+ `player-day.png`), `src/scene/player.ts` |
 | Small animated sprites, monitor sprites, icons | `src/scene/art.ts` |
 | Furniture and props (PNG, ENDESGA 32) | `src/assets/sprites/` |
 | Room layout and furniture placement | `src/scene/room.ts` |
@@ -45,6 +45,7 @@ The scripts need Python with `fonttools`, `brotli`, `pillow` and `numpy`:
 pip install fonttools brotli pillow numpy
 python scripts/subset-fonts.py   # src/assets/fonts/*.woff2 from node_modules/galmuri
 python scripts/make-og.py        # public/og.png social preview
+python scripts/player-daylight.py  # player-day.png, rerun after editing player.png
 ```
 
 New props: generate a large pixel-style reference of a single object on a flat magenta (#FF00FF) background (the existing sprites came from Codex image generation), then shrink it onto the scene grid:

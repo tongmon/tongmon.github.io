@@ -141,9 +141,10 @@ export class Scene {
       this.draw();
       return;
     }
+    // Schedule the next frame first, so one failing frame can't stop the animation.
     const loop = () => {
-      this.draw();
       this.raf = requestAnimationFrame(loop);
+      this.draw();
     };
     this.raf = requestAnimationFrame(loop);
   }

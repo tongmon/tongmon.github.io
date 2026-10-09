@@ -13,6 +13,7 @@ import monitorUrl from "../assets/sprites/monitor.png?inline";
 import mugUrl from "../assets/sprites/mug.png?inline";
 import plantUrl from "../assets/sprites/plant.png?inline";
 import playerUrl from "../assets/sprites/player.png?inline";
+import playerDayUrl from "../assets/sprites/player-day.png?inline";
 import posterUrl from "../assets/sprites/poster.png?inline";
 import rackUrl from "../assets/sprites/rack.png?inline";
 import robotUrl from "../assets/sprites/robot.png?inline";
@@ -40,6 +41,7 @@ export const PROPS = {
   mug: image(mugUrl),
   plant: image(plantUrl),
   player: image(playerUrl),
+  playerDay: image(playerDayUrl),
   poster: image(posterUrl),
   rack: image(rackUrl),
   robot: image(robotUrl),
@@ -48,7 +50,25 @@ export const PROPS = {
   window: image(windowUrl),
 };
 
-/** Resolves once every prop can be drawn. Images that fail to decode are simply skipped. */
-export const propsReady: Promise<void> = Promise.all(
-  Object.values(PROPS).map((img) => img.decode().catch(() => undefined)),
-).then(() => undefined);
+export function isLoaded(img: HTMLImageElement): boolean {
+  return img.complete && img.naturalWidth > 0;
+}
+
+// Wait for the load event, then for decoding: WebKit can report a data-URL image as
+// complete before it is drawable. decode() is capped in case a browser never settles it.
+function loaded(img: HTMLImageElement): Promise<void> {
+  const load = isLoaded(img)
+    ? Promise.resolve()
+    : new Promise<void>((resolve) => {
+        img.addEventListener("load", () => resolve(), { once: true });
+        img.addEventListener("error", () => resolve(), { once: true });
+      });
+  return load.then(() =>
+    Promise.race([img.decode().catch(() => undefined), new Promise((resolve) => setTimeout(resolve, 1500))]).then(
+      () => undefined,
+    ),
+  );
+}
+
+/** Resolves once every prop can be drawn. Images that fail to load are simply skipped. */
+export const propsReady: Promise<void> = Promise.all(Object.values(PROPS).map(loaded)).then(() => undefined);

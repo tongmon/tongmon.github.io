@@ -1,6 +1,6 @@
 import { C } from "./palette";
 import { BAYER, Gfx } from "./gfx";
-import { playerFrame } from "./player";
+import { drawPlayerSprite } from "./player";
 import { PROPS } from "./props";
 
 // Composition space: everything that belongs to the desk scene is laid out in this
@@ -63,14 +63,15 @@ export function drawBackdrop(g: Gfx, th: Theme, W: number, H: number, ox: number
     for (let x = offset - 37; x < W; x += 37) g.vline(x, y, 5, th.floorLine);
   }
 
-  // Soft light falling off around the monitor, as an ordered dither.
+  // Soft light falling off around the monitor, as an ordered dither. It stops at the chair
+  // rail: below that sits in the desk's shadow.
   if (th.glow) {
     const cx = ox + 121;
     const cy = oy + 54;
     const rx = 74;
     const ry = 56;
     g.ctx.fillStyle = th.glow;
-    for (let y = Math.max(0, cy - ry); y < Math.min(floorTop - 3, cy + ry); y++) {
+    for (let y = Math.max(0, cy - ry); y < Math.min(railTop, cy + ry); y++) {
       for (let x = Math.max(0, cx - rx); x < Math.min(W, cx + rx); x++) {
         const d = ((x - cx) / rx) ** 2 + ((y - cy) / ry) ** 2;
         if (d >= 1) continue;
@@ -110,6 +111,5 @@ export function drawPlayer(g: Gfx, t: number, typing: number, daylight: boolean)
   // Typing comes in bursts so it reads as someone thinking between keystrokes.
   const burst = (t % 2.6) < 1.6;
   const frame = typing > 0 && burst ? Math.floor(t * (8 + typing * 4)) % 2 : 0;
-  const sprite = playerFrame(frame, daylight);
-  if (sprite) g.sprite(sprite, 39, 46);
+  drawPlayerSprite(g, 39, 46, frame === 1, daylight);
 }
