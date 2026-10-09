@@ -3,6 +3,7 @@ import { en } from "./content/en";
 import { ko } from "./content/ko";
 import type { Content, Lang } from "./content/types";
 import { formatTime, renderHud, renderSections, renderSteps, STAGE_IDS } from "./render";
+import { propsReady } from "./scene/props";
 import { Scene } from "./scene/scene";
 import { groundTile, starTile } from "./textures";
 
@@ -293,3 +294,4 @@ window.addEventListener("resize", () => {
 });
 window.addEventListener("scroll", onScroll, { passive: true });
 document.fonts?.ready.then(() => scene.resize());
+propsReady.then(() => scene.redraw());

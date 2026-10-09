@@ -1,18 +1,15 @@
 import { C } from "./palette";
-import { flipped, Gfx } from "./gfx";
+import { Gfx } from "./gfx";
 import { textWidth } from "./font";
 import { GLASS, SCREEN, type Theme } from "./room";
+import { PROPS } from "./props";
 import {
-  BIG_PLANT,
   COIN_FRAMES,
-  GAMEPAD,
   HEART,
   KNIGHT_FRAMES,
   KNIGHT_PIXELS,
   POTION,
-  ROBOT,
   SLIME_FRAMES,
-  SMALL_CACTUS,
 } from "./art";
 
 /** Returns the vertical offset of a prop that drops in after `delay` seconds. */
@@ -22,6 +19,8 @@ export interface StageArt {
   theme: Theme;
   /** 0 = idle hands, 1 = typing away. */
   typing: number;
+  /** Daylight drowns out the monitor's rim light on the player. */
+  daylight?: boolean;
   sky(g: Gfx, t: number): void;
   props(g: Gfx, t: number, p: number, drop: Drop): void;
   /** Draws the monitor, in screen space (64x42). `p` is the scroll progress through the stage. */
@@ -99,16 +98,14 @@ function spinner(g: Gfx, x: number, y: number, t: number, c: string): void {
   }
 }
 
-function books(g: Gfx, x: number, colors: string[]): void {
-  let bx = x;
-  colors.forEach((c, i) => {
-    const h = 9 + ((i * 7) % 4);
-    const w = 3 + (i % 2);
-    g.rect(bx, 36 - h, w, h, C.ink);
-    g.rect(bx + 1, 36 - h + 1, w - 1, h - 1, c);
-    g.hline(bx + 1, 36 - h + 3, w - 1, C.sand);
-    bx += w;
-  });
+/** A dithered trapezoid of light, from a narrow top edge to a wider bottom edge. */
+function cone(g: Gfx, top: number, bottom: number, from: [number, number], to: [number, number], c: string, level: number): void {
+  for (let y = top; y < bottom; y++) {
+    const k = (y - top) / (bottom - top);
+    const l = Math.round(from[0] + (to[0] - from[0]) * k);
+    const r = Math.round(from[1] + (to[1] - from[1]) * k);
+    g.dither(l, y, r - l, 1, c, level);
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -135,25 +132,14 @@ const title: StageArt = {
     g.disc(GLASS.x + 33, GLASS.y + 8, 5, C.ink);
   },
   props(g, _t, _p, drop) {
-    books(g, 168, [C.red, C.blue, C.gold, C.green, C.pink, C.navy]);
-    g.sprite(SMALL_CACTUS, 199, 25 + drop(0.1));
+    g.sprite(PROPS.books, 168, 18 + drop(0.1));
 
     // Desk lamp throwing a warm, dithered pool of light.
-    const lx = 180;
-    g.dither(lx - 18, 74, 26, 22, C.gold, 2);
-    g.dither(lx - 22, 96, 34, 6, C.yellow, 5);
-    const dy = drop(0.2);
-    g.rect(lx + 6, 93 + dy, 12, 4, C.ink);
-    g.rect(lx + 7, 93 + dy, 10, 3, C.red);
-    g.hline(lx + 7, 93 + dy, 10, C.salmon);
-    g.line(lx + 12, 92 + dy, lx + 16, 78 + dy, C.ink);
-    g.line(lx + 13, 92 + dy, lx + 17, 78 + dy, C.steel);
-    g.line(lx + 16, 78 + dy, lx + 4, 68 + dy, C.ink);
-    g.line(lx + 16, 77 + dy, lx + 4, 67 + dy, C.steel);
-    for (let i = 0; i < 6; i++) g.hline(lx - 4 + i, 66 + i + dy, 12 - i * 2 + 4, i === 0 ? C.salmon : C.red);
-    g.hline(lx - 2, 72 + dy, 10, C.yellow);
+    cone(g, 74, 96, [185, 194], [167, 197], C.gold, 2);
+    g.dither(164, 96, 36, 6, C.yellow, 5);
+    g.sprite(PROPS.lamp, 184, 62 + drop(0.2));
 
-    g.sprite(BIG_PLANT, 0, 106 + drop(0.3));
+    g.sprite(PROPS.plant, 0, 103 + drop(0.3));
   },
   screen(g, t, _p, age) {
     g.rect(0, 0, SCREEN.w, SCREEN.h, C.ink);
@@ -182,7 +168,6 @@ const title: StageArt = {
 // ---------------------------------------------------------------------------
 
 const PIPELINE = ["CHECKOUT", "DOCKER UP", "EMULATOR", "APPIUM", "ROBOT TESTS", "REPORT"];
-const ROBOT_LEFT = ROBOT.map(flipped);
 
 const devops: StageArt = {
   theme: {
@@ -197,6 +182,7 @@ const devops: StageArt = {
     glow: null,
   },
   typing: 1,
+  daylight: true,
   sky(g, t) {
     bands(g, [C.blue, C.blue, C.cyan]);
     g.disc(GLASS.x + 37, GLASS.y + 8, 4, C.yellow);
@@ -212,46 +198,39 @@ const devops: StageArt = {
   },
   props(g, t, _p, drop) {
     // Shipping containers on the shelf.
-    const box = (x: number, y: number, c: string, d: string) => {
-      g.rect(x, y, 20, 7, C.ink);
-      g.rect(x + 1, y + 1, 18, 5, c);
-      for (let i = x + 3; i < x + 18; i += 2) g.vline(i, y + 2, 3, d);
-    };
-    box(167, 29 + drop(0), C.blue, C.navy);
-    box(188, 29 + drop(0.08), C.orange, C.rust);
-    box(177, 22 + drop(0.16), C.cyan, C.blue);
+    g.sprite(PROPS.containers, 168, 20 + drop(0.1));
 
-    // Infotainment test bench, with a tiny robot tapping its touch screen.
-    const by = drop(0.2);
-    g.rect(171, 68 + by, 32, 21, C.ink);
-    g.rect(172, 69 + by, 30, 19, C.night);
-    g.rect(173, 70 + by, 28, 3, C.navy);
-    g.text("12:00", 174, 70 + by, C.cyan);
-    g.rect(174, 75 + by, 10, 10, C.pink);
-    g.rect(176, 77 + by, 6, 6, C.gold);
-    g.hline(186, 76 + by, 13, C.silver);
-    g.hline(186, 79 + by, 9, C.fog);
+    // Infotainment test bench; the robot stands on the desk beside it and presses its buttons.
+    const bx = 167;
+    const by = 69 + drop(0.2);
+    g.sprite(PROPS.bench, bx, by);
+    const sx = bx + 4;
+    const sy = by + 4;
+    g.text("12:00", sx + 1, sy + 1, C.cyan);
+    for (let i = 0; i < 3; i++) g.vline(sx + 22 + i * 2, sy + 4 - i, i + 1, C.silver);
+    g.rect(sx + 1, sy + 7, 6, 5, C.pink);
+    g.rect(sx + 2, sy + 8, 4, 3, C.gold);
+    g.hline(sx + 8, sy + 8, 6, C.silver);
+    g.hline(sx + 8, sy + 10, 4, C.fog);
     const tap = Math.floor(t / 0.55) % 2 === 1;
-    g.rect(186, 82 + by, 13, 3, tap ? C.white : C.lime);
-    g.rect(183, 89 + by, 8, 7, C.ink);
-    g.rect(184, 89 + by, 6, 6, C.steel);
-    g.line(201, 88 + by, 207, 96, C.ink);
-    g.sprite(ROBOT_LEFT[tap ? 1 : 0], tap ? 198 : 201, 84 + drop(0.3));
-
-    // Server rack with blinking LEDs.
-    const rx = 1;
-    const ry = 101 + drop(0.25);
-    g.rect(rx, ry, 22, 40, C.ink);
-    g.rect(rx + 1, ry + 1, 20, 38, C.night);
-    for (let u = 0; u < 6; u++) {
-      const uy = ry + 2 + u * 6;
-      g.rect(rx + 2, uy, 18, 5, C.slate);
-      g.hline(rx + 2, uy, 18, C.steel);
-      for (let v = 0; v < 4; v++) g.vline(rx + 10 + v * 2, uy + 1, 3, C.night);
-      const blink = Math.sin(t * (3 + u * 1.3) + u * 2) > 0.2;
-      g.px(rx + 4, uy + 2, blink ? C.lime : C.green);
-      g.px(rx + 6, uy + 2, (u + Math.floor(t * 4)) % 3 === 0 ? C.gold : C.slate);
+    g.rect(sx + 15, sy + 7, 6, 5, tap ? C.white : C.lime);
+    const rx = tap ? 195 : 196;
+    const ry = 79 + drop(0.3);
+    g.sprite(PROPS.robot, rx, ry);
+    if (Math.floor(t * 2) % 2 === 0) {
+      g.px(rx + 9, ry, C.yellow);
+      g.px(rx + 10, ry, C.yellow);
     }
+
+    // Server rack with blinking status LEDs.
+    const kx = 2;
+    const ky = 99 + drop(0.25);
+    g.sprite(PROPS.rack, kx, ky);
+    [6, 12, 17, 23, 29, 35].forEach((uy, u) => {
+      const blink = Math.sin(t * (3 + u * 1.3) + u * 2) > 0.2;
+      g.px(kx + 3, ky + uy, blink ? C.lime : C.forest);
+      g.px(kx + 3, ky + uy + 2, (u + Math.floor(t * 4)) % 3 === 0 ? C.gold : C.bark);
+    });
   },
   screen(g, t, p) {
     g.rect(0, 0, SCREEN.w, SCREEN.h, C.ink);
@@ -319,40 +298,25 @@ const gamedev: StageArt = {
     g.sprite(POTION, 203, 29 + drop(0.2));
 
     // Cartridge stack and a controller.
-    const labels = [C.red, C.blue, C.gold];
-    labels.forEach((c, i) => {
-      const y = 91 - i * 5 + drop(0.2 + i * 0.06);
-      g.rect(168, y, 18, 6, C.ink);
-      g.rect(169, y + 1, 16, 4, C.fog);
-      g.hline(169, y + 1, 16, C.silver);
-      g.rect(172, y + 2, 10, 2, c);
-    });
-    g.text("DEV", 171, 77 + drop(0.32), C.gold);
-    g.sprite(GAMEPAD, 189, 89 + drop(0.3));
+    g.sprite(PROPS.games, 168, 85 + drop(0.2));
 
-    // Arcade cabinet.
+    // Arcade cabinet running its attract mode.
     const ax = 0;
     const ay = 97 + drop(0.25);
-    g.rect(ax, ay, 24, 44, C.ink);
-    g.rect(ax + 1, ay + 1, 22, 42, C.grape);
-    g.vline(ax + 1, ay + 1, 42, C.pink);
-    g.rect(ax + 2, ay + 2, 20, 6, C.gold);
-    g.text("ARC", ax + 6, ay + 2, C.ink);
-    g.rect(ax + 3, ay + 10, 18, 13, C.ink);
-    const blink = Math.floor(t * 4);
-    for (let i = 0; i < 3; i++) {
-      const ix = ax + 5 + ((i * 5 + blink) % 14);
-      g.rect(ix, ay + 12 + i * 3, 2, 2, [C.lime, C.cyan, C.salmon][i]);
-    }
-    g.rect(ax + 10, ay + 20, 4, 1, C.white);
-    g.rect(ax + 2, ay + 25, 20, 4, C.pink);
-    g.px(ax + 6, ay + 24, C.ink);
-    g.rect(ax + 5, ay + 23, 3, 2, C.red);
-    g.px(ax + 13, ay + 26, C.cyan);
-    g.px(ax + 16, ay + 26, C.yellow);
-    g.rect(ax + 7, ay + 32, 10, 7, C.ink);
-    g.px(ax + 9, ay + 34, C.red);
-    g.px(ax + 14, ay + 34, C.red);
+    g.sprite(PROPS.arcade, ax, ay);
+    g.rect(ax + 8, ay + 9, 11, 12, C.ink);
+    const march = Math.floor(t * 2) % 4;
+    const shift = march < 2 ? march : 4 - march;
+    [C.cyan, C.lime, C.salmon].forEach((c, i) => {
+      const ix = ax + 9 + i * 3 + shift;
+      const iy = ay + 11 + (i % 2) * 3;
+      g.hline(ix, iy, 2, c);
+      g.px(ix + (Math.floor(t * 4) % 2), iy + 1, c);
+    });
+    g.hline(ax + 12 + (Math.floor(t * 1.5) % 3), ay + 19, 3, C.white);
+    const coin = Math.floor(t * 1.5) % 2 === 0;
+    g.px(ax + 14, ay + 33, coin ? C.red : C.wine);
+    g.px(ax + 16, ay + 33, coin ? C.wine : C.red);
   },
   screen(g, t, p) {
     g.rect(0, 0, SCREEN.w, SCREEN.h, C.slate);
@@ -486,42 +450,21 @@ const quant: StageArt = {
       for (let k = 0; k < 3; k++) g.text(TICKER, 170 - off + k * w, 28 + ty, C.lime);
     });
 
-    // A stack of coins and one spinning on its edge.
-    const sy = drop(0.15);
-    for (let i = 0; i < 5; i++) {
-      g.rect(168, 94 - i * 2 + sy, 12, 3, C.ink);
-      g.rect(169, 94 - i * 2 + sy, 10, 2, i % 2 ? C.gold : C.yellow);
-      g.px(178, 95 - i * 2 + sy, C.orange);
-    }
+    // A stack of coins with a notepad, and one coin spinning on its edge.
+    g.sprite(PROPS.coins, 168, 82 + drop(0.15));
     const spin = [0, 1, 2, 1][Math.floor(t * 8) % 4];
-    g.sprite(COIN_FRAMES[spin], 184, 82 + Math.round(Math.sin(t * 4) * 1.5) + drop(0.25));
-    g.hline(185, 96, 6, C.bark);
-
-    // Notepad with a hand-drawn equity curve.
-    const ny = drop(0.3);
-    g.rect(194, 84 + ny, 15, 13, C.ink);
-    g.rect(195, 85 + ny, 13, 11, C.sand);
-    for (let y = 87; y < 95; y += 2) g.hline(196, y + ny, 11, C.peach);
-    g.line(196, 93 + ny, 199, 90 + ny, C.red);
-    g.line(199, 90 + ny, 202, 91 + ny, C.red);
-    g.line(202, 91 + ny, 206, 86 + ny, C.red);
+    g.sprite(COIN_FRAMES[spin], 200, 84 + Math.round(Math.sin(t * 4) * 1.5) + drop(0.25));
+    g.hline(201, 97, 6, C.bark);
 
     // The research pipeline lives in here.
-    const sx = 0;
-    const sy2 = 114 + drop(0.2);
-    g.rect(sx, sy2, 26, 27, C.ink);
-    g.rect(sx + 1, sy2 + 1, 24, 24, C.steel);
-    g.hline(sx + 1, sy2 + 1, 24, C.fog);
-    g.rect(sx + 3, sy2 + 3, 20, 20, C.slate);
-    g.disc(sx + 13, sy2 + 13, 4, C.silver);
-    g.disc(sx + 13, sy2 + 13, 2, C.fog);
+    const vx = 0;
+    const vy = 115 + drop(0.2);
+    g.sprite(PROPS.safe, vx, vy);
     const a = t * 1.3;
-    g.px(sx + 13 + Math.round(Math.cos(a) * 3), sy2 + 13 + Math.round(Math.sin(a) * 3), C.ink);
-    g.rect(sx + 20, sy2 + 10, 2, 7, C.silver);
-    g.rect(sx + 2, sy2 + 25, 4, 2, C.ink);
-    g.rect(sx + 20, sy2 + 25, 4, 2, C.ink);
-    g.rect(sx + 1, sy2 + 4, 24, 7, C.red);
-    g.text("SECRET", sx + 2, sy2 + 5, C.white);
+    g.px(vx + 12 + Math.round(Math.cos(a) * 2), vy + 12 + Math.round(Math.sin(a) * 2), C.white);
+    g.rect(vx, vy - 8, 25, 8, C.ink);
+    g.rect(vx + 1, vy - 7, 23, 6, C.red);
+    g.text("SECRET", vx + 1, vy - 7, C.white);
   },
   screen(g, t, p) {
     g.rect(0, 0, SCREEN.w, SCREEN.h, C.ink);

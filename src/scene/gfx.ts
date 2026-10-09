@@ -38,33 +38,6 @@ export function sprite(art: string, pal: Record<string, string>): Sprite {
   return c;
 }
 
-/** Paints procedurally into a fresh canvas, then wraps every opaque pixel in a 1px outline. */
-export function outlined(w: number, h: number, outline: string, paint: (g: Gfx) => void): Sprite {
-  const inner = makeCanvas(w, h);
-  paint(new Gfx(context(inner)));
-  const src = context(inner).getImageData(0, 0, w, h).data;
-  const out = makeCanvas(w + 2, h + 2);
-  const ctx = context(out);
-  ctx.fillStyle = outline;
-  const solid = (x: number, y: number) => x >= 0 && y >= 0 && x < w && y < h && src[(y * w + x) * 4 + 3] > 0;
-  for (let y = -1; y <= h; y++) {
-    for (let x = -1; x <= w; x++) {
-      if (solid(x, y)) continue;
-      if (solid(x - 1, y) || solid(x + 1, y) || solid(x, y - 1) || solid(x, y + 1)) ctx.fillRect(x + 1, y + 1, 1, 1);
-    }
-  }
-  ctx.drawImage(inner, 1, 1);
-  return out;
-}
-
-export function flipped(s: Sprite): Sprite {
-  const c = makeCanvas(s.width, s.height);
-  const ctx = context(c);
-  ctx.scale(-1, 1);
-  ctx.drawImage(s, -s.width, 0);
-  return c;
-}
-
 // 4x4 Bayer matrix, values 0..15 — the backbone of every dithered gradient in the scene.
 export const BAYER = [
   [0, 8, 2, 10],
@@ -104,13 +77,6 @@ export class Gfx {
 
   vline(x: number, y: number, h: number, c: string): void {
     this.rect(x, y, 1, h, c);
-  }
-
-  frame(x: number, y: number, w: number, h: number, c: string): void {
-    this.hline(x, y, w, c);
-    this.hline(x, y + h - 1, w, c);
-    this.vline(x, y, h, c);
-    this.vline(x + w - 1, y, h, c);
   }
 
   line(x0: number, y0: number, x1: number, y1: number, c: string): void {
@@ -171,7 +137,7 @@ export class Gfx {
     }
   }
 
-  sprite(s: Sprite, x: number, y: number): void {
+  sprite(s: CanvasImageSource, x: number, y: number): void {
     this.ctx.drawImage(s, Math.round(x) + this.ox, Math.round(y) + this.oy);
   }
 

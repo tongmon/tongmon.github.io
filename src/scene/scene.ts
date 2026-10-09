@@ -1,5 +1,5 @@
 import { BAYER, context, Gfx, makeCanvas } from "./gfx";
-import { COMP_H, COMP_W, GLASS, SCREEN, drawBackdrop, drawFurniture, drawMullions, drawPlayer, drawSteam } from "./room";
+import { COMP_H, COMP_W, GLASS, SCREEN, drawBackdrop, drawFurniture, drawPlayer, drawSteam, drawWindow } from "./room";
 import { STAGES } from "./stages";
 
 const TRANSITION = 0.6;
@@ -123,6 +123,12 @@ export class Scene {
     if (this.reducedMotion) this.draw();
   }
 
+  /** Rebuilds the cached room layers and repaints, e.g. once sprites have finished loading. */
+  redraw(): void {
+    this.caches = STAGES.map(() => null);
+    this.draw();
+  }
+
   setVisible(visible: boolean): void {
     this.visible = visible;
     if (visible) this.start();
@@ -207,7 +213,7 @@ export class Scene {
     g.ctx.drawImage(this.cache(i), 0, 0);
     g.at(this.ox, this.oy);
     g.clip(GLASS.x, GLASS.y, GLASS.w, GLASS.h, () => st.sky(g, t));
-    drawMullions(g);
+    drawWindow(g);
     st.props(g, t, p, drop);
 
     const sg = this.gScreen.at(0, 0);
@@ -218,6 +224,6 @@ export class Scene {
     g.sprite(this.screen, SCREEN.x, SCREEN.y);
 
     drawSteam(g, t);
-    drawPlayer(g, t, this.reducedMotion ? 0 : st.typing);
+    drawPlayer(g, t, this.reducedMotion ? 0 : st.typing, st.daylight ?? false);
   }
 }

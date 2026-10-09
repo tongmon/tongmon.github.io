@@ -349,7 +349,7 @@ ol {
 
 .hud__nav {
   display: flex;
-  gap: 24px;
+  gap: 36px;
 }
 .hud__nav a {
   position: relative;
@@ -423,6 +423,12 @@ ol {
   margin-top: -100vh;
   margin-top: -100svh;
 }
+/* Lets the last stage linger before the sections, without changing its own height. */
+.story__steps::after {
+  content: "";
+  display: block;
+  height: 30vh;
+}
 
 .step {
   min-height: 100vh;
@@ -430,9 +436,6 @@ ol {
   display: flex;
   align-items: center;
   padding: calc(var(--hud-h) + 48px) var(--gutter) 64px;
-}
-.step:last-child {
-  min-height: 130vh;
 }
 
 .step__inner {

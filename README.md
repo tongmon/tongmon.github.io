@@ -29,19 +29,28 @@ Pushing to `main` deploys through `.github/workflows/github_page_deploy.yml`.
 | English copy | `src/content/en.ts` |
 | Korean copy | `src/content/ko.ts` |
 | Links, repos, record times | `src/content/profile.ts` |
-| Scene art and stage props | `src/scene/art.ts`, `src/scene/stages.ts` |
-| Room, desk, character | `src/scene/room.ts` |
+| Player (seated, with chair) | `src/assets/sprites/player.png`, `src/scene/player.ts` |
+| Small animated sprites, monitor sprites, icons | `src/scene/art.ts` |
+| Furniture and props (PNG, ENDESGA 32) | `src/assets/sprites/` |
+| Room layout and furniture placement | `src/scene/room.ts` |
+| Stage skies, props and monitor screens | `src/scene/stages.ts` |
 
 Arrays in `en.ts` / `ko.ts` (stages, records, inventory, contacts) line up by index with the facts in `profile.ts`.
 
 ## Regenerating assets
 
-Both scripts need Python with `fonttools`, `brotli` and `pillow`:
+The scripts need Python with `fonttools`, `brotli`, `pillow` and `numpy`:
 
 ```bash
-pip install fonttools brotli pillow
+pip install fonttools brotli pillow numpy
 python scripts/subset-fonts.py   # src/assets/fonts/*.woff2 from node_modules/galmuri
 python scripts/make-og.py        # public/og.png social preview
+```
+
+New props: generate a large pixel-style reference of a single object on a flat magenta (#FF00FF) background (the existing sprites came from Codex image generation), then shrink it onto the scene grid:
+
+```bash
+python scripts/prop-to-sprite.py reference.png src/assets/sprites/<name>.png <height>   # or w<width>
 ```
 
 The old blog lives on the `main-temp` branch.
