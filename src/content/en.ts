@@ -11,7 +11,6 @@ export const en: Content = {
     nav: { log: "LOG", records: "RECORDS", items: "ITEMS", contact: "CONTACT" },
     langButton: "한국어",
     langLabel: "한국어로 보기",
-    score: "SCORE",
     stage: "STAGE",
     stageNames: { title: "TITLE", devops: "DAY JOB", gamedev: "GAME DEV", quant: "QUANT" },
     goToStage: "Go to",

@@ -36,7 +36,6 @@ export function renderHud(c: Content): string {
       <a href="#items">${esc(c.ui.nav.items)}</a>
       <a href="#contact">${esc(c.ui.nav.contact)}</a>
     </nav>
-    <div class="hud__score" aria-hidden="true"><span>${esc(c.ui.score)}</span> <b id="score">000000</b></div>
     <button class="px-btn hud__lang" id="lang" type="button" aria-label="${esc(c.ui.langLabel)}">${esc(c.ui.langButton)}</button>`;
 }
 

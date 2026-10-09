@@ -36,35 +36,6 @@ let lang = initialLang();
 let content = CONTENT[lang];
 
 // ---------------------------------------------------------------------------
-// Score: exploring the page earns points, like any good game.
-// ---------------------------------------------------------------------------
-
-let score = 0;
-let shownScore = 0;
-let scoreRaf = 0;
-
-function paintScore(): void {
-  const el = document.getElementById("score");
-  if (el) el.textContent = String(Math.round(shownScore)).padStart(6, "0");
-}
-
-function addScore(points: number): void {
-  score += points;
-  if (reduced) {
-    shownScore = score;
-    paintScore();
-    return;
-  }
-  if (scoreRaf) return;
-  const step = () => {
-    shownScore = Math.min(score, shownScore + Math.max(7, (score - shownScore) * 0.12));
-    paintScore();
-    scoreRaf = shownScore < score ? requestAnimationFrame(step) : 0;
-  };
-  scoreRaf = requestAnimationFrame(step);
-}
-
-// ---------------------------------------------------------------------------
 // Typewriter for dialog lines and stage titles.
 // ---------------------------------------------------------------------------
 
@@ -109,7 +80,6 @@ const scene = new Scene(canvas, stageEl, reduced, () => {
 scene.onLayout = ({ sceneBottom }) => root.style.setProperty("--scene-bottom", `${Math.round(sceneBottom)}px`);
 
 let activeStep = -1;
-const reachedSteps = new Set<number>([0]);
 
 function updateStory(): void {
   const vh = window.innerHeight;
@@ -139,10 +109,6 @@ function updateStory(): void {
       if (i === index) d.setAttribute("aria-current", "step");
       else d.removeAttribute("aria-current");
     });
-    if (!reachedSteps.has(index)) {
-      reachedSteps.add(index);
-      addScore(500);
-    }
     typeStep(index);
   }
 
@@ -198,7 +164,6 @@ function observeReveals(instantAbove: boolean): void {
         const el = e.target as HTMLElement;
         el.classList.add("is-in");
         revealObserver!.unobserve(el);
-        addScore(100);
         if (el.classList.contains("record")) runCounter(el);
       }
     },
@@ -245,7 +210,7 @@ function bindHud(): void {
       const step = stepsEl.querySelector<HTMLElement>(`[data-step="${i}"]`);
       if (!step) return;
       const top = i === 0 ? 0 : step.getBoundingClientRect().top + window.scrollY;
-      window.scrollTo({ top, behavior: reduced ? "auto" : "smooth" });
+      window.scrollTo({ top });
     }),
   );
 }
@@ -258,7 +223,6 @@ function render(isSwitch: boolean): void {
   hud.innerHTML = renderHud(content);
   stepsEl.innerHTML = renderSteps(content);
   sectionsEl.innerHTML = renderSections(content);
-  paintScore();
   bindHud();
   observeReveals(isSwitch);
   setupCountdown();
@@ -289,7 +253,7 @@ function toggleLang(): void {
   scene.resize();
 
   const again = selector ? document.querySelector<HTMLElement>(selector) : null;
-  if (again) window.scrollBy(0, again.getBoundingClientRect().top - offset);
+  if (again) window.scrollBy({ top: again.getBoundingClientRect().top - offset, behavior: "instant" });
   document.getElementById("lang")?.focus();
 }
 
@@ -310,7 +274,6 @@ document.addEventListener("keydown", (e) => {
   if (konami === KONAMI.length) {
     konami = 0;
     document.body.classList.toggle("crt");
-    addScore(3000);
   }
 });
 

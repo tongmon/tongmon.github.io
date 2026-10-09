@@ -11,7 +11,6 @@ export const ko: Content = {
     nav: { log: "로그", records: "기록", items: "아이템", contact: "연락" },
     langButton: "ENGLISH",
     langLabel: "Switch to English",
-    score: "SCORE",
     stage: "STAGE",
     stageNames: { title: "타이틀", devops: "본업", gamedev: "게임 개발", quant: "퀀트" },
     goToStage: "이동:",

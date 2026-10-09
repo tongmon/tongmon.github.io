@@ -1,6 +1,6 @@
 import { C } from "./palette";
 import { BAYER, Gfx } from "./gfx";
-import { BODY_FRAMES, CHAIR_BACK, HEAD, MUG } from "./art";
+import { CHAIR_BACK, MUG, PLAYER_FRAMES } from "./art";
 
 // Composition space: everything that belongs to the desk scene is laid out in this
 // fixed coordinate system and later placed on the canvas at an integer offset.
@@ -226,8 +226,7 @@ export function drawPlayer(g: Gfx, t: number, typing: number): void {
   // Typing comes in bursts so it reads as someone thinking between keystrokes.
   const burst = (t % 2.6) < 1.6;
   const frame = typing > 0 && burst ? Math.floor(t * (8 + typing * 4)) % 2 : 0;
-  g.sprite(HEAD, 54, 35);
-  g.sprite(BODY_FRAMES[frame], 45, 55);
+  g.sprite(PLAYER_FRAMES[frame], 42, 35);
 
   // Chair: seat peeking out on both sides, backrest, then the base on the floor.
   g.rect(42, 111, 42, 6, C.ink);

@@ -51,7 +51,6 @@ export interface Content {
     nav: { log: string; records: string; items: string; contact: string };
     langButton: string;
     langLabel: string;
-    score: string;
     stage: string;
     stageNames: Record<StageId, string>;
     goToStage: string;
