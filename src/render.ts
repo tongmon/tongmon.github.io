@@ -183,11 +183,30 @@ export function renderSections(c: Content): string {
       <ul class="inventory">${inv}${more}</ul>
     </section>
     <section class="section continue" id="contact" aria-labelledby="contact-title">
-      <h2 class="continue__title reveal" id="contact-title">${esc(c.contact.title)}</h2>
-      <p class="continue__count" id="countdown" aria-hidden="true">9</p>
+      <div class="arcade px-box reveal" id="arcade" data-state="count">
+        <div class="arcade__screen">
+          <div class="arcade__count">
+            <h2 class="continue__title" id="contact-title">${esc(c.contact.title)}</h2>
+            <p class="continue__count" id="countdown" aria-hidden="true">9</p>
+          </div>
+          <div class="arcade__over" aria-live="polite">
+            <p class="over__title">${esc(c.contact.gameOver)}</p>
+            <p class="over__thanks">${esc(c.contact.thanks)}</p>
+            <div class="credits" id="credits">
+              <dl class="credits__roll">${c.contact.credits
+                .map(([role, name]) => `<div><dt>${esc(role)}</dt><dd>${esc(name)}</dd></div>`)
+                .join("")}</dl>
+            </div>
+            <div class="over__menu">
+              <button class="px-btn" type="button" id="continue-game"><span aria-hidden="true">► </span>${esc(c.contact.continueGame)}</button>
+              <button class="px-btn" type="button" id="new-game"><span aria-hidden="true">► </span>${esc(c.contact.newGame)}</button>
+            </div>
+          </div>
+        </div>
+      </div>
       <p class="continue__prompt reveal">${esc(c.contact.prompt)}</p>
       <ul class="menu" id="menu">${menu}</ul>
-      <p class="continue__coin blink" aria-hidden="true">${esc(c.contact.insertCoin)}</p>
+      <p class="continue__coin" aria-hidden="true"><img class="coin-drop" id="coin-drop" src="${iconUrl("coin")}" alt="" width="32" height="32" /><span id="coin-text" class="blink" data-insert="${esc(c.contact.insertCoin)}" data-credit="${esc(c.contact.credit)}">${esc(c.contact.insertCoin)}</span></p>
     </section>
     <footer class="footer"><p>${esc(c.contact.footer)}</p></footer>`;
 }

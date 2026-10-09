@@ -180,23 +180,104 @@ function observeReveals(instantAbove: boolean): void {
   });
 }
 
-let countdownTimer = 0;
-function setupCountdown(): void {
-  window.clearInterval(countdownTimer);
-  const el = document.getElementById("countdown");
+// CONTINUE? 9..0, then GAME OVER, ending credits and a CONTINUE / NEW GAME menu.
+const CRT_MS = 520;
+const CREDITS_MS = 4200;
+let arcadeTimer = 0;
+let arcadeTimeouts: number[] = [];
+let arcadeObserver: IntersectionObserver | null = null;
+let credits = 0;
+
+function later(ms: number, fn: () => void): void {
+  arcadeTimeouts.push(window.setTimeout(fn, ms));
+}
+
+function bump(el: HTMLElement, cls: string): void {
+  el.classList.remove(cls);
+  void el.offsetWidth;
+  el.classList.add(cls);
+}
+
+function setupArcade(): void {
+  window.clearInterval(arcadeTimer);
+  arcadeTimeouts.forEach((t) => window.clearTimeout(t));
+  arcadeTimeouts = [];
+  arcadeObserver?.disconnect();
+
   const section = document.getElementById("contact");
-  if (!el || !section || reduced) return;
+  const arcade = document.getElementById("arcade");
+  const count = document.getElementById("countdown");
+  const creditsEl = document.getElementById("credits");
+  const coin = document.getElementById("coin-drop");
+  const coinText = document.getElementById("coin-text");
+  if (!section || !arcade || !count || !creditsEl || !coin || !coinText || reduced) return;
+
   let n = 9;
   let visible = false;
-  new IntersectionObserver((entries) => (visible = entries[0].isIntersecting)).observe(section);
-  countdownTimer = window.setInterval(() => {
-    if (!visible) return;
-    n = n === 0 ? 9 : n - 1;
-    el.textContent = String(n);
-    el.classList.remove("tick");
-    void el.offsetWidth;
-    el.classList.add("tick");
+  let running = true;
+
+  const setCount = (value: number) => {
+    n = value;
+    count.textContent = String(n);
+    section.classList.toggle("is-urgent", n <= 3);
+  };
+
+  const showMenu = () => arcade.classList.add("show-menu");
+
+  const gameOver = () => {
+    running = false;
+    section.classList.remove("is-urgent");
+    bump(arcade, "is-off");
+    later(CRT_MS, () => {
+      arcade.classList.remove("is-off");
+      arcade.dataset.state = "over";
+      bump(arcade, "is-on");
+      later(CREDITS_MS, showMenu);
+    });
+  };
+
+  const restart = () => {
+    arcadeTimeouts.forEach((t) => window.clearTimeout(t));
+    arcadeTimeouts = [];
+    arcade.classList.remove("show-menu", "is-off");
+    arcade.dataset.state = "count";
+    setCount(9);
+    running = true;
+  };
+
+  arcadeObserver = new IntersectionObserver((entries) => (visible = entries[0].intersectionRatio >= 0.5), {
+    threshold: [0, 0.5, 1],
+  });
+  arcadeObserver.observe(arcade);
+  arcadeTimer = window.setInterval(() => {
+    if (!visible || !running) return;
+    if (n === 0) return gameOver();
+    setCount(n - 1);
+    bump(count, "tick");
   }, 1000);
+
+  // Skip the credits.
+  creditsEl.addEventListener("click", showMenu);
+
+  document.getElementById("continue-game")?.addEventListener("click", () => {
+    credits = Math.min(99, credits + 1);
+    bump(coin, "is-dropping");
+    later(450, () => {
+      coinText.textContent = `${coinText.dataset.credit} ${String(credits).padStart(2, "0")}`;
+      restart();
+      bump(arcade, "is-on");
+      later(1600, () => (coinText.textContent = coinText.dataset.insert ?? ""));
+    });
+  });
+
+  document.getElementById("new-game")?.addEventListener("click", () => {
+    restart();
+    // Replay the story from the title screen, typewriter and all.
+    typedSteps.clear();
+    stepsEl.innerHTML = renderSteps(content);
+    activeStep = -1;
+    window.scrollTo({ top: 0 });
+  });
 }
 
 // ---------------------------------------------------------------------------
@@ -226,7 +307,7 @@ function render(isSwitch: boolean): void {
   sectionsEl.innerHTML = renderSections(content);
   bindHud();
   observeReveals(isSwitch);
-  setupCountdown();
+  setupArcade();
   activeStep = -1;
   updateStory();
 }

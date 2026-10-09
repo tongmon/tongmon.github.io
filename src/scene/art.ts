@@ -343,6 +343,24 @@ export const ICONS: Record<string, string> = {
     oPPPPPPPPPPPPPPo
     oooooooooooooooo
     `,
+  coin: `
+    .....oooooo.....
+    ...ooYyyyyyoo...
+    ..oYyyyyyyyyYo..
+    .oYyywwyyyyyyYo.
+    .oyywyyyyyyyyYo.
+    oYyyyyYYYYyyyyYo
+    oyyyyYyyyyYyyyYo
+    oyyyyYyyyyyyyyYo
+    oyyyyYyyyyyyyyYo
+    oyyyyYyyyyYyyyYo
+    oYyyyyYYYYyyyyYo
+    .oYyyyyyyyyyyYo.
+    .oYYyyyyyyyyYYo.
+    ..oYYYyyyyYYYo..
+    ...ooYYYYYYoo...
+    .....oooooo.....
+    `,
   star: `
     .......oo.......
     ......oyyo......

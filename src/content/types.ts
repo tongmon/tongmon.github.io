@@ -61,5 +61,18 @@ export interface Content {
   questLog: { title: string; subtitle: string; entries: QuestEntry[] };
   records: { title: string; subtitle: string; newRecord: string; items: RecordCopy[] };
   inventory: { title: string; subtitle: string; stars: string; more: string; moreDesc: string; items: ItemCopy[] };
-  contact: { title: string; prompt: string; insertCoin: string; links: ContactCopy[]; footer: string };
+  contact: {
+    title: string;
+    prompt: string;
+    insertCoin: string;
+    credit: string;
+    links: ContactCopy[];
+    gameOver: string;
+    thanks: string;
+    /** Ending credits, as [role, name] pairs. */
+    credits: [string, string][];
+    continueGame: string;
+    newGame: string;
+    footer: string;
+  };
 }
